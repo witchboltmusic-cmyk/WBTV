@@ -1,0 +1,17 @@
+{
+  "station": "WITCH BOLT TV",
+  "programs": [
+    {
+      "title": "Midnight Transmission",
+      "description": "Original programming from Witch Bolt",
+      "duration_seconds": 180,
+      "url": "https://YOUR-PUBLIC-VIDEO-DOMAIN.example/midnight-transmission.mp4"
+    },
+    {
+      "title": "Station Identification",
+      "description": "We are still here",
+      "duration_seconds": 30,
+      "url": "https://YOUR-PUBLIC-VIDEO-DOMAIN.example/ident.mp4"
+    }
+  ]
+}
