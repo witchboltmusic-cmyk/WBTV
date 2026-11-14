@@ -33,19 +33,41 @@ PEOPLE = {
     "ellen": {"name": "Ellen Price", "role": "Librarian",
               "personality": "Precise, dry, opinionated about terminology; wants evidence."},
 }
+# Dedicated Piper voice models give the residents genuinely different voices.
+# The rate/pitch settings below are small finishing adjustments, not the identity.
 VOICES = {
-    "anchor": ("host", 1.00, 1.00, False),
-    "host": ("host", 1.00, 1.00, False),
-    "weather": ("caller", 1.00, 0.98, False),
-    "swap_host": ("caller", 0.94, 1.00, False),
-    "sam": ("host", 1.13, 1.04, True),
-    "harold": ("host", 0.86, 0.91, True),
-    "ellen": ("caller", 1.06, 0.98, True),
+    "anchor": ("en_US-john-medium", 1.00, 1.00, False),
+    "host": ("en_US-john-medium", 0.98, 0.95, False),
+    "weather": ("en_US-kristin-medium", 1.00, 0.98, False),
+    "swap_host": ("en_US-kristin-medium", 0.96, 1.00, False),
+    "sam": ("en_US-joe-medium", 1.00, 1.02, True),
+    "harold": ("en_US-mike-medium", 0.94, 0.92, True),
+    "ellen": ("en_US-amy-medium", 1.02, 1.00, True),
 }
+_PILOT_VOICES = {}
+
+def write_pilot_speech(text, speaker, destination, engine):
+    model_name = VOICES[speaker][0]
+    if engine == "piper":
+        from piper import PiperVoice
+        model = ROOT / "voices" / (model_name + ".onnx")
+        config = ROOT / "voices" / (model_name + ".onnx.json")
+        if not model.exists() or not config.exists():
+            raise RuntimeError(f"Missing required Piper model/config: {model_name}")
+        if model_name not in _PILOT_VOICES:
+            _PILOT_VOICES[model_name] = PiperVoice.load(str(model))
+        with wave.open(str(destination), "wb") as out:
+            _PILOT_VOICES[model_name].synthesize_wav(text, out)
+    else:
+        # Retain old speech solely as an explicit local testing fallback.
+        legacy = "caller" if speaker in ("ellen", "weather", "swap_host") else "host"
+        _write_speech(text, legacy, destination, engine)
 
 def speak(segments, dest, voice_choice="auto"):
     """Reuse installed Piper/eSpeak voices, with stable individual rate/pitch/EQ."""
     engine = active_voice_engine(voice_choice)
+    if voice_choice == "piper" and engine != "piper":
+        raise RuntimeError("Piper required: do not silently use eSpeak")
     with tempfile.TemporaryDirectory() as tmp:
         frames = []
         rate = 44100
@@ -55,7 +77,7 @@ def speak(segments, dest, voice_choice="auto"):
             model, pitch, speed, phone = VOICES[speaker]
             raw = Path(tmp) / f"{i:03d}_raw.wav"
             done = Path(tmp) / f"{i:03d}_done.wav"
-            _write_speech(content, model, raw, engine)
+            write_pilot_speech(content, speaker, raw, engine)
             # Only pitch-shift the two underlying Piper voices. eSpeak already
             # has its own voice variations; tempo adjustments remain gentle.
             shift = pitch if engine == "piper" else 1.0
