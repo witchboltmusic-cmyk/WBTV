@@ -1,8 +1,16 @@
 name: Validate BRD AI voice code
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'TownTV_Factory/cryptid_trial.py'
+      - 'TownTV_Factory/tests/test_cryptid_pilot.py'
+      - '.github/workflows/check-ai-voices.yml'
   pull_request:
     paths:
+      - 'TownTV_Factory/cryptid_trial.py'
+      - 'TownTV_Factory/tests/test_cryptid_pilot.py'
       - 'TownTV_Factory/openai_voice.py'
       - 'TownTV_Factory/revoice_cryptid.py'
       - 'TownTV_Factory/tests/test_natural_ai_voices.py'
