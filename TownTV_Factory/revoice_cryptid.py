@@ -72,14 +72,14 @@ def main():
     tv.TEMP = args.out / "_render"
     pilot.active_voice_engine("piper")
     tv.synthesize = pilot.speak
-    reports = sorted(args.out.glob("day_*_cryptid_report.json"))
+    reports = sorted(args.out.rglob("day_*_cryptid_report.json"))
     if not reports:
         ap.error("No prior LLM pilot reports were downloaded into " + str(args.out))
     render_log = []
     for report_path in reports:
         day = json.loads(report_path.read_text("utf-8"))["day"]
         day_number = day["day"]
-        original_scripts = args.out / f"day_{day_number:03d}_cryptid_scripts.txt"
+        original_scripts = report_path.parent / f"day_{day_number:03d}_cryptid_scripts.txt"
         if not original_scripts.exists():
             raise FileNotFoundError(f"Original scripts not found: {original_scripts}")
         turns = dialogue_by_day.get(day_number)
