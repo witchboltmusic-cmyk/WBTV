@@ -3,13 +3,13 @@
   "town": "Bramhollow",
   "county": "Morrow County",
   "station": "BRD TV 8",
-  "broadcast_day": 9,
+  "broadcast_day": 12,
   "fictional_start_date": "1996-10-01",
   "seed": 81381996,
   "surreal_chance": 0.17,
   "weather": {
-    "condition": "cloudy",
-    "temperature_f": 52
+    "condition": "clear",
+    "temperature_f": 53
   },
   "residents": {
     "mara": {
@@ -38,7 +38,7 @@
       "job": "Bus driver",
       "status": "home",
       "away_until": 0,
-      "mentions": 1
+      "mentions": 2
     },
     "violet": {
       "name": "Violet Dunn",
@@ -52,7 +52,7 @@
       "job": "Garden club president",
       "status": "home",
       "away_until": 0,
-      "mentions": 0
+      "mentions": 1
     },
     "june": {
       "name": "June Mercer",
@@ -67,6 +67,13 @@
       "status": "home",
       "away_until": 0,
       "mentions": 2
+    },
+    "oscar": {
+      "name": "Oscar Reed",
+      "job": "Sign painter",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 0
     }
   },
   "businesses": {
@@ -113,25 +120,28 @@
     "Lions Club schedules monthly breakfast": 6,
     "County fair announces pie contest": 7,
     "Library extends weekend hours": 8,
-    "Roadside flower beds replanted": 9
+    "Roadside flower beds replanted": 9,
+    "County fair announces flower competition": 10,
+    "Downtown sidewalk repairs begin": 11,
+    "Community theater schedules auditions": 12
   },
   "business_last_mentioned": {
-    "cinema": 4,
-    "laundry": 6,
+    "cinema": 12,
+    "laundry": 10,
     "bakery": 7,
     "garden": 9,
-    "hardware": 8
+    "hardware": 11
   },
   "threads": {
     "orchard": {
-      "stage": 2,
-      "due_day": 12,
+      "stage": 3,
+      "due_day": 17,
       "done": false,
-      "last_day": 8
+      "last_day": 12
     }
   },
   "threads_completed": [],
-  "last_thread_day": 8,
+  "last_thread_day": 12,
   "history": [
     {
       "day": 1,
@@ -452,6 +462,110 @@
       "category": "community",
       "surreal": false,
       "thread": "cryptid_naming"
+    },
+    {
+      "day": 10,
+      "headline": "County fair announces flower competition",
+      "text": "Registration for the county fair flower arrangement contest is available at the recreation hall.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 10,
+      "headline": "West End Laundromat joins county fair",
+      "text": "West End Laundromat will sponsor a table at the next county fair.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 10,
+      "headline": "Community volunteer: Ernest Pike",
+      "text": "Ernest Pike, a local garden club president, will help organize the annual neighborhood cleanup.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 10,
+      "headline": "Sam Evers Wants Bramhollow to Call the Shape \u201cThe Long Coat\u201d",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
+    },
+    {
+      "day": 11,
+      "headline": "Downtown sidewalk repairs begin",
+      "text": "Sidewalk repair work will begin outside the hardware store this week.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 11,
+      "headline": "Oscar Reed settles in Bramhollow",
+      "text": "Oscar Reed, a sign painter, has moved into a home on the west side of town. Neighbors are planning a small welcome gathering.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 11,
+      "headline": "Vale Hardware extends Saturday opening",
+      "text": "Vale Hardware will offer extended Saturday hours throughout the month.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 11,
+      "headline": "Harold Vale Adds Two Rival Names to Bramhollow\u2019s Coat Argument",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
+    },
+    {
+      "day": 12,
+      "headline": "Regent Picture House extends Saturday opening",
+      "text": "Regent Picture House will offer extended Saturday hours throughout the month.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 12,
+      "headline": "Community volunteer: Sam Evers",
+      "text": "Sam Evers, a local bus driver, has offered to lend supplies to the community garden.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 12,
+      "headline": "Orchard growers invited to public meeting",
+      "text": "Residents with questions about land records are invited to a short meeting at the recreation hall.",
+      "category": "county",
+      "surreal": true,
+      "thread": "orchard"
+    },
+    {
+      "day": 12,
+      "headline": "Community theater schedules auditions",
+      "text": "The county theater group will hold auditions for its annual autumn production.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 12,
+      "headline": "Harold Vale's Reservoir Stilt Meets Sam Evers's Long Coat",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
     }
   ],
   "metadata": {
@@ -459,213 +573,285 @@
     "tone_upgrade_v2": true
   },
   "cryptid_trial": {
-    "first_day": 7,
+    "first_day": 10,
     "names": {
-      "sam": "Longshape",
-      "harold": "Roadside Case",
-      "ellen": "Unverified Form"
+      "sam": "The Long Coat",
+      "harold": "The Reservoir Stilt",
+      "ellen": "The Blank Sleeve"
     },
     "minds": {
       "sam": {
         "witnessed": true,
-        "belief": "He saw a tall shape beside Reservoir Road after his bus route, in poor visibility; he remains the only person reporting a sighting.",
-        "stance": "Keeps Longshape as a cautious description and wants his report left on record. He knows Harold and Ellen have not seen what he reported."
+        "belief": "He saw a tall shape beside Reservoir Road after his bus route, but cannot explain what it was.",
+        "stance": "He still calls it The Long Coat and resents Harold and Ellen treating the name as a public joke. He is more uneasy than he lets on about passing the road again."
       },
       "harold": {
         "witnessed": false,
-        "belief": "He has never seen anything and doubts Sam identified anything at all.",
-        "stance": "Still favors Roadside Case as a practical label for the report. He does not claim that his proposed name identifies an animal."
+        "belief": "He has not seen the shape and has no firsthand idea what it was.",
+        "stance": "He still prefers The Reservoir Stilt and wants his name taken seriously, but worries the whole argument makes him look ridiculous."
       },
       "ellen": {
         "witnessed": false,
-        "belief": "She has never seen anything and wants evidence before accepting a more specific term.",
-        "stance": "Still favors Unverified Form because it marks uncertainty and does not turn a description into an established proper name."
+        "belief": "She has not seen the shape and does not claim to know what it was.",
+        "stance": "She still prefers The Blank Sleeve. She thinks Harold is more concerned with protecting his pride than choosing a useful name, and she is willing to needle him about it."
       }
     },
     "public_record": [
       {
-        "day": 7,
-        "headline": "Sam Evers proposes \"Longshape\" as name for reservoir animal",
+        "day": 10,
+        "headline": "Sam Evers Wants Bramhollow to Call the Shape \u201cThe Long Coat\u201d",
         "names": {
-          "sam": "Longshape"
+          "sam": "The Long Coat"
         }
       },
       {
-        "day": 8,
-        "headline": "Harold Vale and Ellen Price dispute Sam Evers' proposed name",
+        "day": 11,
+        "headline": "Harold Vale Adds Two Rival Names to Bramhollow\u2019s Coat Argument",
         "names": {
-          "sam": "Longshape",
-          "harold": "Roadside Case",
-          "ellen": "Unverified Form"
+          "sam": "The Long Coat",
+          "harold": "The Reservoir Stilt",
+          "ellen": "The Blank Sleeve"
         }
       },
       {
-        "day": 9,
-        "headline": "Reservoir animal naming debate draws community comment",
+        "day": 12,
+        "headline": "Harold Vale's Reservoir Stilt Meets Sam Evers's Long Coat",
         "names": {
-          "sam": "Longshape",
-          "harold": "Roadside Case",
-          "ellen": "Unverified Form"
+          "sam": "The Long Coat",
+          "harold": "The Reservoir Stilt",
+          "ellen": "The Blank Sleeve"
         }
       }
     ],
     "recent_dialogue": [
       {
-        "day": 7,
+        "day": 10,
         "turns": [
           {
             "speaker_id": "host",
-            "text": "Sam, why \u201cLongshape\u201d?"
+            "text": "Sam, you\u2019ve called it The Long Coat. Why that?"
           },
           {
             "speaker_id": "sam",
-            "text": "It says what I saw without claiming what it was."
+            "text": "Because it was tall and narrow. That\u2019s what I saw. I\u2019m not dressing it up for Harold\u2019s approval."
           },
           {
             "speaker_id": "harold",
-            "text": "It says very little. A useful label ought to help someone sort one thing from another."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "That assumes there is a thing to sort. Sam reported a shape."
+            "text": "You\u2019ve named a thing you can\u2019t identify. That\u2019s not naming, Sam. That\u2019s hanging a coat on a fence."
           },
           {
             "speaker_id": "sam",
-            "text": "I reported what I could see in poor visibility."
+            "text": "You weren\u2019t there."
           },
           {
             "speaker_id": "harold",
-            "text": "And I am not saying you saw nothing. I am saying the label should wait."
+            "text": "No, I was at work, where people come in asking for nails instead of a bedtime story."
           },
           {
             "speaker_id": "ellen",
-            "text": "I agree about waiting. I do not agree that \u201cLongshape\u201d is a proper name."
+            "text": "Harold, you sell screws by the inch and still manage to make every conversation about your own importance."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "Thank you, Ellen. That\u2019s almost a sentence."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "It was a complete one. You may keep it."
           },
           {
             "speaker_id": "host",
-            "text": "You both want a better name, but neither of you has seen it."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "Correct. That is why I\u2019m asking for a practical standard first."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "And I am asking that we distinguish a description from a name."
+            "text": "Sam, what made you sure it was a shape and not something beside the road?"
           },
           {
             "speaker_id": "sam",
-            "text": "For now, I\u2019d rather use a modest word than pretend I know more."
+            "text": "I don\u2019t know what it was. I know where it stood. I keep remembering the exact patch of road, and that\u2019s the bit I don\u2019t like."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "That\u2019s a patch of road, not a name."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "You could try shutting up long enough to hear what I\u2019m saying."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "I heard you. You want a name before anyone laughs."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "I don\u2019t care if they laugh."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "You\u2019ve said that three times, Sam. It sounds less convincing each time."
           },
           {
             "speaker_id": "host",
-            "text": "The station will keep the proposal on record, without upgrading it to an identification."
+            "text": "Harold, if you haven\u2019t seen it, what exactly are you objecting to?"
+          },
+          {
+            "speaker_id": "harold",
+            "text": "The name. It sounds like something left on a bus."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "Then don\u2019t pick it up."
           }
         ]
       },
       {
-        "day": 8,
+        "day": 11,
         "turns": [
           {
             "speaker_id": "host",
-            "text": "Harold, what does Roadside Case help you do?"
+            "text": "Harold, The Reservoir Stilt. Why a stilt?"
           },
           {
             "speaker_id": "harold",
-            "text": "Put the report somewhere findable. A label should work on a folder."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "A folder can hold a report without deciding there is a case."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "That is why I said case, not creature."
+            "text": "Tall. Reservoir. It\u2019s got a spine to it, unlike a coat that\u2019s apparently wandered off a bus."
           },
           {
             "speaker_id": "sam",
-            "text": "Longshape still describes what I could make out. I am not claiming more than that."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "Unverified Form keeps the uncertainty attached to the words."
+            "text": "You\u2019re proud of that? You\u2019ve named a thing you never saw after the nearest puddle."
           },
           {
             "speaker_id": "harold",
-            "text": "It sounds like a box on a form that has not been filled in."
+            "text": "Reservoir. Not puddle. Words do matter, Sam."
           },
           {
             "speaker_id": "ellen",
-            "text": "That would be an accurate use of the phrase."
+            "text": "Harold has mistaken a longer word for a better thought."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "And you\u2019ve named it The Blank Sleeve. You\u2019ve managed to make a sleeve sound unemployed."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "It is a description, not a job reference."
           },
           {
             "speaker_id": "host",
-            "text": "So far, the names are competing; the evidence is not."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "I can live with that, provided my report stays on record."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "Keep the report. I still want a label that sorts properly."
+            "text": "Ellen, why that name?"
           },
           {
             "speaker_id": "ellen",
-            "text": "And I want the label to say what we actually know."
+            "text": "It\u2019s spare. The shape was tall, according to Sam; a sleeve suggests a person without pretending we know there was one."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "I didn\u2019t say sleeve. I said it was there."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "Then we need a vote. A proper one. I\u2019ll put a box by the register Saturday."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "You\u2019ll put a box by the register so every customer has to see you winning."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "I\u2019m open longer than you are. That\u2019s called convenience."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "It\u2019s also called having your own ballot box beside the nails."
+          },
+          {
+            "speaker_id": "host",
+            "text": "Sam, would a vote bother you?"
+          },
+          {
+            "speaker_id": "sam",
+            "text": "The name doesn\u2019t bother me. It\u2019s that patch of road. I can still point to it without looking."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "That doesn\u2019t make it\u2014"
+          },
+          {
+            "speaker_id": "sam",
+            "text": "Don\u2019t finish that for me."
           }
         ]
       },
       {
-        "day": 9,
+        "day": 12,
         "turns": [
           {
             "speaker_id": "host",
-            "text": "We have three proposed labels and no agreement. Sam, are you still using yours?"
-          },
-          {
-            "speaker_id": "sam",
-            "text": "Yes. Longshape stays close to what I could make out."
+            "text": "Harold, you say your name sounds less foolish. Are you worried people are laughing at the name, or at you?"
           },
           {
             "speaker_id": "harold",
-            "text": "For filing, I still think Roadside Case is clearer. It tells you where the report belongs."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "It tells you there is a case. Unverified Form keeps the uncertainty in plain view."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "A form can be unverified without becoming the title of the folder."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "And a folder title can sound more conclusive than its contents."
+            "text": "I\u2019m worried you\u2019re helping them do both. The Reservoir Stilt has a shape to it. The others sound like things Sam\u2019s misplaced."
           },
           {
             "speaker_id": "sam",
-            "text": "I\u2019m not asking either of you to endorse what I saw. I\u2019m asking that the description remain mine."
+            "text": "I haven\u2019t misplaced anything. And I didn\u2019t offer garden supplies so you could use me as your example of a town fool."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "I didn\u2019t say that. You\u2019re the one making every sentence sound like a personal injury."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "Harold, you could make a compliment sound like an invoice."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "You\u2019ve been waiting all week to say that."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "No. I thought of it just now. It\u2019s worse for you that way."
           },
           {
             "speaker_id": "host",
-            "text": "Would you accept the three names listed side by side?"
-          },
-          {
-            "speaker_id": "harold",
-            "text": "Side by side is workable, provided nobody files them as three separate reports."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "That is a sensible distinction. Names are not evidence."
+            "text": "Sam, does the garden offer have anything to do with wanting the town to take you seriously?"
           },
           {
             "speaker_id": "sam",
-            "text": "Then Longshape can stay as my description, not a finding."
+            "text": "It has to do with the garden needing supplies. That\u2019s all. I don\u2019t need a prize for lending things."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "No, you just need everyone to call it The Long Coat."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "I didn\u2019t ask everyone to do anything. You\u2019re the one trying to turn this into a contest."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "A name is a contest the minute people start choosing sides."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "Then stop standing there with a little flag in your hand."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "I have no flag. I have a hardware store. People know what I sell."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "I know what I saw. I don\u2019t know what it was. Those aren\u2019t the same thing."
           },
           {
             "speaker_id": "host",
-            "text": "The station will keep the disagreement as a disagreement."
+            "text": "When you pass Reservoir Road now, do you look for it?"
+          },
+          {
+            "speaker_id": "sam",
+            "text": "No. I look away before I get there. Then I wonder why I did."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "That still doesn\u2019t make it a\u2014"
           }
         ]
       }
