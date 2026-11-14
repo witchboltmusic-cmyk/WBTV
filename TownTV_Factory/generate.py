@@ -1,216 +1,271 @@
 #!/usr/bin/env python3
-"""Briar Glen: persistent fictional-town TV generator, no AI video.
+"""Briar Glen TV v2: persistent town, polished procedural retro graphics, natural TTS.
 
-One run advances one simulated day, renders 4 MP4 programs, and saves town_state.json.
-Use --no-video for a fast simulation-only test. All visuals procedural, TTS = eSpeak.
+One run advances one day. No AI-generated video: all imagery is code-rendered.
+Piper voices are free/offline; eSpeak remains a tested fallback.
 """
 from __future__ import annotations
 import argparse
 import datetime as dt
 import json
 import math
+import random
 import shutil
 import subprocess
-import tempfile
-import wave
 from pathlib import Path
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from town_engine import initial_state, upgrade_state, advance, write_scripts
+from voiceover import synthesize, active_voice_engine
 
-ROOT = Path(__file__).resolve().parent
-OUT = ROOT / 'output'
-TEMP = OUT / '_render'
-STATE_FILE = ROOT / 'town_state.json'
-W, H, FPS = 800, 450, 4
-BG=(7,17,20); CREAM=(212,227,208); MUTED=(132,162,148)
-HILITE=(126,190,160); GOLD=(200,184,126)
-FONT_PATH=next((p for p in ['/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf',
-                            '/usr/share/fonts/truetype/liberation2/LiberationMono-Regular.ttf',
-                            'C:/Windows/Fonts/consola.ttf'] if Path(p).exists()),None)
-def font(size): return ImageFont.truetype(FONT_PATH,size) if FONT_PATH else ImageFont.load_default()
-F10,F14,F17,F23,F32=(font(n) for n in (10,14,17,23,32))
+ROOT=Path(__file__).resolve().parent
+OUT=ROOT/'output'
+TEMP=OUT/'_render'
+STATE_FILE=ROOT/'town_state.json'
+W,H,FPS=960,540,8
+BG=(11,22,33);WHITE=(232,232,221);MUTED=(150,172,175);CYAN=(122,208,200)
+BRASS=(217,178,110);NAVY=(18,37,54);TEAL=(31,79,81)
+FONT_OPTIONS={
+ 'regular':['/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf','/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf'],
+ 'bold':['/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf','/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf'],
+ 'mono':['/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf','/usr/share/fonts/truetype/liberation2/LiberationMono-Regular.ttf'],
+}
+def font(sz,kind='regular'):
+    chosen=next((p for p in FONT_OPTIONS[kind] if Path(p).exists()),None)
+    return ImageFont.truetype(chosen,sz) if chosen else ImageFont.load_default()
+SIZES=(13,14,15,16,17,18,19,20,22,23,24,28,30,32,36,38,40,42,46,54,64)
+F={('reg',s):font(s) for s in SIZES}
+F.update({('bold',s):font(s,'bold') for s in SIZES})
+F.update({('mono',s):font(s,'mono') for s in SIZES})
 
 def run(*cmd):
-    completed = subprocess.run([str(x) for x in cmd],capture_output=True,text=True)
-    if completed.returncode:
-        raise RuntimeError(f"Command failed: {' '.join(map(str,cmd[:6]))}\n{completed.stderr[-1400:]}")
+    p=subprocess.run([str(x) for x in cmd],text=True,capture_output=True)
+    if p.returncode: raise RuntimeError(f'Command failed: {" ".join(map(str,cmd[:6]))}\n{p.stderr[-1500:]}')
 
-def synthesize(segments, dest):
-    """Convert narrator/caller lines to one WAV. Deterministic and fully offline."""
-    with tempfile.TemporaryDirectory() as td:
-        pieces=[]; audio_params=None
-        for i,(voice,message) in enumerate(segments):
-            fp=Path(td)/f'{i:02d}.wav'
-            tts_voice = 'en-us+f3' if voice == 'caller' else 'en-us'
-            pitch='42' if voice == 'caller' else '26'
-            run('espeak','-v',tts_voice,'-s','139','-p',pitch,'-a','160','-w',str(fp),message)
-            with wave.open(str(fp),'rb') as w:
-                params=(w.getnchannels(),w.getsampwidth(),w.getframerate())
-                if audio_params is None: audio_params=params
-                if params != audio_params: raise ValueError('TTS audio format mismatch')
-                pieces.append(w.readframes(w.getnframes()))
-        channels,sampwidth,rate=audio_params
-        pause=b'\x00'*int(rate*.3)*channels*sampwidth
-        with wave.open(str(dest),'wb') as out:
-            out.setnchannels(channels);out.setsampwidth(sampwidth);out.setframerate(rate)
-            for i,frames in enumerate(pieces):
-                if i: out.writeframes(pause)
-                out.writeframes(frames)
-        return sum(len(x) for x in pieces)/(rate*channels*sampwidth)+max(len(pieces)-1,0)*.3
 
-def txt(draw,xy,value,font_obj=F17,color=CREAM,max_chars=70,gap=4,max_lines=None):
-    x,y=xy; words=str(value).split(' ');line='';shown=0
-    for word in words+['']:
-        candidate=(line+' '+word).strip()
-        if (len(candidate)>max_chars and line) or not word:
-            draw.text((x,y),line,fill=color,font=font_obj)
-            y+=(font_obj.size if hasattr(font_obj,'size') else 14)+gap
-            shown+=1;line=word
-            if max_lines and shown>=max_lines:break
-        else:line=candidate
+def txt(d,xy,text,size=20,fill=WHITE,kind='regular'):
+    d.text(tuple(map(int,xy)),str(text),fill=fill,font=F[('reg' if kind=='regular' else kind,size)])
+
+
+def wrapped(d,xy,s,max_width,size=20,fill=WHITE,leading=8,max_lines=5,kind='regular'):
+    x,y=xy; fo=F[('reg' if kind=='regular' else kind,size)]
+    words=str(s).split();lines=[];line=''
+    for word in words:
+        trial=(line+' '+word).strip()
+        if line and d.textbbox((0,0),trial,font=fo)[2] > max_width:
+            lines.append(line);line=word
+        else:line=trial
+    if line:lines.append(line)
+    for line in lines[:max_lines]:
+        d.text((int(x),int(y)),line,fill=fill,font=fo)
+        y += size+leading
     return y
 
-def base(draw,station,day,label,sec,air_date):
-    draw.rectangle((0,0,W,H),fill=BG)
-    draw.rectangle((0,0,W,42),fill=(20,43,42))
-    draw.text((20,11),station,fill=CREAM,font=F17)
-    draw.text((W-190,13),f'{air_date} / {day:03d}',fill=MUTED,font=F14)
-    draw.line((18,H-38,W-18,H-38),fill=(55,87,77),width=2)
-    draw.text((22,H-29),f'CHANNEL 08 / {label.upper()}',font=F14,fill=MUTED)
-    draw.text((W-152,H-29),f'{int(sec//60):02d}:{int(sec%60):02d}  AIR',font=F14,fill=HILITE)
-    # Low-intensity scan lines, not flashing.
-    for y in range(48,H-40,5):draw.line((0,y,W,y),fill=(13,24,25),width=1)
 
-def draw_news(draw,sec,day,primary,second):
-    draw.rectangle((20,58,W-20,104),fill=(31,68,64),outline=(74,120,99),width=2)
-    draw.text((32,67),'MORROW COUNTY EVENING NEWS',font=F23,fill=CREAM)
-    # Stylized procedural digital anchor; no footage, AI, or photorealism.
-    draw.polygon([(85,370),(100,280),(210,280),(235,370)],fill=(52,74,73))
-    draw.rectangle((135,264,180,300),fill=(163,161,141))
-    draw.ellipse((110,143,205,275),fill=(185,174,153),outline=(95,108,101),width=3)
-    draw.polygon([(108,175),(125,132),(192,137),(211,170)],fill=(63,70,68))
-    for x in (139,178):draw.rectangle((x-9,195,x+3,199),fill=(49,55,48))
-    mouth_h=3+(8 if int(sec*4.2)%5<3 else 0)
-    draw.rectangle((145,239,174,239+mouth_h),fill=(66,45,42))
-    draw.rectangle((24,368,255,394),fill=(31,68,64))
-    draw.text((33,373),'ANCHOR / UNIT 01',fill=CREAM,font=F14)
-    draw.text((293,134),'LOCAL HEADLINES',fill=GOLD,font=F17)
-    draw.rectangle((281,176,770,295),fill=(13,32,31),outline=(51,87,75))
-    txt(draw,(294,190),primary if sec%22<13 else second,F17,CREAM,39,8,max_lines=4)
-    draw.rectangle((280,360,W-26,393),fill=(32,62,60))
-    draw.text((292,367),'MUNICIPAL REPORT / NEWS DESK',fill=HILITE,font=F14)
+def line(d,points,fill,width=2):d.line(points,fill=fill,width=width)
 
-def draw_weather(draw,sec,wx):
-    draw.text((28,67),'COUNTY WEATHER SERVICE',fill=CREAM,font=F23)
-    draw.text((W-185,70),f'{wx["temp_f"]} F',fill=GOLD,font=F23)
-    L,T,R,B=24,110,480,373
-    draw.rectangle((L,T,R,B),fill=(19,48,46),outline=(74,120,99),width=2)
-    for k in range(1,9):draw.line((L+k*51,T,L+k*51,B),fill=(31,64,58))
-    for k in range(1,5):draw.line((L,T+k*52,R,T+k*52),fill=(31,64,58))
-    draw.line([(30,280),(125,212),(175,247),(260,164),(350,205),(472,155)],fill=(92,150,128),width=3)
-    draw.line([(50,130),(122,176),(220,150),(310,218),(445,307)],fill=(72,115,104),width=2)
-    x=265+int(5*math.sin(sec*.5));y=230
-    for r in (20,42,68):draw.ellipse((x-r,y-r*.62,x+r,y+r*.62),outline=(80,140,107),width=2)
-    a=sec*.45;draw.line((x,y,int(x+68*math.cos(a)),int(y+43*math.sin(a))),fill=GOLD,width=3)
-    draw.text((40,124),'BRIAR GLEN',fill=CREAM,font=F14)
-    draw.text((300,338),'RESERVOIR',fill=CREAM,font=F14)
-    draw.text((510,148),'TONIGHT',fill=GOLD,font=F23)
-    txt(draw,(510,203),wx['forecast'],F14,CREAM,29,7,max_lines=6)
-    draw.text((29,386),'SIMULATED DOPPLER / COUNTY 08',fill=MUTED,font=F10)
 
-def draw_swap(draw,sec,listing):
-    draw.text((24,68),'COUNTY SWAP SHOP',fill=CREAM,font=F32)
-    draw.text((26,115),'BUY  /  SELL  /  TRADE',fill=MUTED,font=F17)
-    draw.rectangle((29,160,260,375),fill=(22,47,42),outline=(105,146,123),width=2)
-    draw.ellipse((105,188,176,218),fill=(90,122,103))
-    draw.polygon([(115,207),(166,207),(155,245),(125,245)],fill=(118,148,126))
-    draw.rectangle((132,245,145,323),fill=(104,124,112))
-    draw.rectangle((97,323,178,334),fill=(104,124,112))
-    draw.text((58,348),'LISTING 08-04',fill=MUTED,font=F14)
-    draw.text((289,165),'TODAY\'S LISTINGS',fill=GOLD,font=F23)
-    txt(draw,(290,226),listing,F17,CREAM,43,7,max_lines=6)
-    draw.text((291,365),'CALL STATION FOR DETAILS',fill=HILITE,font=F14)
+def panel(d,box,fill=NAVY,border=(60,104,116),width=1):
+    d.rectangle(box,fill=fill,outline=border,width=width)
 
-def draw_nightline(draw,sec,caller,message):
-    draw.text((30,65),'THE NIGHT LINE',fill=CREAM,font=F32)
-    draw.text((30,115),'COMMUNITY CALL-IN  /  AFTER HOURS',fill=MUTED,font=F17)
-    draw.rectangle((28,159,770,376),fill=(12,32,33),outline=(70,113,99),width=2)
-    draw.text((50,188),f'CALLER: {caller.upper()}',fill=GOLD,font=F17)
-    # Procedural telephone waveform gently moving with clock, no intense strobe.
-    samples=[]
-    for x in range(50,748,5):
-        wave=(math.sin((x+sec*55)/25)+math.sin((x+sec*30)/9)*.32)*21
-        samples.append((x, int(280+wave)))
-    draw.line(samples,fill=HILITE,width=3)
-    draw.text((52,334),'LOCAL CALLS  /  TELEPHONE AUDIO',fill=MUTED,font=F14)
-    draw.text((36,389),'THE VIEWS OF CALLERS ARE THEIR OWN',fill=MUTED,font=F10)
 
-def render_program(program,daily,state):
+def base(d,station,day,name,sec,air_date,events):
+    d.rectangle((0,0,W,H),fill=BG)
+    # horizontal top band and station ID
+    d.rectangle((0,0,W,74),fill=(24,56,70))
+    d.rectangle((0,72,W,76),fill=BRASS)
+    d.ellipse((22,11,76,65),fill=(10,31,40),outline=CYAN,width=2)
+    txt(d,(39,22),'8',32,WHITE,'bold')
+    txt(d,(93,11),'WMRW',28,WHITE,'bold')
+    txt(d,(94,44),'MORROW COUNTY TELEVISION',14,CYAN,'mono')
+    txt(d,(W-256,12),air_date.replace('-',' / '),17,MUTED,'mono')
+    txt(d,(W-256,44),f'LOCAL  /  08  /  {day:03d}',14,WHITE,'mono')
+    # subtle lines on film, low intensity, no flicker/strobes
+    for y in range(82,H-62,7):
+        line(d,[(0,y),(W,y)],(16,28,40),1)
+    # lower third, patterned station system
+    d.rectangle((0,H-61,W,H),fill=(16,43,57))
+    d.rectangle((0,H-61,W,H-58),fill=(61,108,111))
+    txt(d,(25,H-49),'WMRW 08',20,CYAN,'bold')
+    txt(d,(163,H-46),name.upper()+'   /   BRIAR GLEN',15,WHITE,'mono')
+    txt(d,(W-116,H-47),f'{int(sec//60):02d}:{int(sec%60):02d}',20,BRASS,'mono')
+    # A rare, completely understated unexplained broadcast-system status.
+    if day % 13 == 0 and 10 <= sec < 15:
+        d.rectangle((W-345,84,W-22,110),fill=(24,53,62))
+        txt(d,(W-330,89),'SIGNAL SOURCE: UNLISTED',13,MUTED,'mono')
+    ticker='   •   '.join(e['headline'].upper() for e in events[:3])
+    tw=max(1,d.textbbox((0,0),ticker,font=F[('mono',13)])[2])
+    tick_x=W-int((sec*45) % (tw+W))
+    d.text((tick_x,H-20),ticker,fill=(153,180,176),font=F[('mono',13)])
+    return d
+
+
+def news(d,sec,program,daily):
+    txt(d,(34,100),'EVENING REPORT',40,WHITE,'bold')
+    txt(d,(36,152),'LIVE FROM THE COUNTY NEWSROOM',14,MUTED,'mono')
+    # polished 1990s pseudo-digital anchor: no photo, video, or AI images
+    panel(d,(32,198,350,460),fill=(23,55,69),border=(77,134,139))
+    d.rectangle((46,212,336,414),fill=(34,70,78))
+    for y in range(230,400,22):line(d,[(50,y),(332,y)],(43,83,90),1)
+    d.ellipse((115,338,274,433),fill=(53,71,79))
+    d.polygon([(145,413),(170,385),(221,388),(247,413)],fill=(188,197,181))
+    d.rectangle((165,379,210,419),fill=(175,165,149))
+    d.ellipse((146,245,229,391),fill=(185,169,153),outline=(103,115,107),width=2)
+    d.polygon([(140,286),(150,251),(181,227),(222,247),(231,287),(214,269),(164,274)],fill=(56,61,60))
+    # eyes: rare blink, not strobing
+    blink=(int(sec*2.4)%47==0)
+    for x in (169,204):line(d,[(x-6,317),(x+4,317)],(69,68,61),2 if blink else 3)
+    mouth_open=(int(sec*3)%6 in (0,1,2))
+    d.rectangle((178,364,202,370 if mouth_open else 366),fill=(80,64,62))
+    d.rectangle((46,414,336,446),fill=(14,39,52))
+    txt(d,(59,420),'NEWS DESK  /  UNIT 01',15,CYAN,'mono')
+    first=program['display'] if sec < 13 else program['second']
+    second=program['second'] if sec < 13 else program['display']
+    panel(d,(369,199,926,461),(23,47,62),(64,105,124))
+    d.rectangle((369,199,926,239),fill=(47,98,110))
+    txt(d,(391,208),'TOP STORY',20,WHITE,'bold')
+    txt(d,(763,209),'LOCAL / DESK',15,WHITE,'mono')
+    wrapped(d,(390,269),first,505,28,WHITE,12,4,'bold')
+    line(d,[(388,390),(902,390)],(69,103,112))
+    wrapped(d,(391,405),second,510,16,MUTED,5,2)
+
+
+def weather(d,sec,program,daily):
+    wx=daily['weather']
+    txt(d,(34,98),'COUNTY WEATHER SERVICE',36,WHITE,'bold')
+    txt(d,(36,149),'SYNTHETIC RADAR OBSERVATION  /  SECTOR 04',14,CYAN,'mono')
+    panel(d,(32,194,603,459),(13,49,57),(71,134,134))
+    L,T,R,B=44,207,591,447
+    for x in range(L,R,40):line(d,[(x,T),(x,B)],(37,83,87),1)
+    for y in range(T,B,40):line(d,[(L,y),(R,y)],(37,83,87),1)
+    # stylized waterways and county routes
+    line(d,[(52,340),(104,313),(139,343),(197,297),(243,312),(302,261),(357,278),(422,236),(480,253),(567,213)],(100,148,141),3)
+    line(d,[(61,247),(130,275),(189,257),(268,306),(369,292),(440,352),(578,379)],(82,118,131),2)
+    # natural-looking weather patches
+    phase=sec*.21
+    if wx['condition']!='clear':
+        for index,(cx,cy,rx,ry) in enumerate([(268,318,76,40),(366,277,87,45),(460,340,54,37)]):
+            cx+=int(11*math.sin(phase+index*2));cy+=int(7*math.cos(phase+.7*index))
+            for scale,shade in [(1.8,(34,79,75)),(1.35,(49,99,78)),(1,(65,125,89)),(.6,(98,149,102))]:
+                d.ellipse((cx-rx*scale,cy-ry*scale,cx+rx*scale,cy+ry*scale),outline=shade,width=2)
+    # radar sweep, passive and non-flashing
+    cx,cy=309,331
+    for r in (35,72,109):d.ellipse((cx-r,cy-r,cx+r,cy+r),outline=(57,102,96),width=1)
+    ang=sec*.22
+    line(d,[(cx,cy),(cx+int(108*math.cos(ang)),cy+int(108*math.sin(ang)))],BRASS,2)
+    for x,y,name in [(96,242,'BRIAR GLEN'),(424,235,'NORTH RIDGE'),(406,405,'RESERVOIR')]:
+        d.ellipse((x-2,y-2,x+2,y+2),fill=WHITE)
+        txt(d,(x+8,y-17),name,13,WHITE,'mono')
+    panel(d,(619,193,929,459),(20,46,62),(68,106,122))
+    txt(d,(641,211),'CURRENT',16,CYAN,'mono')
+    txt(d,(639,240),str(wx['temp_f'])+'°',64,WHITE,'bold')
+    txt(d,(760,268),'FAHRENHEIT',13,MUTED,'mono')
+    d.rectangle((638,338,909,342),fill=(70,102,105))
+    wrapped(d,(639,358),wx['label'].upper(),265,19,BRASS,6,2,'bold')
+    wrapped(d,(639,411),wx.get('footnote') or 'OUTLOOK: LOCAL CONDITIONS NORMAL',265,14,MUTED,5,2)
+
+
+def swap(d,sec,program,daily):
+    txt(d,(37,102),'COUNTY SWAP SHOP',42,WHITE,'bold')
+    txt(d,(39,157),'BUY • SELL • TRADE  /  COMMUNITY CLASSIFIEDS',16,CYAN,'mono')
+    panel(d,(34,209,312,455),(29,65,74),(84,135,136))
+    # procedural rotary-dial telephone icon, more convincing than crude generic shape
+    d.ellipse((94,236,251,393),fill=(12,42,54),outline=(183,199,188),width=5)
+    d.ellipse((127,268,219,360),fill=(33,73,79),outline=(77,126,123),width=3)
+    for i in range(10):
+        angle=i*2*math.pi/10 - math.pi/2
+        x=173+int(57*math.cos(angle));y=315+int(57*math.sin(angle))
+        d.ellipse((x-7,y-7,x+7,y+7),fill=(174,185,172))
+    txt(d,(83,417),'CALL 555-0108',17,WHITE,'mono')
+    panel(d,(331,208,930,455),(25,49,62),(71,106,122))
+    d.rectangle((332,209,929,254),fill=(59,104,112))
+    txt(d,(357,220),'TODAY’S CLASSIFIEDS',22,WHITE,'bold')
+    wrapped(d,(358,290),daily['swap'],529,24,WHITE,12,5)
+    txt(d,(356,426),'REFER TO STATION FOR DETAILS',15,BRASS,'mono')
+
+
+def nightline(d,sec,program,daily):
+    txt(d,(36,103),'THE NIGHT LINE',42,WHITE,'bold')
+    txt(d,(38,157),'CALLS FROM AROUND MORROW COUNTY',16,CYAN,'mono')
+    panel(d,(35,209,926,458),(13,37,50),(78,114,126))
+    caller=daily['call']['caller']
+    d.rectangle((54,231,904,278),fill=(35,76,86))
+    txt(d,(68,241),'ON THE LINE    '+caller.upper(),20,WHITE,'bold')
+    pts=[]
+    for x in range(64,901,4):
+        a=(math.sin((x/29)+sec*3)+.4*math.sin((x/9)+sec*2.0))
+        envelope=(.35+.6*math.sin(x/84+sec*.35)**2)
+        pts.append((x,int(349+a*19*envelope)))
+    line(d,pts,CYAN,2)
+    line(d,[(64,392),(900,392)],(65,99,108),1)
+    txt(d,(66,416),'CALL-IN PROGRAM   •   LINES REMAIN OPEN',15,MUTED,'mono')
+
+
+def render_program(program,daily,state,voice_choice):
     name=program['name'];stem=name.lower().replace(' ','_');day=daily['day']
     work=TEMP/stem;work.mkdir(parents=True,exist_ok=True)
     segments=program.get('segments') or [('host',program['narration'])]
-    voice=work/'voice.wav';voice_len=synthesize(segments,voice)
-    duration=max(13,math.ceil(voice_len+1.5));frame_count=duration*FPS
-    for i in range(frame_count):
+    voice=work/'voice.wav';voice_len,engine=synthesize(segments,voice,voice_choice)
+    duration=max(13,math.ceil(voice_len+1.75))
+    fn={'News':news,'Weather':weather,'Swap Shop':swap,'Night Line':nightline}[name]
+    for i in range(duration*FPS):
         sec=i/FPS
         im=Image.new('RGB',(W,H),BG);d=ImageDraw.Draw(im)
-        base(d,state['station'],day,name,sec,daily['air_date'])
-        if name=='News':draw_news(d,sec,day,program['display'],program['second'])
-        elif name=='Weather':draw_weather(d,sec,daily['weather'])
-        elif name=='Swap Shop':draw_swap(d,sec,program['display'])
-        else:draw_nightline(d,sec,program['second'],program['display'])
-        im.save(work/f'f_{i:05d}.jpg',quality=80,subsampling=2)
+        base(d,state['station'],day,name,sec,daily['air_date'],daily['events'])
+        fn(d,sec,program,daily)
+        im.save(work/f'f_{i:05d}.jpg',quality=88,subsampling=0)
     output=OUT/f'day_{day:03d}_{stem}.mp4'
     music=next((p for p in [ROOT/'music'/'theme.mp3',ROOT/'music'/'theme.wav',ROOT/'music'/'theme.ogg'] if p.exists()),None)
     args=['ffmpeg','-y','-hide_banner','-loglevel','error','-framerate',str(FPS),
           '-i',str(work/'f_%05d.jpg'),'-i',str(voice)]
     if music:
         args+=['-stream_loop','-1','-i',str(music),'-filter_complex',
-               '[1:a]volume=1.0[v];[2:a]volume=0.12[m];[v][m]amix=inputs=2:duration=first:dropout_transition=0[a]',
+               '[1:a]volume=1[v];[2:a]volume=0.12[m];[v][m]amix=inputs=2:duration=first:dropout_transition=0[a]',
                '-map','0:v','-map','[a]']
     else:args+=['-map','0:v','-map','1:a']
-    args+=['-t',str(duration),'-c:v','libx264','-preset','veryfast','-crf','30',
-           '-pix_fmt','yuv420p','-r',str(FPS),'-c:a','aac','-b:a','96k',
+    args+=['-t',str(duration),'-c:v','libx264','-preset','veryfast','-crf','25',
+           '-pix_fmt','yuv420p','-r',str(FPS),'-c:a','aac','-b:a','128k',
            '-movflags','+faststart',str(output)]
     run(*args)
     return {'title':f'{name} — Day {day}','filename':output.name,'duration_seconds':duration,
-            'description':f'{state["town"]} {name.lower()} / {daily["air_date"]}'}
+            'voice_engine':engine, 'description':f'{state["town"]} {name.lower()} / {daily["air_date"]}'}
+
 
 def main():
-    parser=argparse.ArgumentParser(description='Advance and broadcast a persistent fictional town.')
-    parser.add_argument('--no-video',action='store_true',help='Simulate days and save story text only; no FFmpeg/eSpeak required.')
-    parser.add_argument('--days',type=int,default=1,help='Advance this many town days (1–30). Video made for last day only.')
-    parser.add_argument('--state',type=Path,default=STATE_FILE,help='Custom state file, useful for testing.')
-    args=parser.parse_args()
-    if not 1 <= args.days <= 30: parser.error('--days must be between 1 and 30')
+    ap=argparse.ArgumentParser(description='Advance and broadcast a persistent fictional town.')
+    ap.add_argument('--no-video',action='store_true')
+    ap.add_argument('--days',type=int,default=1)
+    ap.add_argument('--voice',choices=['auto','piper','espeak'],default='auto')
+    ap.add_argument('--state',type=Path,default=STATE_FILE)
+    args=ap.parse_args()
+    if not 1<=args.days<=30:ap.error('--days must be 1–30')
     if not args.no_video:
-        for exe in ('ffmpeg','espeak'):
-            if not shutil.which(exe): raise SystemExit(f'{exe} not installed. Read README.md or run on GitHub Actions.')
-    state=upgrade_state(json.loads(args.state.read_text('utf-8'))) if args.state.exists() else initial_state()
-    OUT.mkdir(exist_ok=True);daily=None
+        if not shutil.which('ffmpeg'):raise SystemExit('FFmpeg not installed')
+        print('Voice engine:',active_voice_engine(args.voice))
+    state=upgrade_state(json.loads(args.state.read_text('utf8'))) if args.state.exists() else initial_state()
+    OUT.mkdir(exist_ok=True)
     for _ in range(args.days):
         daily=advance(state)
         print(f'Day {daily["day"]:03d}: {daily["air_date"]}')
-        for e in daily['events']: print('  '+('* ' if e['surreal'] else '- ')+e['headline'])
+        for e in daily['events']:print('  '+('* ' if e['surreal'] else '- ')+e['headline'])
     programs=write_scripts(state,daily)
     report={'station':state['station'],'town':state['town'],'day':daily['day'],
             'air_date':daily['air_date'],'events':daily['events'],
             'weather':daily['weather'],'threads_active':daily['threads_active'],
-            'threads_completed':daily['threads_completed'],
-            'businesses_closed':daily['businesses_closed'],
+            'threads_completed':daily['threads_completed'],'businesses_closed':daily['businesses_closed'],
             'programs':[],'scripts':{p['name']:p['narration'] for p in programs}}
-    (OUT/'town_report.json').write_text(json.dumps(daily,indent=2)+'\n',encoding='utf-8')
-    (OUT/'todays_scripts.txt').write_text('\n\n'.join(f'[{p["name"]}]\n{p["narration"]}' for p in programs)+'\n',encoding='utf-8')
+    (OUT/'town_report.json').write_text(json.dumps(daily,indent=2)+'\n')
+    (OUT/'todays_scripts.txt').write_text('\n\n'.join(f'[{p["name"]}]\n{p["narration"]}' for p in programs)+'\n')
     if not args.no_video:
         TEMP.mkdir(exist_ok=True)
-        for p in programs:
-            clip=render_program(p,daily,state)
-            report['programs'].append(clip)
-            print('Rendered',clip['filename'],clip['duration_seconds'],'sec')
-        shutil.rmtree(TEMP,ignore_errors=True)
-    (OUT/'broadcast_manifest.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+        try:
+            for p in programs:
+                clip=render_program(p,daily,state,args.voice)
+                report['programs'].append(clip)
+                print('Rendered',clip['filename'],clip['duration_seconds'],'sec')
+        finally:shutil.rmtree(TEMP,ignore_errors=True)
+    (OUT/'broadcast_manifest.json').write_text(json.dumps(report,indent=2)+'\n')
     state['last_generation']=dt.datetime.now(dt.timezone.utc).isoformat()
-    args.state.write_text(json.dumps(state,indent=2)+'\n',encoding='utf-8')
+    args.state.write_text(json.dumps(state,indent=2)+'\n')
     print(f'Persisted {len(state["history"])} town events in {args.state}.')
 
 if __name__=='__main__':main()

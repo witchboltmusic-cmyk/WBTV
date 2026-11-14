@@ -173,13 +173,19 @@ LOW_STAKE_ODDITIES = [
  ('Community notice issued about fountain', 'The parks department reminds residents that the fountain behind Town Hall is decorative and has no public water connection.'),
  ('Empty room added to building inspection', 'A room with no listed use was included in the annual recreation hall inspection. The report will be corrected.'),
  ('Recorded time signal being reviewed', 'The telephone time service briefly repeated yesterday’s announcement. Engineers describe the problem as routine.'),
+ ('Two identical notices posted at library', 'Library staff removed a duplicate notice from the display board. The second copy was dated one week from today.'),
+ ('School reports misplaced attendance sheet', 'An attendance sheet was filed with an extra name. Teachers say all students have been accounted for.'),
+ ('County phone directory corrections announced', 'The new telephone directory includes a listing for the old water office. The number was disconnected several years ago.'),
+ ('Clock at station platform being checked', 'Maintenance has been asked to inspect a clock that has been running four minutes ahead only on Tuesdays.'),
+ ('Public Works retrieves duplicate street marker', 'A second Maple Street sign was found in storage. Officials have not determined when it was installed.'),
+ ('Broadcast music briefly changed overnight', 'The station received calls about an unfamiliar instrumental during the midnight sign-off. A recording was not retained.'),
 ]
 
 def initial_state():
     return {
       'schema_version': 2, 'town': 'Briar Glen', 'county': 'Morrow County',
       'station': 'WMRW CHANNEL 8', 'broadcast_day': 0, 'fictional_start_date': START_DATE,
-      'seed': 81381996, 'surreal_chance': .16, 'weather': {'condition':'cloudy', 'temperature_f':46},
+      'seed': 81381996, 'surreal_chance': .17, 'weather': {'condition':'cloudy', 'temperature_f':46},
       'residents': deepcopy(INITIAL_RESIDENTS), 'businesses':deepcopy(INITIAL_BUSINESSES),
       'town_flags': {'bridge_closed': False}, 'mundane_last_used':{},'business_last_mentioned':{},
       'threads':{}, 'threads_completed':[], 'last_thread_day':-5,
@@ -195,6 +201,11 @@ def upgrade_state(raw):
         for k in ('weather','residents','businesses','threads','threads_completed',
                   'last_thread_day','history','metadata','town_flags','mundane_last_used','business_last_mentioned'):
             if k in raw: state[k]=raw[k]
+    # One-time subtle tonal upgrade for pre-existing v2 saves, without changing custom settings.
+    if not state.get('metadata', {}).get('tone_upgrade_v2'):
+        if float(state.get('surreal_chance', 0)) == .16:
+            state['surreal_chance'] = .17
+        state.setdefault('metadata', {})['tone_upgrade_v2'] = True
     return state
 
 def evt(day, headline, text, category='community', weird=False, thread=None):
@@ -307,6 +318,12 @@ def weather_update(state, day, rng, focus):
         footnote = 'A low-lying cloud has been reported above the reservoir. This has not affected the main forecast.'
     elif focus and focus['thread']=='orchard' and rng.random()<.35:
         footnote = 'Conditions around the western orchards are expected to remain similar.'
+    elif rng.random() < .05:
+        footnote = rng.choice([
+            'The eastern gauge submitted two identical readings. This does not affect the forecast.',
+            'A late observation from the old water office has been excluded from tonight’s report.',
+            'The county has not requested a correction to the published sunrise time.',
+        ])
     return {'condition':current,'label':label,'temp_f':temp,'forecast':forecast,'footnote':footnote}
 
 def make_swap(state, day, rng, focus):
@@ -380,6 +397,11 @@ def write_scripts(state, daily):
     events=daily['events']
     ordered=sorted(events,key=lambda e:(e['thread'] is None, e['surreal'],e['category']!='business'))
     first=ordered[0]; second=ordered[1]
+    # A low-stakes oddity should occasionally reach the airwaves, usually as
+    # the SECOND story, while ordinary local news still leads the broadcast.
+    odd=next((e for e in events if e['surreal'] and not e['thread']),None)
+    if odd and first['thread'] is None:
+        second=odd
     news=(f'Good evening, this is the {state["county"]} Evening News. '
           f'{first["text"]} {second["text"]} '
           'For other community notices, consult the noticeboard at the public library. Good night.')
