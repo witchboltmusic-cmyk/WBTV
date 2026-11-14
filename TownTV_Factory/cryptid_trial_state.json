@@ -3,13 +3,13 @@
   "town": "Bramhollow",
   "county": "Morrow County",
   "station": "BRD TV 8",
-  "broadcast_day": 6,
+  "broadcast_day": 9,
   "fictional_start_date": "1996-10-01",
   "seed": 81381996,
   "surreal_chance": 0.17,
   "weather": {
-    "condition": "fog",
-    "temperature_f": 51
+    "condition": "cloudy",
+    "temperature_f": 52
   },
   "residents": {
     "mara": {
@@ -31,7 +31,7 @@
       "job": "Hardware store owner",
       "status": "home",
       "away_until": 0,
-      "mentions": 1
+      "mentions": 3
     },
     "sam": {
       "name": "Sam Evers",
@@ -59,7 +59,7 @@
       "job": "Postal worker",
       "status": "home",
       "away_until": 0,
-      "mentions": 2
+      "mentions": 3
     },
     "david": {
       "name": "David Bell",
@@ -110,24 +110,28 @@
     "Fire hall announces open house": 3,
     "Town Hall replaces front door": 4,
     "Community choir welcomes new singers": 5,
-    "Lions Club schedules monthly breakfast": 6
+    "Lions Club schedules monthly breakfast": 6,
+    "County fair announces pie contest": 7,
+    "Library extends weekend hours": 8,
+    "Roadside flower beds replanted": 9
   },
   "business_last_mentioned": {
     "cinema": 4,
     "laundry": 6,
-    "bakery": 3,
-    "garden": 5
+    "bakery": 7,
+    "garden": 9,
+    "hardware": 8
   },
   "threads": {
     "orchard": {
-      "stage": 1,
-      "due_day": 8,
+      "stage": 2,
+      "due_day": 12,
       "done": false,
-      "last_day": 3
+      "last_day": 8
     }
   },
   "threads_completed": [],
-  "last_thread_day": 3,
+  "last_thread_day": 8,
   "history": [
     {
       "day": 1,
@@ -336,6 +340,118 @@
       "category": "community",
       "surreal": false,
       "thread": "cryptid_naming"
+    },
+    {
+      "day": 7,
+      "headline": "Bell Street Bakery joins county fair",
+      "text": "Bell Street Bakery will sponsor a table at the next county fair.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 7,
+      "headline": "County fair announces pie contest",
+      "text": "Organizers have opened entries for the annual county fair pie competition. Forms are available at the library.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 7,
+      "headline": "Community volunteer: Harold Vale",
+      "text": "Harold Vale, a local hardware store owner, will speak briefly at the next recreation hall meeting.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 7,
+      "headline": "Public Works retrieves duplicate street marker",
+      "text": "A second Maple Street sign was found in storage. Officials have not determined when it was installed.",
+      "category": "county",
+      "surreal": true,
+      "thread": null
+    },
+    {
+      "day": 7,
+      "headline": "Sam Evers proposes \"Longshape\" as name for reservoir animal",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
+    },
+    {
+      "day": 8,
+      "headline": "Community volunteer: June Mercer",
+      "text": "June Mercer, a local postal worker, will speak briefly at the next recreation hall meeting.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 8,
+      "headline": "Unmarked rows noted on orchard map",
+      "text": "Inspectors found several rows of trees missing from an older survey. Property boundaries are unchanged.",
+      "category": "county",
+      "surreal": true,
+      "thread": "orchard"
+    },
+    {
+      "day": 8,
+      "headline": "Library extends weekend hours",
+      "text": "The Bramhollow Library will remain open an additional hour on Saturdays following a successful trial period.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 8,
+      "headline": "Vale Hardware replaces store sign",
+      "text": "Vale Hardware has installed a new sign near its entrance.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 8,
+      "headline": "Harold Vale and Ellen Price dispute Sam Evers' proposed name",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
+    },
+    {
+      "day": 9,
+      "headline": "Roadside flower beds replanted",
+      "text": "Parks workers have completed the seasonal planting near the county welcome sign.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 9,
+      "headline": "Community volunteer: Harold Vale",
+      "text": "Harold Vale, a local hardware store owner, will help organize the annual neighborhood cleanup.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 9,
+      "headline": "Dunn Garden Supply seeks weekend staff",
+      "text": "Dunn Garden Supply is accepting applications for part-time weekend help.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 9,
+      "headline": "Reservoir animal naming debate draws community comment",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
     }
   ],
   "metadata": {
@@ -343,209 +459,213 @@
     "tone_upgrade_v2": true
   },
   "cryptid_trial": {
-    "first_day": 4,
+    "first_day": 7,
     "names": {
-      "sam": "Reservoir Road Tall",
-      "harold": "Roadside Figure",
-      "ellen": "Unidentified Tall Shape"
+      "sam": "Longshape",
+      "harold": "Roadside Case",
+      "ellen": "Unverified Form"
     },
     "minds": {
       "sam": {
         "witnessed": true,
-        "belief": "I saw a tall shape beside Reservoir Road after my bus route, in poor visibility. I cannot say what it was; I remain the only one claiming a sighting.",
-        "stance": "I stand by Reservoir Road Tall because it records the place and what I could make out. Harold and Ellen have never seen it, and their proposals do not change my account."
+        "belief": "He saw a tall shape beside Reservoir Road after his bus route, in poor visibility; he remains the only person reporting a sighting.",
+        "stance": "Keeps Longshape as a cautious description and wants his report left on record. He knows Harold and Ellen have not seen what he reported."
       },
       "harold": {
         "witnessed": false,
-        "belief": "I have only Sam's account. I have never seen the shape, and I am not convinced Sam can identify what he saw.",
-        "stance": "I stand by Roadside Figure: it is concise and does not claim to settle what Sam saw. I still prefer it to a name tied too closely to one report."
+        "belief": "He has never seen anything and doubts Sam identified anything at all.",
+        "stance": "Still favors Roadside Case as a practical label for the report. He does not claim that his proposed name identifies an animal."
       },
       "ellen": {
         "witnessed": false,
-        "belief": "I have never seen it. A report of a tall shape is not enough to establish what it was.",
-        "stance": "I stand by Unidentified Tall Shape because it keeps uncertainty in the name. Harold's wording leaves out that we do not know what the figure was."
+        "belief": "She has never seen anything and wants evidence before accepting a more specific term.",
+        "stance": "Still favors Unverified Form because it marks uncertainty and does not turn a description into an established proper name."
       }
     },
     "public_record": [
       {
-        "day": 4,
-        "headline": "Sam Evers proposes \"Reservoir Road Tall\" as name for reservoir animal",
+        "day": 7,
+        "headline": "Sam Evers proposes \"Longshape\" as name for reservoir animal",
         "names": {
-          "sam": "Reservoir Road Tall"
+          "sam": "Longshape"
         }
       },
       {
-        "day": 5,
+        "day": 8,
         "headline": "Harold Vale and Ellen Price dispute Sam Evers' proposed name",
         "names": {
-          "sam": "Reservoir Road Tall",
-          "harold": "Roadside Figure",
-          "ellen": "Unidentified Tall Shape"
+          "sam": "Longshape",
+          "harold": "Roadside Case",
+          "ellen": "Unverified Form"
         }
       },
       {
-        "day": 6,
+        "day": 9,
         "headline": "Reservoir animal naming debate draws community comment",
         "names": {
-          "sam": "Reservoir Road Tall",
-          "harold": "Roadside Figure",
-          "ellen": "Unidentified Tall Shape"
+          "sam": "Longshape",
+          "harold": "Roadside Case",
+          "ellen": "Unverified Form"
         }
       }
     ],
     "recent_dialogue": [
       {
-        "day": 4,
+        "day": 7,
         "turns": [
           {
             "speaker_id": "host",
-            "text": "Sam, are you standing by the name you proposed?"
+            "text": "Sam, why \u201cLongshape\u201d?"
           },
           {
             "speaker_id": "sam",
-            "text": "Yes. It says what I could tell, and no more."
+            "text": "It says what I saw without claiming what it was."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "It says very little. A useful label ought to help someone sort one thing from another."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "That assumes there is a thing to sort. Sam reported a shape."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "I reported what I could see in poor visibility."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "And I am not saying you saw nothing. I am saying the label should wait."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "I agree about waiting. I do not agree that \u201cLongshape\u201d is a proper name."
           },
           {
             "speaker_id": "host",
-            "text": "Harold, what troubles you about it?"
+            "text": "You both want a better name, but neither of you has seen it."
           },
           {
             "speaker_id": "harold",
-            "text": "It sounds like a label made from the first report. A useful name ought to be less hasty."
+            "text": "Correct. That is why I\u2019m asking for a practical standard first."
           },
           {
             "speaker_id": "ellen",
-            "text": "Useful to whom? We should at least agree whether a name describes a report or a thing."
+            "text": "And I am asking that we distinguish a description from a name."
           },
           {
             "speaker_id": "sam",
-            "text": "I am naming what I saw, not claiming to know what it was."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "That distinction is fair. I still think I can do better, but I will wait for the proper turn."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "And I will reserve mine too. The minutes should say who proposed what, not merely who spoke longest."
+            "text": "For now, I\u2019d rather use a modest word than pretend I know more."
           },
           {
             "speaker_id": "host",
-            "text": "There are no other nominations tonight."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "Then I am content to leave mine on the record."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "On the record, yes. Not necessarily on the sign."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "There is no sign in evidence, Harold."
+            "text": "The station will keep the proposal on record, without upgrading it to an identification."
           }
         ]
       },
       {
-        "day": 5,
+        "day": 8,
         "turns": [
           {
             "speaker_id": "host",
-            "text": "We have the three proposals on tonight's sheet. Sam, does the new list alter yours?"
+            "text": "Harold, what does Roadside Case help you do?"
+          },
+          {
+            "speaker_id": "harold",
+            "text": "Put the report somewhere findable. A label should work on a folder."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "A folder can hold a report without deciding there is a case."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "That is why I said case, not creature."
           },
           {
             "speaker_id": "sam",
-            "text": "No. Reservoir Road Tall still seems honest about the limits of my view."
-          },
-          {
-            "speaker_id": "host",
-            "text": "Harold, what makes your wording practical?"
-          },
-          {
-            "speaker_id": "harold",
-            "text": "Roadside Figure is brief. A person can say it once without needing to consult the minutes."
+            "text": "Longshape still describes what I could make out. I am not claiming more than that."
           },
           {
             "speaker_id": "ellen",
-            "text": "Brevity is not the same as accuracy. Unidentified Tall Shape states what is missing."
+            "text": "Unverified Form keeps the uncertainty attached to the words."
           },
           {
             "speaker_id": "harold",
-            "text": "It states it at length. I do not see why the uncertainty needs three words."
+            "text": "It sounds like a box on a form that has not been filled in."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "That would be an accurate use of the phrase."
+          },
+          {
+            "speaker_id": "host",
+            "text": "So far, the names are competing; the evidence is not."
           },
           {
             "speaker_id": "sam",
-            "text": "I can accept uncertainty. I only want the location left in the record."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "The record can hold the location. The name need not pretend the report is a map."
-          },
-          {
-            "speaker_id": "host",
-            "text": "For clarity, neither of you is speaking from personal sight of it."
+            "text": "I can live with that, provided my report stays on record."
           },
           {
             "speaker_id": "harold",
-            "text": "Correct. I am judging the wording, not the sighting."
+            "text": "Keep the report. I still want a label that sorts properly."
           },
           {
             "speaker_id": "ellen",
-            "text": "And I would like the proposals entered under their proposers, in that order."
+            "text": "And I want the label to say what we actually know."
           }
         ]
       },
       {
-        "day": 6,
+        "day": 9,
         "turns": [
           {
             "speaker_id": "host",
-            "text": "Tonight's three proposals are still on the sheet. Sam, do you want the place kept in the name?"
+            "text": "We have three proposed labels and no agreement. Sam, are you still using yours?"
           },
           {
             "speaker_id": "sam",
-            "text": "Yes. Reservoir Road Tall says where I was and what I could make out."
+            "text": "Yes. Longshape stays close to what I could make out."
           },
           {
             "speaker_id": "harold",
-            "text": "It says where your report came from. That is not quite the same as naming the thing."
+            "text": "For filing, I still think Roadside Case is clearer. It tells you where the report belongs."
           },
           {
             "speaker_id": "ellen",
-            "text": "Which is why Unidentified Tall Shape is more exact about what remains unknown."
+            "text": "It tells you there is a case. Unverified Form keeps the uncertainty in plain view."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "A form can be unverified without becoming the title of the folder."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "And a folder title can sound more conclusive than its contents."
           },
           {
             "speaker_id": "sam",
-            "text": "I don't object to unknown. I object to losing the location."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "Roadside Figure keeps it short, and it doesn't claim a conclusion."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "It also removes the word tall, which is the one description we have from Sam."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "A name is not an inventory. I would rather leave room for correction."
+            "text": "I\u2019m not asking either of you to endorse what I saw. I\u2019m asking that the description remain mine."
           },
           {
             "speaker_id": "host",
-            "text": "For the record, neither Harold nor Ellen reports seeing anything."
+            "text": "Would you accept the three names listed side by side?"
+          },
+          {
+            "speaker_id": "harold",
+            "text": "Side by side is workable, provided nobody files them as three separate reports."
           },
           {
             "speaker_id": "ellen",
-            "text": "Correct. I am disputing the wording, not adding testimony."
+            "text": "That is a sensible distinction. Names are not evidence."
           },
           {
             "speaker_id": "sam",
-            "text": "Then keep all three proposals attributed properly. Mine stays mine."
+            "text": "Then Longshape can stay as my description, not a finding."
           },
           {
             "speaker_id": "host",
-            "text": "They will remain listed under their respective proposers."
+            "text": "The station will keep the disagreement as a disagreement."
           }
         ]
       }
