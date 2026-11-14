@@ -3,13 +3,13 @@
   "town": "Briar Glen",
   "county": "Morrow County",
   "station": "WMRW CHANNEL 8",
-  "broadcast_day": 2,
+  "broadcast_day": 3,
   "fictional_start_date": "1996-10-01",
   "seed": 81381996,
   "surreal_chance": 0.17,
   "weather": {
-    "condition": "clear",
-    "temperature_f": 47
+    "condition": "cloudy",
+    "temperature_f": 45
   },
   "residents": {
     "mara": {
@@ -31,7 +31,7 @@
       "job": "Hardware store owner",
       "status": "home",
       "away_until": 0,
-      "mentions": 0
+      "mentions": 1
     },
     "sam": {
       "name": "Sam Evers",
@@ -106,15 +106,24 @@
   },
   "mundane_last_used": {
     "Animal shelter seeks blankets": 1,
-    "Volunteer reading program expands": 2
+    "Volunteer reading program expands": 2,
+    "Fire hall announces open house": 3
   },
   "business_last_mentioned": {
     "cinema": 1,
-    "laundry": 2
+    "laundry": 2,
+    "bakery": 3
   },
-  "threads": {},
+  "threads": {
+    "orchard": {
+      "stage": 1,
+      "due_day": 8,
+      "done": false,
+      "last_day": 3
+    }
+  },
   "threads_completed": [],
-  "last_thread_day": -5,
+  "last_thread_day": 3,
   "history": [
     {
       "day": 1,
@@ -171,11 +180,43 @@
       "category": "business",
       "surreal": false,
       "thread": null
+    },
+    {
+      "day": 3,
+      "headline": "Community volunteer: Harold Vale",
+      "text": "Harold Vale, a local hardware store owner, has volunteered to sort records at the historical society.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 3,
+      "headline": "Fire hall announces open house",
+      "text": "The volunteer fire department will hold an open house with equipment demonstrations.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 3,
+      "headline": "Agricultural office begins orchard survey",
+      "text": "Agricultural inspectors will visit farms west of Briar Glen to update tree inventories.",
+      "category": "county",
+      "surreal": false,
+      "thread": "orchard"
+    },
+    {
+      "day": 3,
+      "headline": "Bell Street Bakery extends Saturday opening",
+      "text": "Bell Street Bakery will offer extended Saturday hours throughout the month.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
     }
   ],
   "metadata": {
     "origin": "Briar Glen prototype; entirely fictional",
     "tone_upgrade_v2": true
   },
-  "last_generation": "2026-11-14T01:54:48.444246+00:00"
+  "last_generation": "2026-11-14T02:00:22.105317+00:00"
 }
