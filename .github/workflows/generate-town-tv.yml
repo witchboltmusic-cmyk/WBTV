@@ -25,12 +25,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg espeak
           python -m pip install -r TownTV_Factory/requirements.txt
+          python -m pip install piper-tts
+          python -m piper.download_voices en_US-john-medium en_US-kristin-medium --data-dir TownTV_Factory/voices
+
 
       - name: Check story continuity
         run: python -m unittest discover -s TownTV_Factory/tests -v
 
       - name: Generate town broadcasts
-        run: python TownTV_Factory/generate.py
+        run: python TownTV_Factory/generate.py --voice piper
 
       - name: Save broadcasts
         uses: actions/upload-artifact@v4
