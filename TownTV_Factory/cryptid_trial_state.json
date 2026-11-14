@@ -1,0 +1,438 @@
+{
+  "schema_version": 2,
+  "town": "Bramhollow",
+  "county": "Morrow County",
+  "station": "BRD TV 8",
+  "broadcast_day": 3,
+  "fictional_start_date": "1996-10-01",
+  "seed": 81381996,
+  "surreal_chance": 0.17,
+  "weather": {
+    "condition": "cloudy",
+    "temperature_f": 45
+  },
+  "residents": {
+    "mara": {
+      "name": "Mara Voss",
+      "job": "County clerk",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 0
+    },
+    "ellen": {
+      "name": "Ellen Price",
+      "job": "Librarian",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 0
+    },
+    "harold": {
+      "name": "Harold Vale",
+      "job": "Hardware store owner",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 1
+    },
+    "sam": {
+      "name": "Sam Evers",
+      "job": "Bus driver",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 1
+    },
+    "violet": {
+      "name": "Violet Dunn",
+      "job": "Retired schoolteacher",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 0
+    },
+    "ernest": {
+      "name": "Ernest Pike",
+      "job": "Garden club president",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 0
+    },
+    "june": {
+      "name": "June Mercer",
+      "job": "Postal worker",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 0
+    },
+    "david": {
+      "name": "David Bell",
+      "job": "Recreation director",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 1
+    }
+  },
+  "businesses": {
+    "hardware": {
+      "name": "Vale Hardware",
+      "owner": "harold",
+      "status": "open",
+      "reopen_day": 0
+    },
+    "bakery": {
+      "name": "Bell Street Bakery",
+      "owner": null,
+      "status": "open",
+      "reopen_day": 0
+    },
+    "laundry": {
+      "name": "West End Laundromat",
+      "owner": null,
+      "status": "open",
+      "reopen_day": 0
+    },
+    "cinema": {
+      "name": "Regent Picture House",
+      "owner": null,
+      "status": "open",
+      "reopen_day": 0
+    },
+    "garden": {
+      "name": "Dunn Garden Supply",
+      "owner": null,
+      "status": "open",
+      "reopen_day": 0
+    }
+  },
+  "town_flags": {
+    "bridge_closed": false
+  },
+  "mundane_last_used": {
+    "Animal shelter seeks blankets": 1,
+    "Volunteer reading program expands": 2,
+    "Fire hall announces open house": 3
+  },
+  "business_last_mentioned": {
+    "cinema": 1,
+    "laundry": 2,
+    "bakery": 3
+  },
+  "threads": {
+    "orchard": {
+      "stage": 1,
+      "due_day": 8,
+      "done": false,
+      "last_day": 3
+    }
+  },
+  "threads_completed": [],
+  "last_thread_day": 3,
+  "history": [
+    {
+      "day": 1,
+      "headline": "Animal shelter seeks blankets",
+      "text": "The shelter is accepting clean towels and blankets throughout the coming week.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 1,
+      "headline": "Regent Picture House extends Saturday opening",
+      "text": "Regent Picture House will offer extended Saturday hours throughout the month.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 1,
+      "headline": "Community volunteer: Sam Evers",
+      "text": "Sam Evers, a local bus driver, has volunteered to sort records at the historical society.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 1,
+      "headline": "Sam Evers proposes \"The Tall One\" as name for reservoir animal",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
+    },
+    {
+      "day": 2,
+      "headline": "Community volunteer: David Bell",
+      "text": "David Bell, a local recreation director, has volunteered to sort records at the historical society.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 2,
+      "headline": "Postal box temporarily unavailable",
+      "text": "The post office has covered a mailbox after letters addressed to an unlisted street were found inside.",
+      "category": "county",
+      "surreal": true,
+      "thread": null
+    },
+    {
+      "day": 2,
+      "headline": "Volunteer reading program expands",
+      "text": "The reading program is seeking volunteers to help younger students on Thursday afternoons.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 2,
+      "headline": "West End Laundromat joins county fair",
+      "text": "West End Laundromat will sponsor a table at the next county fair.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 2,
+      "headline": "Harold Vale and Ellen Price dispute Sam Evers' proposed name",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
+    },
+    {
+      "day": 3,
+      "headline": "Community volunteer: Harold Vale",
+      "text": "Harold Vale, a local hardware store owner, has volunteered to sort records at the historical society.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 3,
+      "headline": "Fire hall announces open house",
+      "text": "The volunteer fire department will hold an open house with equipment demonstrations.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 3,
+      "headline": "Agricultural office begins orchard survey",
+      "text": "Agricultural inspectors will visit farms west of Bramhollow to update tree inventories.",
+      "category": "county",
+      "surreal": false,
+      "thread": "orchard"
+    },
+    {
+      "day": 3,
+      "headline": "Bell Street Bakery extends Saturday opening",
+      "text": "Bell Street Bakery will offer extended Saturday hours throughout the month.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 3,
+      "headline": "Reservoir animal naming debate draws community comment",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
+    }
+  ],
+  "metadata": {
+    "origin": "Bramhollow prototype; entirely fictional"
+  },
+  "cryptid_trial": {
+    "first_day": 1,
+    "names": {
+      "sam": "The Tall One",
+      "harold": "Roadside Shape",
+      "ellen": "Unidentified Tall Shape"
+    },
+    "minds": {
+      "sam": {
+        "witnessed": true,
+        "belief": "Sam remains the only person who reports seeing a tall shape beside Reservoir Road after his bus route. He cannot identify it.",
+        "stance": "He keeps The Tall One as a cautious description. He finds Roadside Shape and Unidentified Tall Shape more like labels than names people would say."
+      },
+      "harold": {
+        "witnessed": false,
+        "belief": "Harold has not seen anything and is skeptical that Sam can identify what he saw.",
+        "stance": "He continues to favor Roadside Shape as a practical description based on Sam's account, without claiming what the shape was. He thinks The Tall One sounds too settled."
+      },
+      "ellen": {
+        "witnessed": false,
+        "belief": "Ellen has not seen anything and wants evidence before accepting an identification.",
+        "stance": "She continues to favor Unidentified Tall Shape because it preserves uncertainty. She finds The Tall One too informal and Roadside Shape incomplete as terminology."
+      }
+    },
+    "public_record": [
+      {
+        "day": 1,
+        "headline": "Sam Evers proposes \"The Tall One\" as name for reservoir animal",
+        "names": {
+          "sam": "The Tall One"
+        }
+      },
+      {
+        "day": 2,
+        "headline": "Harold Vale and Ellen Price dispute Sam Evers' proposed name",
+        "names": {
+          "sam": "The Tall One",
+          "harold": "Roadside Shape",
+          "ellen": "Unidentified Tall Shape"
+        }
+      },
+      {
+        "day": 3,
+        "headline": "Reservoir animal naming debate draws community comment",
+        "names": {
+          "sam": "The Tall One",
+          "harold": "Roadside Shape",
+          "ellen": "Unidentified Tall Shape"
+        }
+      }
+    ],
+    "recent_dialogue": [
+      {
+        "day": 1,
+        "turns": [
+          {
+            "speaker_id": "host",
+            "text": "Sam, why The Tall One?"
+          },
+          {
+            "speaker_id": "sam",
+            "text": "It says what I could make out, and no more."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "It says what you made out. That isn't quite the same as saying what was there."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "Precisely. A description should not quietly become an identification."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "I meant it as a name, not a report on its nature."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "Then I object to the word 'the.' It sounds settled."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "The article is grammatical. It does not certify a specimen."
+          },
+          {
+            "speaker_id": "host",
+            "text": "So the disagreement is partly about grammar?"
+          },
+          {
+            "speaker_id": "harold",
+            "text": "Grammar matters when a name is going on a notice."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "There is no notice, Harold."
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "turns": [
+          {
+            "speaker_id": "host",
+            "text": "Three names are now in circulation. Sam, does The Tall One still suit you?"
+          },
+          {
+            "speaker_id": "sam",
+            "text": "Yes. It is short, and I only mean it to describe what I could make out."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "Roadside Shape is shorter than Ellen's, and it says where the account places it."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "It says roadside, but not which road. I prefer the full uncertainty in Unidentified Tall Shape."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "That sounds like a heading on a file, not something a person would call it."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "A file heading can be useful. We have no reason to make the wording more certain."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "I didn't ask anyone to decide what it was. I wanted a name I could say plainly."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "And I want one that doesn't imply the description is a settled identification."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "Then we agree on the caution and disagree on the paperwork."
+          },
+          {
+            "speaker_id": "host",
+            "text": "For tonight, all three proposals remain proposals."
+          }
+        ]
+      },
+      {
+        "day": 3,
+        "turns": [
+          {
+            "speaker_id": "host",
+            "text": "We have no new proposal tonight. Is that a relief to anyone?"
+          },
+          {
+            "speaker_id": "harold",
+            "text": "It gives Roadside Shape a fair chance to be considered without another entry crowding the page."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "There is no page, Harold. And consideration does not require a queue."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "I still say The Tall One plainly. That's useful when you are talking, not filing."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "Roadside Shape would fit on a notice and doesn't say what it was."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "It leaves out that the account describes it as tall. That is not a small omission."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "Unidentified Tall Shape is careful, but I would have to take a breath halfway through."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "A breath is not a defect in a term."
+          },
+          {
+            "speaker_id": "host",
+            "text": "And none of you is speaking from having seen it, except Sam."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "Correct. I am arguing over the wording of his account."
+          }
+        ]
+      }
+    ],
+    "creature_private": {
+      "exists": true,
+      "habitat": "wooded drainage near reservoir",
+      "behavior": "avoids lit areas; mostly nocturnal"
+    }
+  }
+}
