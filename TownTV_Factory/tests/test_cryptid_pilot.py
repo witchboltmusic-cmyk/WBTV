@@ -16,6 +16,11 @@ def fake_response(phase):
         3: [],
     }
     return {
+        "lead_headline": (
+            "Sam Evers Names Reservoir Animal Amid Confusion"
+            if phase == 1 else
+            "Harold Vale Challenges Ellen Price Over Creature Name"
+        ),
         "nominations": options.get(phase, []),
         "opinions": [{"resident_id":who, "belief":"Unconfirmed sighting",
                       "stance":"Name matters"} for who in ("sam","harold","ellen")],
@@ -26,7 +31,7 @@ def fake_response(phase):
             "swap_shop":{"narration":"A resident has asked for a spare suggestion box for a local naming poll.",
                          "listing":"Wanted: spare suggestion box"},
             "night_line":{"turns":[{"speaker_id":who, "text":"We ought to agree on a reasonable name."}
-                          for who in ("host","sam","harold","ellen","host","sam","harold","ellen")]},
+                          for who in ("host","sam","harold","ellen","host","sam","harold","ellen","host","sam","harold","ellen","host","sam")]},
         },
     }
 
@@ -44,6 +49,8 @@ class CryptidPilotTests(unittest.TestCase):
             self.assertFalse(state["cryptid_trial"]["minds"]["ellen"]["witnessed"])
             self.assertTrue(state["cryptid_trial"]["minds"]["sam"]["witnessed"])
             self.assertEqual(len(state["cryptid_trial"]["public_record"]),phase)
+            self.assertEqual(daily["cryptid"]["headline"],fake_response(phase)["lead_headline"])
+            self.assertEqual(len(programs[-1]["segments"]),14)
         self.assertEqual(len(state["cryptid_trial"]["names"]),3)
 
     def test_reject_unexpected_witness_nomination(self):
