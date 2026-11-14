@@ -3,13 +3,13 @@
   "town": "Briar Glen",
   "county": "Morrow County",
   "station": "WMRW CHANNEL 8",
-  "broadcast_day": 0,
+  "broadcast_day": 1,
   "fictional_start_date": "1996-10-01",
   "seed": 81381996,
   "surreal_chance": 0.16,
   "weather": {
-    "condition": "cloudy",
-    "temperature_f": 46
+    "condition": "clear",
+    "temperature_f": 47
   },
   "residents": {
     "mara": {
@@ -38,7 +38,7 @@
       "job": "Bus driver",
       "status": "home",
       "away_until": 0,
-      "mentions": 0
+      "mentions": 1
     },
     "violet": {
       "name": "Violet Dunn",
@@ -104,13 +104,43 @@
   "town_flags": {
     "bridge_closed": false
   },
-  "mundane_last_used": {},
-  "business_last_mentioned": {},
+  "mundane_last_used": {
+    "Animal shelter seeks blankets": 1
+  },
+  "business_last_mentioned": {
+    "cinema": 1
+  },
   "threads": {},
   "threads_completed": [],
   "last_thread_day": -5,
-  "history": [],
+  "history": [
+    {
+      "day": 1,
+      "headline": "Animal shelter seeks blankets",
+      "text": "The shelter is accepting clean towels and blankets throughout the coming week.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 1,
+      "headline": "Regent Picture House extends Saturday opening",
+      "text": "Regent Picture House will offer extended Saturday hours throughout the month.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 1,
+      "headline": "Community volunteer: Sam Evers",
+      "text": "Sam Evers, a local bus driver, has volunteered to sort records at the historical society.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    }
+  ],
   "metadata": {
     "origin": "Briar Glen prototype; entirely fictional"
-  }
+  },
+  "last_generation": "2026-11-14T00:09:36.449406+00:00"
 }
