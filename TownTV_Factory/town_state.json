@@ -1,0 +1,116 @@
+{
+  "schema_version": 2,
+  "town": "Briar Glen",
+  "county": "Morrow County",
+  "station": "WMRW CHANNEL 8",
+  "broadcast_day": 0,
+  "fictional_start_date": "1996-10-01",
+  "seed": 81381996,
+  "surreal_chance": 0.16,
+  "weather": {
+    "condition": "cloudy",
+    "temperature_f": 46
+  },
+  "residents": {
+    "mara": {
+      "name": "Mara Voss",
+      "job": "County clerk",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 0
+    },
+    "ellen": {
+      "name": "Ellen Price",
+      "job": "Librarian",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 0
+    },
+    "harold": {
+      "name": "Harold Vale",
+      "job": "Hardware store owner",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 0
+    },
+    "sam": {
+      "name": "Sam Evers",
+      "job": "Bus driver",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 0
+    },
+    "violet": {
+      "name": "Violet Dunn",
+      "job": "Retired schoolteacher",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 0
+    },
+    "ernest": {
+      "name": "Ernest Pike",
+      "job": "Garden club president",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 0
+    },
+    "june": {
+      "name": "June Mercer",
+      "job": "Postal worker",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 0
+    },
+    "david": {
+      "name": "David Bell",
+      "job": "Recreation director",
+      "status": "home",
+      "away_until": 0,
+      "mentions": 0
+    }
+  },
+  "businesses": {
+    "hardware": {
+      "name": "Vale Hardware",
+      "owner": "harold",
+      "status": "open",
+      "reopen_day": 0
+    },
+    "bakery": {
+      "name": "Bell Street Bakery",
+      "owner": null,
+      "status": "open",
+      "reopen_day": 0
+    },
+    "laundry": {
+      "name": "West End Laundromat",
+      "owner": null,
+      "status": "open",
+      "reopen_day": 0
+    },
+    "cinema": {
+      "name": "Regent Picture House",
+      "owner": null,
+      "status": "open",
+      "reopen_day": 0
+    },
+    "garden": {
+      "name": "Dunn Garden Supply",
+      "owner": null,
+      "status": "open",
+      "reopen_day": 0
+    }
+  },
+  "town_flags": {
+    "bridge_closed": false
+  },
+  "mundane_last_used": {},
+  "business_last_mentioned": {},
+  "threads": {},
+  "threads_completed": [],
+  "last_thread_day": -5,
+  "history": [],
+  "metadata": {
+    "origin": "Briar Glen prototype; entirely fictional"
+  }
+}
