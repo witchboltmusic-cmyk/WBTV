@@ -1,0 +1,53 @@
+
+name: Briar Glen - generate town broadcasts
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: briar-glen-world-state
+  cancel-in-progress: false
+
+jobs:
+  tv:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install video and voice tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg espeak
+          python -m pip install -r TownTV_Factory/requirements.txt
+
+      - name: Check story continuity
+        run: python -m unittest discover -s TownTV_Factory/tests -v
+
+      - name: Generate town broadcasts
+        run: python TownTV_Factory/generate.py
+
+      - name: Save broadcasts
+        uses: actions/upload-artifact@v4
+        with:
+          name: briar-glen-broadcasts
+          retention-days: 30
+          path: |
+            TownTV_Factory/output/*.mp4
+            TownTV_Factory/output/*.json
+            TownTV_Factory/output/*.txt
+
+      - name: Remember town changes
+        run: |
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git config user.name 'github-actions[bot]'
+          git add TownTV_Factory/town_state.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Save town history [skip ci]'
+            git push
+          fi
