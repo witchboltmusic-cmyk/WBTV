@@ -189,6 +189,10 @@ BROADCAST REQUIREMENTS:
 - News: 90-150 vivid words; take the name controversy absurdly seriously, then pivot
   to ONE normal community news event from supplied input. Accurate, restrained anchor voice,
   with an ironic contrast; no generic "residents continue to disagree" summaries.
+  WRITE FOR A WOMAN READING ALOUD ON LOCAL TELEVISION: short and medium sentences,
+  natural commas, occasional em dashes for asides, real full stops and paragraph-like
+  breath points. No run-on sentences, monotone lists, or dramatic cliffhanger punctuation.
+  Make each sentence easy to say in one comfortable breath.
 - Weather: 60-100 words; actual supplied forecast unchanged; ordinary professional
   weather voice with at most ONE faintly ominous, understated line tied to reservoir visibility.
 - Swap Shop: 45-90 words, an almost-believable classified or community announcement that
