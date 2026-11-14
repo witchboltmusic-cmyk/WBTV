@@ -27,11 +27,11 @@ ROOT = Path(__file__).resolve().parent
 TRIAL_STATE = ROOT / "cryptid_trial_state.json"
 PEOPLE = {
     "sam": {"name": "Sam Evers", "role": "Bus driver",
-            "personality": "Earnest, cautious; proud to be the only witness."},
+            "personality": "Blunt, observant, touchy about being dismissed. Saw the shape himself and gets furious when two non-witnesses lecture him. Speaks in plain, imperfect sentences; humor comes from indignation and specificity."},
     "harold": {"name": "Harold Vale", "role": "Hardware store owner",
-               "personality": "Opinionated and practical; skeptical of Sam's identification."},
+               "personality": "Stubborn, loud, slyly insulting, and certain he knows better. Has NOT seen the animal. Keeps trying to make the naming argument a matter of common sense and personal dignity; grudges are petty and specific."},
     "ellen": {"name": "Ellen Price", "role": "Librarian",
-              "personality": "Precise, dry, opinionated about terminology; wants evidence."},
+              "personality": "Acid-dry, intelligent, ferociously precise, sometimes cutting. Has NOT seen the animal. Uses a calm voice to say surprisingly brutal things, especially when Harold becomes pompous; capable of making things worse on purpose."},
 }
 # Dedicated Piper voice models give the residents genuinely different voices.
 # The rate/pitch settings below are small finishing adjustments, not the identity.
@@ -123,6 +123,7 @@ TURN = schema_obj(
     text=STRING,
 )
 SCHEMA = schema_obj(
+    lead_headline=STRING,
     nominations={"type": "array", "items": NOMINATION},
     opinions={"type": "array", "items": OPINION},
     shows=schema_obj(
@@ -132,36 +133,76 @@ SCHEMA = schema_obj(
         night_line=schema_obj(turns={"type": "array", "items": TURN}),
     ),
 )
-INSTRUCTIONS = """Write an original, low-key, sometimes absurd series of BRD TV 8 local
-television broadcasts from October 1996. The station is serious, municipal,
-underfunded, and vaguely uncanny. The animal is not the sensational headline.
-The headline is that bus driver SAM EVERS proposed a name, and two other
-residents are obsessed with choosing a better name.
+INSTRUCTIONS = """You write BRD TV 8, a tiny, underfunded local station in fictional Bramhollow, October 1996.
+Its earnest municipal programming contains wildly human arguments, unexpectedly funny social friction,
+and occasional deeply unsettling moments. The station is NOT intentionally making a horror comedy.
+The presenters treat absurdly petty incidents as serious news. People swear, interrupt, get sarcastic,
+talk past each other, get their feelings hurt, double down, and sometimes say something genuinely eerie.
 
-The town engine establishes facts. Do not invent new sightings, witnesses,
-evidence, attacks, deaths, magic, named residents, or physical facts.
-Sam alone saw an unidentified tall shape near Reservoir Road in poor visibility.
-Harold and Ellen have NEVER seen it. They are competing in a naming dispute
-over something they do not know exists.
+YOUR MAIN GOAL: MAKE THE DIALOGUE WORTH WATCHING. No one should sound like a committee meeting,
+a legal deposition, a polite AI assistant, or a balanced panel discussion. Avoid bureaucratic
+phrases like "for the record", "there is no evidence", "sensible distinction",
+"remain unverified", "we will continue to monitor", "appropriate designation",
+"the debate continues", or "the station will keep". Characters are not here to reach consensus.
+No recapping one another's argument. They REACT to what was just said with specificity.
+Use contractions, fragments, overlapping thoughts, memorable images, petty digs, awkward
+silences conveyed in dialogue, and the odd curse. Hell, damn, bullshit, and sometimes
+"what the fuck" are fine when earned, especially in Night Line; do not spray profanity
+into every sentence or make the anchor curse. No insults against protected groups.
+Humor must be conversational and character-based, not sitcom punchlines or memes.
 
-Use character personalities, carried-forward beliefs, and previously proposed
-names. NO recycling earlier scripted dialogue. Let the humor emerge through
-earnest nitpicking over the names and procedural etiquette, not jokes or horror.
-Residents may be confidently wrong and can misinterpret rumors. They must
-never become omniscient.
+CHARACTER FRICTION:
+- SAM EVERS, bus driver, is the ONLY eyewitness. He's plainspoken, wounded, and sure he knows what
+  he saw even if he cannot explain it. His description may be uncertain; his irritation is not.
+- HAROLD VALE owns the hardware store, has NOT seen it, and is loud, dry, condescending, and
+  infuriatingly confident. He can jab at Sam and Ellen; his pride matters more than the name.
+- ELLEN PRICE, the librarian, has NOT seen it. She can eviscerate Harold in one cool sentence,
+  weaponize precise language, and occasionally reveal an odd or morbid preoccupation.
+- NIGHT LINE HOST tries to stay professional but may laugh, lose patience, or ask a devastatingly
+  simple question. Their job is to maintain a show, not to resolve the dispute.
 
-On day phase 1, nominate exactly one distinctive, speakable name from Sam.
-On day phase 2, nominate exactly two OTHER names, one from Harold and Ellen.
-After that, nominate no new names. Keep names and rationale consistent.
-Write opinions for Sam, Harold and Ellen each day.
-News narration: 75-130 words, naming proposal/disagreement as LEAD and one
-normal community news story using supplied events.
-Weather: 55-90 words; use ONLY supplied weather, with at most a subtle
-reservoir reference. Supply a short weather footnote.
-Swap Shop: 35-65 words, mundane listing with a weak link to the naming issue.
-Night Line: 8-14 conversational turns, short natural dialogue featuring the
-host and ALL THREE people; people should argue over names on their own.
-Return JSON conforming exactly to schema. No stage directions or markdown."""
+REALITY AND CONTINUITY:
+The town engine's weather, events and names are authoritative. Sam alone saw an unidentified
+tall shape near Reservoir Road in poor visibility; this does NOT prove what it was.
+Harold and Ellen have never seen it. Do not report new witnesses, attacks, physical evidence,
+official investigations, deaths, or supernatural powers as objective facts.
+Characters MAY speculate outrageously, lie, repeat ridiculous rumors, exaggerate, threaten
+to take actions, or misremember, but clearly frame these as their own claims, not new established
+events. Preserve named proposals, previous opinions, and all facts. No omniscience.
+Do not invent more named town residents.
+
+NARRATIVE MOVEMENT:
+Phase 1: Sam proposes ONE distinctive, speakable name.
+Phase 2: Harold and Ellen each propose ONE different rival name; neither is an eyewitness.
+Later phases: No new nominations; the same three names remain established, but the argument
+MUST evolve—wounded pride, accusations of stealing a name, a proposed vote or petition,
+a petty business dispute, an embarrassing public correction, the danger of being laughed at,
+or unease about what Sam actually saw. Characters may plan these, not assert unmodeled
+actions already happened. Avoid replaying the same exchange from previous episodes.
+Let someone occasionally say something surprising, rude, or unexpectedly vulnerable.
+The creature is genuinely mysterious, but the town is preoccupied with naming it.
+
+BROADCAST REQUIREMENTS:
+- lead_headline: original, specific, amusingly deadpan TV headline (35-100 characters)
+  about the ACTUAL name dispute or a resident's behavior, not an invented sighting.
+  Name one or more residents and/or an established creature nickname.
+- News: 90-150 vivid words; take the name controversy absurdly seriously, then pivot
+  to ONE normal community news event from supplied input. Accurate, restrained anchor voice,
+  with an ironic contrast; no generic "residents continue to disagree" summaries.
+- Weather: 60-100 words; actual supplied forecast unchanged; ordinary professional
+  weather voice with at most ONE faintly ominous, understated line tied to reservoir visibility.
+- Swap Shop: 45-90 words, an almost-believable classified or community announcement that
+  tangentially relates to the feud. Make it particular, not abstract, without inventing
+  a verified major event. Presenter must remain upbeat and not seem in on the joke.
+- Night Line: 14-20 fast, punchy conversational turns, each usually one or two sentences.
+  Include host plus all three named residents. At least one sharp personal jab,
+  one convincing escalation or interruption, and one surprising, quietly unsettling beat.
+  Not every turn must be a joke. Every character needs a recognizable linguistic fingerprint.
+  End with unresolved tension or a memorable interruption, NEVER a calm agreement.
+- Opinions: update each character's subjective belief and stance based on THAT day's dialogue.
+- Nomination list: Sam only in phase 1; Harold and Ellen only in phase 2; empty afterward.
+Use plain spoken English with genuine energy. Return strict JSON schema, no markdown
+and no stage directions or explanatory commentary."""
 
 def context_for(state, daily):
     c = state.setdefault("cryptid_trial", {
@@ -229,7 +270,7 @@ def apply_response(state, daily, context, data):
         raise ValueError("One opinion is required from each named resident")
     shows = data["shows"]
     turns = shows["night_line"]["turns"]
-    if not 8 <= len(turns) <= 14 or not {"host", *PEOPLE}.issubset(
+    if not 14 <= len(turns) <= 20 or not {"host", *PEOPLE}.issubset(
         {item["speaker_id"] for item in turns}
     ):
         raise ValueError("Night Line needs host and all three speakers")
@@ -247,12 +288,13 @@ def apply_response(state, daily, context, data):
     c["minds"]["sam"]["witnessed"] = True
     c["minds"]["harold"]["witnessed"] = False
     c["minds"]["ellen"]["witnessed"] = False
-    if phase == 1:
-        headline = f'Sam Evers proposes "{c["names"]["sam"]}" as name for reservoir animal'
-    elif phase == 2:
-        headline = "Harold Vale and Ellen Price dispute Sam Evers' proposed name"
-    else:
-        headline = "Reservoir animal naming debate draws community comment"
+    headline = " ".join(data["lead_headline"].split())
+    if not 20 <= len(headline) <= 110 or not any(
+        token in headline.lower()
+        for token in ("sam", "harold", "ellen", "name", "naming",
+                      *(n.lower() for n in c["names"].values()))
+    ):
+        raise ValueError("Lead headline must be specific to the ongoing naming dispute")
     normal = next((e["headline"] for e in daily["events"]
                    if e.get("category") == "community"), "Local community bulletins")
     story = {"day": daily["day"], "headline": headline,
