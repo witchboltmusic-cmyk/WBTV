@@ -1,0 +1,51 @@
+name: BRD TV 8 - revoice cryptid pilot (Piper)
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_run_id:
+        description: Successful original cryptid run to revoice (no new LLM calls)
+        type: string
+        required: true
+        default: '43644279946'
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  revoice-existing-episodes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install video tools and neural speech engine
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          python -m pip install -r TownTV_Factory/requirements.txt 'openai>=2,<4' piper-tts
+          python -m piper.download_voices en_US-john-medium en_US-kristin-medium en_US-joe-medium en_US-mike-medium en_US-amy-medium --data-dir TownTV_Factory/voices
+      - name: Retrieve ORIGINAL generated scripts and reports
+        uses: actions/download-artifact@v4
+        with:
+          name: brd-tv8-cryptid-pilot
+          run-id: ${{ inputs.source_run_id }}
+          github-token: ${{ github.token }}
+          path: TownTV_Factory/output
+      - name: Re-render same 12 episodes with distinct Piper voices
+        run: python TownTV_Factory/revoice_cryptid.py
+      - name: Upload original story with new voice tracks
+        uses: actions/upload-artifact@v4
+        with:
+          name: brd-tv8-cryptid-piper-revoiced
+          retention-days: 30
+          path: |
+            TownTV_Factory/output/day_*.mp4
+            TownTV_Factory/output/day_*_cryptid_*.txt
+            TownTV_Factory/output/day_*_cryptid_*.json
+            TownTV_Factory/output/cryptid_piper_revoice_manifest.json
