@@ -27,9 +27,10 @@ ROOT = Path(__file__).resolve().parent
 MODEL = os.environ.get("BRD_VOICE_MODEL", "gpt-realtime-2.1-mini")
 PROFILE = {
     "anchor": {
-        "voice": "cedar",
-        "style": "Mature American local TV news presenter. Grounded, measured, slightly formal. Read copy straight, no theatrical suspense.",
+        "voice": "shimmer",
+        "style": "ONE adult woman with a clear, naturally feminine mid-register American voice. The SAME woman for the entire reading: keep her vocal pitch, resonance, accent and identity consistent from first word to last. She is a capable, slightly tired 1990s local-TV anchor. Read as real broadcast copy, not a character impersonation. Warm but authoritative, dry and conversational, with confident sentence endings. Medium-slow, even pacing. Small pauses at commas and em dashes; full breaths between sentences. Avoid sing-song intonation, dramatic rises, rushed clauses, vocal fry, or switching voices.",
         "telephone": False,
+        "speed": 0.94,
         "sample": "Tonight's leading story: Sam Evers has proposed a name for the animal reported near Reservoir Road. The town has not yet agreed.",
     },
     "host": {
@@ -79,6 +80,29 @@ def profile_for(speaker):
 def _normalize(words):
     return re.sub(r"[^a-z0-9]+", " ", words.lower()).strip()
 
+def format_spoken_copy(text, speaker):
+    """Punctuate anchor copy with natural breaths without changing its words.
+
+    Original scripts and events remain unchanged. Only the anchor's speech
+    input gains line breaks; the other cast retains their existing delivery.
+    """
+    if speaker != "anchor":
+        return text
+    copy = re.sub(r"\s+", " ", text).strip()
+    # Keep punctuation; open a fresh paragraph after full stops.
+    copy = re.sub(r'(?<=[.!?]) +(?=[A-Z"])', "\n\n", copy)
+    # Pauses at headline introductions and explicit semicolons.
+    copy = re.sub(r'([;:]) +(?=[A-Z])', r'\1\n', copy)
+    # A long clause gets one breath at an existing comma.
+    lines = []
+    for line in copy.split("\n"):
+        if len(line) > 115 and ", " in line:
+            before, after = line.split(", ", 1)
+            if len(before) >= 35 and len(after) >= 30:
+                line = before + ",\n" + after
+        lines.append(line)
+    return "\n".join(lines)
+
 def _generate_pcm(text, profile, model=MODEL):
     """Get one isolated speech-only 24kHz PCM sample from the Realtime API."""
     if not os.environ.get("OPENAI_API_KEY"):
@@ -96,6 +120,9 @@ def _generate_pcm(text, profile, model=MODEL):
         "1990s regional television station. Read the exact supplied script, word for "
         "word. Do not add or omit words. Do not improvise. Do not introduce the script. "
         "Produce only the voice reading, no sound effects, no music. "
+        "Maintain one consistent voice throughout; punctuation and line breaks "
+        "are silent breathing and phrasing cues, not words to speak. "
+        "Do not rush sentences. End statements naturally, not as questions. "
         "Delivery style: " + profile["style"] + "\n\n"
         "READ THIS EXACT SCRIPT:\n" + text
     )
@@ -116,6 +143,7 @@ def _generate_pcm(text, profile, model=MODEL):
                     "output": {
                         "voice": profile["voice"],
                         "format": {"type": "audio/pcm", "rate": 24000},
+                        "speed": profile.get("speed", 1.0),
                     }
                 },
                 "instructions": instructions,
@@ -154,7 +182,8 @@ def _generate_pcm(text, profile, model=MODEL):
 def _make_wave(text, speaker, destination):
     """Write clean 24kHz mono WAV with no AI voice alteration after generation."""
     profile = profile_for(speaker)
-    audio = _generate_pcm(text, profile)
+    spoken_copy = format_spoken_copy(text, speaker)
+    audio = _generate_pcm(spoken_copy, profile)
     with wave.open(str(destination), "wb") as dest:
         dest.setnchannels(1)
         dest.setsampwidth(2)
