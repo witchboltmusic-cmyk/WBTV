@@ -3,10 +3,10 @@
   "town": "Briar Glen",
   "county": "Morrow County",
   "station": "WMRW CHANNEL 8",
-  "broadcast_day": 1,
+  "broadcast_day": 2,
   "fictional_start_date": "1996-10-01",
   "seed": 81381996,
-  "surreal_chance": 0.16,
+  "surreal_chance": 0.17,
   "weather": {
     "condition": "clear",
     "temperature_f": 47
@@ -66,7 +66,7 @@
       "job": "Recreation director",
       "status": "home",
       "away_until": 0,
-      "mentions": 0
+      "mentions": 1
     }
   },
   "businesses": {
@@ -105,10 +105,12 @@
     "bridge_closed": false
   },
   "mundane_last_used": {
-    "Animal shelter seeks blankets": 1
+    "Animal shelter seeks blankets": 1,
+    "Volunteer reading program expands": 2
   },
   "business_last_mentioned": {
-    "cinema": 1
+    "cinema": 1,
+    "laundry": 2
   },
   "threads": {},
   "threads_completed": [],
@@ -137,10 +139,43 @@
       "category": "people",
       "surreal": false,
       "thread": null
+    },
+    {
+      "day": 2,
+      "headline": "Community volunteer: David Bell",
+      "text": "David Bell, a local recreation director, has volunteered to sort records at the historical society.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 2,
+      "headline": "Postal box temporarily unavailable",
+      "text": "The post office has covered a mailbox after letters addressed to an unlisted street were found inside.",
+      "category": "county",
+      "surreal": true,
+      "thread": null
+    },
+    {
+      "day": 2,
+      "headline": "Volunteer reading program expands",
+      "text": "The reading program is seeking volunteers to help younger students on Thursday afternoons.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 2,
+      "headline": "West End Laundromat joins county fair",
+      "text": "West End Laundromat will sponsor a table at the next county fair.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
     }
   ],
   "metadata": {
-    "origin": "Briar Glen prototype; entirely fictional"
+    "origin": "Briar Glen prototype; entirely fictional",
+    "tone_upgrade_v2": true
   },
-  "last_generation": "2026-11-14T00:09:36.449406+00:00"
+  "last_generation": "2026-11-14T01:54:48.444246+00:00"
 }
