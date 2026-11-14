@@ -1,9 +1,9 @@
 {
   "schema_version": 2,
-  "town": "Briar Glen",
+  "town": "Bramhollow",
   "county": "Morrow County",
-  "station": "WMRW CHANNEL 8",
-  "broadcast_day": 3,
+  "station": "BRD TV 8",
+  "broadcast_day": 4,
   "fictional_start_date": "1996-10-01",
   "seed": 81381996,
   "surreal_chance": 0.17,
@@ -66,7 +66,7 @@
       "job": "Recreation director",
       "status": "home",
       "away_until": 0,
-      "mentions": 1
+      "mentions": 2
     }
   },
   "businesses": {
@@ -107,10 +107,11 @@
   "mundane_last_used": {
     "Animal shelter seeks blankets": 1,
     "Volunteer reading program expands": 2,
-    "Fire hall announces open house": 3
+    "Fire hall announces open house": 3,
+    "Town Hall replaces front door": 4
   },
   "business_last_mentioned": {
-    "cinema": 1,
+    "cinema": 4,
     "laundry": 2,
     "bakery": 3
   },
@@ -200,7 +201,7 @@
     {
       "day": 3,
       "headline": "Agricultural office begins orchard survey",
-      "text": "Agricultural inspectors will visit farms west of Briar Glen to update tree inventories.",
+      "text": "Agricultural inspectors will visit farms west of Bramhollow to update tree inventories.",
       "category": "county",
       "surreal": false,
       "thread": "orchard"
@@ -212,11 +213,36 @@
       "category": "business",
       "surreal": false,
       "thread": null
+    },
+    {
+      "day": 4,
+      "headline": "Town Hall replaces front door",
+      "text": "The replacement front door at Town Hall will be installed during normal office hours.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 4,
+      "headline": "Community volunteer: David Bell",
+      "text": "David Bell, a local recreation director, has volunteered to sort records at the historical society.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 4,
+      "headline": "Regent Picture House seeks weekend staff",
+      "text": "Regent Picture House is accepting applications for part-time weekend help.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
     }
   ],
   "metadata": {
-    "origin": "Briar Glen prototype; entirely fictional",
-    "tone_upgrade_v2": true
+    "origin": "Bramhollow prototype; entirely fictional",
+    "tone_upgrade_v2": true,
+    "brd_tv_8_brand_upgrade": true
   },
-  "last_generation": "2026-11-14T02:00:22.105317+00:00"
+  "last_generation": "2026-11-14T02:46:33.789257+00:00"
 }
