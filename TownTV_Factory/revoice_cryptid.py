@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 import re
 import shutil
@@ -29,7 +30,7 @@ def parse_scripts(file):
             for i, m in enumerate(parts)}
 
 
-def revoice_one(daily, programs, dialogue, state):
+def revoice_one(daily, programs, dialogue, state, voice_engine="piper"):
     headline = daily["cryptid"]["headline"]
     regular_news = next((e["headline"] for e in daily.get("events", [])
                          if e.get("category") == "community" and e.get("thread") != "cryptid_naming"),
@@ -50,8 +51,8 @@ def revoice_one(daily, programs, dialogue, state):
     ]
     clips = []
     for program in result:
-        output = tv.render_program(program, daily, state, "piper")
-        if output.get("voice_engine") != "piper":
+        output = tv.render_program(program, daily, state, voice_engine)
+        if output.get("voice_engine") != voice_engine:
             raise RuntimeError("Output used old speech engine: " + str(output))
         clips.append(output)
     return clips
@@ -59,6 +60,7 @@ def revoice_one(daily, programs, dialogue, state):
 
 def main():
     ap = argparse.ArgumentParser(description="Re-render pilot's ORIGINAL scripts with separate Piper voices")
+    ap.add_argument("--voice-engine", choices=("piper", "realtime"), default="piper")
     ap.add_argument("--state", type=Path, default=pilot.TRIAL_STATE)
     ap.add_argument("--out", type=Path, default=tv.OUT)
     args = ap.parse_args()
@@ -70,8 +72,14 @@ def main():
     tv.OUT = args.out
     tv.OUT.mkdir(exist_ok=True, parents=True)
     tv.TEMP = args.out / "_render"
-    pilot.active_voice_engine("piper")
-    tv.synthesize = pilot.speak
+    if args.voice_engine == "piper":
+        pilot.active_voice_engine("piper")
+        tv.synthesize = pilot.speak
+    else:
+        import openai_voice
+        if not os.environ.get("OPENAI_API_KEY"):
+            ap.error("OPENAI_API_KEY is required for OpenAI natural voices")
+        tv.synthesize = openai_voice.synthesize
     reports = sorted(args.out.rglob("day_*_cryptid_report.json"))
     if not reports:
         ap.error("No prior LLM pilot reports were downloaded into " + str(args.out))
@@ -88,13 +96,13 @@ def main():
                                "is missing from saved state; refusing to invent replacement dialogue")
         scripts = parse_scripts(original_scripts)
         try:
-            clips = revoice_one(day, scripts, turns, state)
+            clips = revoice_one(day, scripts, turns, state, args.voice_engine)
         finally:
             shutil.rmtree(tv.TEMP, ignore_errors=True)
         render_log.append({"day": day_number, "date": day["air_date"], "clips": clips})
-        print(f"Revoiced Day {day_number} with Piper neural voices; preserved original story.")
-    (args.out / "cryptid_piper_revoice_manifest.json").write_text(
-        json.dumps({"engine": "piper", "new_llm_calls": 0,
+        print(f"Revoiced Day {day_number} with {args.voice_engine} voices; preserved original story.")
+    (args.out / f"cryptid_{args.voice_engine}_revoice_manifest.json").write_text(
+        json.dumps({"engine": args.voice_engine, "new_script_llm_calls": 0,
                     "source": "original BRD cryptid pilot", "reports": render_log}, indent=2) + "\n",
         encoding="utf-8")
 
