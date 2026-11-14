@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Briar Glen TV v2: persistent town, polished procedural retro graphics, natural TTS.
+"""Bramhollow BRD TV 8: persistent town, polished procedural retro graphics, natural TTS.
 
 One run advances one day. No AI-generated video: all imagery is code-rendered.
 Piper voices are free/offline; eSpeak remains a tested fallback.
@@ -16,6 +16,7 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from town_engine import initial_state, upgrade_state, advance, write_scripts
 from voiceover import synthesize, active_voice_engine
+from render_media import AssetRenderer, render_news_frame, render_weather_frame
 
 ROOT=Path(__file__).resolve().parent
 OUT=ROOT/'output'
@@ -75,8 +76,8 @@ def base(d,station,day,name,sec,air_date,events):
     d.rectangle((0,72,W,76),fill=BRASS)
     d.ellipse((22,11,76,65),fill=(10,31,40),outline=CYAN,width=2)
     txt(d,(39,22),'8',32,WHITE,'bold')
-    txt(d,(93,11),'WMRW',28,WHITE,'bold')
-    txt(d,(94,44),'MORROW COUNTY TELEVISION',14,CYAN,'mono')
+    txt(d,(93,11),'BRD TV 8',28,WHITE,'bold')
+    txt(d,(94,44),'BRAMHOLLOW INDEPENDENT TELEVISION',14,CYAN,'mono')
     txt(d,(W-256,12),air_date.replace('-',' / '),17,MUTED,'mono')
     txt(d,(W-256,44),f'LOCAL  /  08  /  {day:03d}',14,WHITE,'mono')
     # subtle lines on film, low intensity, no flicker/strobes
@@ -85,8 +86,8 @@ def base(d,station,day,name,sec,air_date,events):
     # lower third, patterned station system
     d.rectangle((0,H-61,W,H),fill=(16,43,57))
     d.rectangle((0,H-61,W,H-58),fill=(61,108,111))
-    txt(d,(25,H-49),'WMRW 08',20,CYAN,'bold')
-    txt(d,(163,H-46),name.upper()+'   /   BRIAR GLEN',15,WHITE,'mono')
+    txt(d,(25,H-49),'BRD TV 8',20,CYAN,'bold')
+    txt(d,(163,H-46),name.upper()+'   /   BRAMHOLLOW',15,WHITE,'mono')
     txt(d,(W-116,H-47),f'{int(sec//60):02d}:{int(sec%60):02d}',20,BRASS,'mono')
     # A rare, completely understated unexplained broadcast-system status.
     if day % 13 == 0 and 10 <= sec < 15:
@@ -152,7 +153,7 @@ def weather(d,sec,program,daily):
     for r in (35,72,109):d.ellipse((cx-r,cy-r,cx+r,cy+r),outline=(57,102,96),width=1)
     ang=sec*.22
     line(d,[(cx,cy),(cx+int(108*math.cos(ang)),cy+int(108*math.sin(ang)))],BRASS,2)
-    for x,y,name in [(96,242,'BRIAR GLEN'),(424,235,'NORTH RIDGE'),(406,405,'RESERVOIR')]:
+    for x,y,name in [(96,242,'BRAMHOLLOW'),(424,235,'NORTH RIDGE'),(406,405,'RESERVOIR')]:
         d.ellipse((x-2,y-2,x+2,y+2),fill=WHITE)
         txt(d,(x+8,y-17),name,13,WHITE,'mono')
     panel(d,(619,193,929,459),(20,46,62),(68,106,122))
@@ -207,12 +208,21 @@ def render_program(program,daily,state,voice_choice):
     voice=work/'voice.wav';voice_len,engine=synthesize(segments,voice,voice_choice)
     duration=max(13,math.ceil(voice_len+1.75))
     fn={'News':news,'Weather':weather,'Swap Shop':swap,'Night Line':nightline}[name]
+    asset_renderer = AssetRenderer(ROOT/'assets', work/'media', W, H, FPS) if name in ('News', 'Weather') else None
+    if asset_renderer is not None:
+        asset_renderer.prepare(name)
     for i in range(duration*FPS):
         sec=i/FPS
-        im=Image.new('RGB',(W,H),BG);d=ImageDraw.Draw(im)
-        base(d,state['station'],day,name,sec,daily['air_date'],daily['events'])
-        fn(d,sec,program,daily)
-        im.save(work/f'f_{i:05d}.jpg',quality=88,subsampling=0)
+        if asset_renderer and asset_renderer.has_media(name):
+            if name == 'News':
+                im=render_news_frame(asset_renderer, sec, day, daily, program, duration)
+            else:
+                im=render_weather_frame(asset_renderer, sec, day, daily, program, duration)
+        else:
+            im=Image.new('RGB',(W,H),BG);d=ImageDraw.Draw(im)
+            base(d,state['station'],day,name,sec,daily['air_date'],daily['events'])
+            fn(d,sec,program,daily)
+        im.save(work/f'f_{i:05d}.jpg',quality=86,subsampling=0)
     output=OUT/f'day_{day:03d}_{stem}.mp4'
     music=next((p for p in [ROOT/'music'/'theme.mp3',ROOT/'music'/'theme.wav',ROOT/'music'/'theme.ogg'] if p.exists()),None)
     args=['ffmpeg','-y','-hide_banner','-loglevel','error','-framerate',str(FPS),
@@ -242,6 +252,18 @@ def main():
         if not shutil.which('ffmpeg'):raise SystemExit('FFmpeg not installed')
         print('Voice engine:',active_voice_engine(args.voice))
     state=upgrade_state(json.loads(args.state.read_text('utf8'))) if args.state.exists() else initial_state()
+    # Non-destructive brand migration: keep people, history, active mysteries and dates.
+    # Rename only the old fictional place name in existing saved narrative text.
+    def rename_place(value):
+        if isinstance(value, str): return value.replace('Briar Glen', 'Bramhollow')
+        if isinstance(value, list): return [rename_place(x) for x in value]
+        if isinstance(value, dict): return {k:rename_place(v) for k,v in value.items()}
+        return value
+    if state.get('town') != 'Bramhollow' or state.get('station') != 'BRD TV 8':
+        state=rename_place(state)
+        state['town']='Bramhollow'
+        state['station']='BRD TV 8'
+        state.setdefault('metadata',{})['brd_tv_8_brand_upgrade']=True
     OUT.mkdir(exist_ok=True)
     for _ in range(args.days):
         daily=advance(state)

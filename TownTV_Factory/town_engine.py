@@ -29,7 +29,7 @@ THREADS = {
  'library': {
   'title': 'The Library Return Ledger',
   'stages': [
-   ('Library launches overdue-book amnesty', 'Briar Glen Library has begun an amnesty for overdue books and asked patrons to return unidentified volumes to the front desk.'),
+   ('Library launches overdue-book amnesty', 'Bramhollow Library has begun an amnesty for overdue books and asked patrons to return unidentified volumes to the front desk.'),
    ('Unlisted book returned to circulation desk', 'Library staff received a volume with no accession number. The book has been set aside while staff locate its original record.'),
    ('Library asks patrons about missing catalog pages', 'A small number of catalog cards are missing from the local history cabinet. Staff say no books appear to be missing.'),
    ('Historical society receives disputed library inventory', 'An inventory delivered to the historical society lists a reading room that was removed during a renovation in 1972.'),
@@ -68,7 +68,7 @@ THREADS = {
  'orchard': {
   'title': 'The Orchard Survey',
   'stages': [
-   ('Agricultural office begins orchard survey', 'Agricultural inspectors will visit farms west of Briar Glen to update tree inventories.'),
+   ('Agricultural office begins orchard survey', 'Agricultural inspectors will visit farms west of Bramhollow to update tree inventories.'),
    ('Unmarked rows noted on orchard map', 'Inspectors found several rows of trees missing from an older survey. Property boundaries are unchanged.'),
    ('Orchard growers invited to public meeting', 'Residents with questions about land records are invited to a short meeting at the recreation hall.'),
    ('Old bell located near orchard property', 'Survey workers located a rusted farm bell on the northern boundary. The owner says it has not been used for decades.'),
@@ -98,7 +98,7 @@ INITIAL_BUSINESSES = {
  'garden': {'name':'Dunn Garden Supply','owner':None,'status':'open','reopen_day':0},
 }
 MUNDANE_EVENTS = [
- ('Library extends weekend hours', 'The Briar Glen Library will remain open an additional hour on Saturdays following a successful trial period.'),
+ ('Library extends weekend hours', 'The Bramhollow Library will remain open an additional hour on Saturdays following a successful trial period.'),
  ('Community choir welcomes new singers', 'The recreation hall choir is accepting new members. Rehearsals are held on Tuesday evenings.'),
  ('Painting planned for Maple Avenue', 'Crews will refresh the lane markings along Maple Avenue. Drivers should allow extra time near the square.'),
  ('County fair announces pie contest', 'Organizers have opened entries for the annual county fair pie competition. Forms are available at the library.'),
@@ -125,7 +125,7 @@ MUNDANE_EVENTS = [
  ('Volunteer reading program expands', 'The reading program is seeking volunteers to help younger students on Thursday afternoons.'),
  ('Downtown sidewalk repairs begin', 'Sidewalk repair work will begin outside the hardware store this week.'),
  ('New benches installed by courthouse', 'Public Works has installed two benches near the courthouse entrance after receiving requests from residents.'),
- ('Briar Glen school announces book drive', 'The school is collecting used books for its winter reading program. Donations may be dropped off at the office.'),
+ ('Bramhollow school announces book drive', 'The school is collecting used books for its winter reading program. Donations may be dropped off at the office.'),
  ('Street market changes opening time', 'Market vendors will begin setting up an hour earlier on the first Saturday of next month.'),
 ]
 # New characters and businesses appear slowly, with names persisted in the town record.
@@ -143,7 +143,7 @@ NEW_SHOPS = [
  ('radio_repair', 'North Ridge Radio Repair'),
  ('flower_shop', 'Market Street Florist'),
  ('clock_repair', 'County Clock & Watch'),
- ('photo', 'Briar Glen Photo Service'),
+ ('photo', 'Bramhollow Photo Service'),
 ]
 
 SWAP_OBJECTS = ['a small oak dresser','a portable radio','two porch chairs','a working table lamp','three enamel mixing bowls',
@@ -169,7 +169,7 @@ LOW_STAKE_ODDITIES = [
  ('Unclaimed umbrella located at courthouse', 'The county clerk has placed a gray umbrella in lost property. No one remembers seeing it arrive.'),
  ('An unusual municipal calendar error', 'The printed community calendar includes a second Thursday. The printer has been notified.'),
  ('Postal box temporarily unavailable', 'The post office has covered a mailbox after letters addressed to an unlisted street were found inside.'),
- ('Town sign receives unexpected correction', 'The welcome sign outside Briar Glen briefly listed a population one person higher than the latest census.'),
+ ('Town sign receives unexpected correction', 'The welcome sign outside Bramhollow briefly listed a population one person higher than the latest census.'),
  ('Community notice issued about fountain', 'The parks department reminds residents that the fountain behind Town Hall is decorative and has no public water connection.'),
  ('Empty room added to building inspection', 'A room with no listed use was included in the annual recreation hall inspection. The report will be corrected.'),
  ('Recorded time signal being reviewed', 'The telephone time service briefly repeated yesterday’s announcement. Engineers describe the problem as routine.'),
@@ -183,13 +183,13 @@ LOW_STAKE_ODDITIES = [
 
 def initial_state():
     return {
-      'schema_version': 2, 'town': 'Briar Glen', 'county': 'Morrow County',
-      'station': 'WMRW CHANNEL 8', 'broadcast_day': 0, 'fictional_start_date': START_DATE,
+      'schema_version': 2, 'town': 'Bramhollow', 'county': 'Morrow County',
+      'station': 'BRD TV 8', 'broadcast_day': 0, 'fictional_start_date': START_DATE,
       'seed': 81381996, 'surreal_chance': .17, 'weather': {'condition':'cloudy', 'temperature_f':46},
       'residents': deepcopy(INITIAL_RESIDENTS), 'businesses':deepcopy(INITIAL_BUSINESSES),
       'town_flags': {'bridge_closed': False}, 'mundane_last_used':{},'business_last_mentioned':{},
       'threads':{}, 'threads_completed':[], 'last_thread_day':-5,
-      'history':[], 'metadata':{'origin':'Briar Glen prototype; entirely fictional'},
+      'history':[], 'metadata':{'origin':'Bramhollow prototype; entirely fictional'},
     }
 
 def upgrade_state(raw):
@@ -278,17 +278,17 @@ def resident_activity(state, day, rng):
     if day > 6 and day % 11 == 0 and possible:
         key,name,job=rng.choice(possible)
         residents[key]={'name':name,'job':job,'status':'home','away_until':0,'mentions':0}
-        return evt(day,f'{name} settles in Briar Glen',
+        return evt(day,f'{name} settles in Bramhollow',
                    f'{name}, a {job.lower()}, has moved into a home on the west side of town. Neighbors are planning a small welcome gathering.','people')
     eligible_longtime=[r for r in residents.values() if r['status']=='home' and r['mentions']>=2]
     if day > 35 and len([r for r in residents.values() if r['status']=='home'])>7 and rng.random()<.025 and eligible_longtime:
         r=rng.choice(eligible_longtime);r['status']='moved'
-        return evt(day,f'{r["name"]} leaves Briar Glen',
+        return evt(day,f'{r["name"]} leaves Bramhollow',
                    f'{r["name"]} has moved out of town to be nearer to family. A farewell gathering was held at the recreation center.','people')
     for r in residents.values():
         if r['status']=='away' and day >= r['away_until']:
             r['status']='home'
-            return evt(day, f'{r["name"]} returns from family visit', f'{r["name"]} has returned to Briar Glen following a brief visit with relatives.', 'people')
+            return evt(day, f'{r["name"]} returns from family visit', f'{r["name"]} has returned to Bramhollow following a brief visit with relatives.', 'people')
     eligible = [r for r in residents.values() if r['status']=='home']
     if day > 5 and eligible and rng.random() < .09:
         r = rng.choice(eligible)
