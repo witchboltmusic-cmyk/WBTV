@@ -15,7 +15,7 @@ on:
         description: Original cryptid experiment GitHub run (for all12 mode only)
         type: string
         required: true
-        default: '43644279946'
+        default: '43648703309'
 
 permissions:
   contents: read
