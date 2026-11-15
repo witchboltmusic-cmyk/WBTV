@@ -13,7 +13,7 @@ class VoiceAuditionTests(unittest.TestCase):
         anchor = openai_voice.PROFILE["anchor"]
         self.assertEqual(anchor["voice"], "shimmer")
         self.assertIn("woman", anchor["style"].lower())
-        self.assertLess(anchor["speed"], 1.0)
+        self.assertIn("Medium-slow", anchor["style"])
         # The news and weather shows can share an announcer; callers cannot.
         names = ["sam", "harold", "ellen", "host"]
         ids = [openai_voice.PROFILE[x]["voice"] for x in names]
