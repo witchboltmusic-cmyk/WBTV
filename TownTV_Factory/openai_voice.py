@@ -30,7 +30,6 @@ PROFILE = {
         "voice": "shimmer",
         "style": "ONE adult woman with a clear, naturally feminine mid-register American voice. The SAME woman for the entire reading: keep her vocal pitch, resonance, accent and identity consistent from first word to last. She is a capable, slightly tired 1990s local-TV anchor. Read as real broadcast copy, not a character impersonation. Warm but authoritative, dry and conversational, with confident sentence endings. Medium-slow, even pacing. Small pauses at commas and em dashes; full breaths between sentences. Avoid sing-song intonation, dramatic rises, rushed clauses, vocal fry, or switching voices.",
         "telephone": False,
-        "speed": 0.94,
         "sample": "Tonight's leading story: Sam Evers has proposed a name for the animal reported near Reservoir Road. The town has not yet agreed.",
     },
     "host": {
@@ -143,7 +142,6 @@ def _generate_pcm(text, profile, model=MODEL):
                     "output": {
                         "voice": profile["voice"],
                         "format": {"type": "audio/pcm", "rate": 24000},
-                        "speed": profile.get("speed", 1.0),
                     }
                 },
                 "instructions": instructions,
