@@ -9,7 +9,7 @@ from town_engine import initial_state, advance
 from apocalypse_engine import advance_incident
 from cryptid_trial import context_for, apply_response, VOICES, SCHEMA
 
-def fake_response(phase):
+def fake_response(phase, caller="sam"):
     options = {
         1: [{"resident_id":"sam","name":"Reservoir Rambler"}],
         2: [{"resident_id":"harold","name":"Mud Walker"},
@@ -31,8 +31,12 @@ def fake_response(phase):
                        "footnote":"Reduced visibility possible near the reservoir."},
             "swap_shop":{"narration":"A resident has asked for a spare suggestion box for a local naming poll.",
                          "listing":"Wanted: spare suggestion box"},
-            "night_line":{"turns":[{"speaker_id":who, "text":"We ought to agree on a reasonable name."}
-                          for who in ("host","sam","harold","ellen","host","sam","harold","ellen","host","sam","harold","ellen","host","sam")]},
+            "night_line":{"turns":[
+                {"speaker_id": "host" if i % 2 == 0 else caller,
+                 "text": ("Where did that happen? Please tell me the street."
+                          if i % 2 == 0 else
+                          "I was standing on the corner beside the library.")}
+                for i in range(14)]},
         },
     }
 
@@ -43,7 +47,8 @@ class CryptidPilotTests(unittest.TestCase):
             daily = advance(state)
             context = context_for(state,daily)
             self.assertEqual(context["phase"], phase)
-            programs = apply_response(state,daily,context,fake_response(phase))
+            programs = apply_response(state,daily,context,
+                                      fake_response(phase, context["call_in_guest"]["resident_id"]))
             self.assertEqual([p["name"] for p in programs],
                              ["News","Weather","Swap Shop","Night Line"])
             self.assertFalse(state["cryptid_trial"]["minds"]["harold"]["witnessed"])
@@ -61,17 +66,13 @@ class CryptidPilotTests(unittest.TestCase):
             advance_incident(state, daily)
             context = context_for(state, daily)
             available = context["available_speakers"]
-            result = fake_response(phase)
+            guest = context["call_in_guest"]
+            self.assertTrue(guest is None or
+                            state["residents"][guest["resident_id"]]["status"] == "home")
+            result = fake_response(phase, guest["resident_id"] if guest else "sam")
             result["lead_headline"] = daily["horror"]["headline"]
             result["opinions"] = [p for p in result["opinions"]
                                   if p["resident_id"] in available]
-            order = ["host", *available]
-            length = 14 if len(available) >= 3 else 10 if len(available) == 2 else 7
-            result["shows"]["night_line"]["turns"] = [
-                {"speaker_id": order[i % len(order)],
-                 "text": "I cannot find a way home, and I need somebody to stay on the line."}
-                for i in range(length)
-            ]
             if phase == 4:
                 self.assertNotIn("harold", available)
                 invalid = fake_response(phase)
@@ -81,12 +82,49 @@ class CryptidPilotTests(unittest.TestCase):
             programs = apply_response(state,daily,context,result)
             self.assertEqual(len(programs),4)
             self.assertEqual(programs[0]["display"], daily["horror"]["headline"])
-            self.assertTrue(
-                set(who for who, _ in programs[-1]["segments"]) <= {"host", *available}
+            self.assertEqual(
+                set(who for who, _ in programs[-1]["segments"]),
+                {"host", guest["resident_id"]}
+            )
+            self.assertEqual(
+                [who for who, _ in programs[-1]["segments"]],
+                ["host" if i % 2 == 0 else guest["resident_id"]
+                 for i in range(14)]
             )
         self.assertNotIn("sam", context["available_speakers"])
         self.assertEqual(state["residents"]["sam"]["status"], "missing")
         self.assertEqual(state["residents"]["harold"]["status"], "dead")
+
+    def test_nightline_rejects_panel_discussion_and_same_speaker_twice(self):
+        state = initial_state()
+        daily = advance(state)
+        context = context_for(state, daily)
+        guest = context["call_in_guest"]["resident_id"]
+        bad = fake_response(1, guest)
+        bad["shows"]["night_line"]["turns"][3]["speaker_id"] = "ellen"
+        with self.assertRaisesRegex(ValueError, "ONE live caller"):
+            apply_response(state, daily, context, bad)
+        repeated = fake_response(1, guest)
+        repeated["shows"]["night_line"]["turns"][3]["speaker_id"] = "host"
+        with self.assertRaisesRegex(ValueError, "ONE live caller"):
+            apply_response(state, daily, context, repeated)
+        self.assertEqual(state["cryptid_trial"]["public_record"], [])
+
+    def test_guest_selection_avoids_deceased_and_repeated_callers(self):
+        from cryptid_trial import select_nightline_guest
+        state = initial_state()
+        day1 = advance(state)
+        a = select_nightline_guest(state, day1)
+        state["cryptid_trial"] = {"last_nightline_guest": a["resident_id"]}
+        day2 = advance(state)
+        b = select_nightline_guest(state, day2)
+        self.assertNotEqual(a["resident_id"], b["resident_id"])
+        state["residents"][b["resident_id"]]["status"] = "dead"
+        c = select_nightline_guest(state, day2)
+        self.assertNotEqual(c["resident_id"], b["resident_id"])
+        for item in state["residents"].values():
+            item["status"] = "dead"
+        self.assertIsNone(select_nightline_guest(state, day2))
 
     def test_reject_unexpected_witness_nomination(self):
         state = initial_state()
