@@ -6,6 +6,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 # This test imports the pilot in CI after the OpenAI package is installed.
 from town_engine import initial_state, advance
+from apocalypse_engine import advance_incident
 from cryptid_trial import context_for, apply_response, VOICES, SCHEMA
 
 def fake_response(phase):
@@ -52,6 +53,40 @@ class CryptidPilotTests(unittest.TestCase):
             self.assertEqual(daily["cryptid"]["headline"],fake_response(phase)["lead_headline"])
             self.assertEqual(len(programs[-1]["segments"]),14)
         self.assertEqual(len(state["cryptid_trial"]["names"]),3)
+
+    def test_horror_continuity_prevents_dead_or_missing_callers(self):
+        state = initial_state()
+        for phase in range(1, 7):
+            daily = advance(state)
+            advance_incident(state, daily)
+            context = context_for(state, daily)
+            available = context["available_speakers"]
+            result = fake_response(phase)
+            result["lead_headline"] = daily["horror"]["headline"]
+            result["opinions"] = [p for p in result["opinions"]
+                                  if p["resident_id"] in available]
+            order = ["host", *available]
+            length = 14 if len(available) >= 3 else 10 if len(available) == 2 else 7
+            result["shows"]["night_line"]["turns"] = [
+                {"speaker_id": order[i % len(order)],
+                 "text": "I cannot find a way home, and I need somebody to stay on the line."}
+                for i in range(length)
+            ]
+            if phase == 4:
+                self.assertNotIn("harold", available)
+                invalid = fake_response(phase)
+                invalid["lead_headline"] = result["lead_headline"]
+                with self.assertRaises(ValueError):
+                    apply_response(state,daily,context,invalid)
+            programs = apply_response(state,daily,context,result)
+            self.assertEqual(len(programs),4)
+            self.assertEqual(programs[0]["display"], daily["horror"]["headline"])
+            self.assertTrue(
+                set(who for who, _ in programs[-1]["segments"]) <= {"host", *available}
+            )
+        self.assertNotIn("sam", context["available_speakers"])
+        self.assertEqual(state["residents"]["sam"]["status"], "missing")
+        self.assertEqual(state["residents"]["harold"]["status"], "dead")
 
     def test_reject_unexpected_witness_nomination(self):
         state = initial_state()
