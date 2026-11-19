@@ -3,13 +3,13 @@
   "town": "Bramhollow",
   "county": "Morrow County",
   "station": "BRD TV 8",
-  "broadcast_day": 15,
+  "broadcast_day": 18,
   "fictional_start_date": "1996-10-01",
   "seed": 81381996,
   "surreal_chance": 0.17,
   "weather": {
-    "condition": "fog",
-    "temperature_f": 55
+    "condition": "clear",
+    "temperature_f": 58
   },
   "residents": {
     "mara": {
@@ -24,28 +24,31 @@
       "job": "Librarian",
       "status": "home",
       "away_until": 0,
-      "mentions": 1
+      "mentions": 2
     },
     "harold": {
       "name": "Harold Vale",
       "job": "Hardware store owner",
-      "status": "home",
+      "status": "dead",
       "away_until": 0,
-      "mentions": 3
+      "mentions": 3,
+      "fate_day": 16
     },
     "sam": {
       "name": "Sam Evers",
       "job": "Bus driver",
-      "status": "home",
+      "status": "missing",
       "away_until": 0,
-      "mentions": 2
+      "mentions": 2,
+      "fate_day": 18
     },
     "violet": {
       "name": "Violet Dunn",
       "job": "Retired schoolteacher",
-      "status": "home",
+      "status": "dead",
       "away_until": 0,
-      "mentions": 0
+      "mentions": 1,
+      "fate_day": 17
     },
     "ernest": {
       "name": "Ernest Pike",
@@ -68,7 +71,7 @@
       "job": "Recreation director",
       "status": "home",
       "away_until": 0,
-      "mentions": 3
+      "mentions": 4
     },
     "oscar": {
       "name": "Oscar Reed",
@@ -82,8 +85,8 @@
     "hardware": {
       "name": "Vale Hardware",
       "owner": "harold",
-      "status": "open",
-      "reopen_day": 0
+      "status": "destroyed",
+      "reopen_day": 1000000000
     },
     "bakery": {
       "name": "Bell Street Bakery",
@@ -128,25 +131,28 @@
     "Community theater schedules auditions": 12,
     "High school band fund-raiser begins": 13,
     "Post office adjusts collection time": 14,
-    "School bus safety meeting scheduled": 15
+    "School bus safety meeting scheduled": 15,
+    "Youth bowling league registration opens": 16,
+    "Street market changes opening time": 17,
+    "Birdwatching society schedules outing": 18
   },
   "business_last_mentioned": {
-    "cinema": 15,
+    "cinema": 18,
     "laundry": 14,
-    "bakery": 13,
+    "bakery": 17,
     "garden": 9,
-    "hardware": 11
+    "hardware": 16
   },
   "threads": {
     "orchard": {
-      "stage": 3,
-      "due_day": 17,
+      "stage": 4,
+      "due_day": 20,
       "done": false,
-      "last_day": 12
+      "last_day": 17
     }
   },
   "threads_completed": [],
-  "last_thread_day": 12,
+  "last_thread_day": 17,
   "history": [
     {
       "day": 1,
@@ -708,6 +714,143 @@
       "category": "community",
       "surreal": false,
       "thread": "cryptid_naming"
+    },
+    {
+      "day": 16,
+      "headline": "Community volunteer: Ellen Price",
+      "text": "Ellen Price, a local librarian, has volunteered to sort records at the historical society.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 16,
+      "headline": "Youth bowling league registration opens",
+      "text": "The recreation department is registering teams for the autumn bowling league.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 16,
+      "headline": "Vale Hardware joins county fair",
+      "text": "Vale Hardware will sponsor a table at the next county fair.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 16,
+      "headline": "Vale Hardware destroyed; owner among confirmed dead",
+      "text": "Four people were killed inside Vale Hardware after the storefront folded inward without an explosion. Owner Harold Vale is among the dead. Fire crews located the front door on the basement ceiling, still attached to the frame. The business has been permanently closed. Authorities have ordered residents to leave the adjoining block.",
+      "category": "emergency",
+      "surreal": true,
+      "thread": "county_emergency",
+      "location": "hardware",
+      "time": "18:22",
+      "confirmed_deaths": 4
+    },
+    {
+      "day": 16,
+      "headline": "Vale Hardware destroyed; owner among confirmed dead",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
+    },
+    {
+      "day": 17,
+      "headline": "Bell Street Bakery joins county fair",
+      "text": "Bell Street Bakery will sponsor a table at the next county fair.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 17,
+      "headline": "Community volunteer: Violet Dunn",
+      "text": "Violet Dunn, a local retired schoolteacher, has volunteered to sort records at the historical society.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 17,
+      "headline": "Street market changes opening time",
+      "text": "Market vendors will begin setting up an hour earlier on the first Saturday of next month.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 17,
+      "headline": "Old bell located near orchard property",
+      "text": "Survey workers located a rusted farm bell on the northern boundary. The owner says it has not been used for decades.",
+      "category": "county",
+      "surreal": true,
+      "thread": "orchard"
+    },
+    {
+      "day": 17,
+      "headline": "Thirty-seven deaths confirmed in Willow Street incident",
+      "text": "County dispatch confirmed thirty-seven deaths after a series of white figures entered occupied homes on Willow Street. Doors and windows remained locked. Responders reported that the figures passed through interior walls without damaging them. Several rooms were found empty except for neatly folded clothing and human teeth embedded in the floor. Violet Dunn is among those confirmed dead.",
+      "category": "emergency",
+      "surreal": true,
+      "thread": "county_emergency",
+      "location": "residential",
+      "time": "13:17",
+      "confirmed_deaths": 37
+    },
+    {
+      "day": 17,
+      "headline": "Thirty-seven deaths confirmed in Willow Street incident",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
+    },
+    {
+      "day": 18,
+      "headline": "Birdwatching society schedules outing",
+      "text": "The local birdwatching society will meet at dawn at the public park entrance.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 18,
+      "headline": "Regent Picture House replaces store sign",
+      "text": "Regent Picture House has installed a new sign near its entrance.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 18,
+      "headline": "Community volunteer: David Bell",
+      "text": "David Bell, a local recreation director, will speak briefly at the next recreation hall meeting.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 18,
+      "headline": "Evacuation convoy returns with missing and deceased passengers",
+      "text": "Sixty-three deaths were confirmed after the county evacuation convoy returned to Bramhollow from the opposite direction of travel. Several vehicles were filled with soil to the windows. Their occupants had not been aboard at departure. The eastern highway has been replaced for two miles by a smooth, warm surface. Transit driver Sam Evers remains missing; no death has been confirmed.",
+      "category": "emergency",
+      "surreal": true,
+      "thread": "county_emergency",
+      "location": "eastern_road",
+      "time": "07:12",
+      "confirmed_deaths": 63
+    },
+    {
+      "day": 18,
+      "headline": "Evacuation convoy returns with missing and deceased passengers",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
     }
   ],
   "metadata": {
@@ -724,8 +867,8 @@
     "minds": {
       "sam": {
         "witnessed": true,
-        "belief": "He saw a tall shape beside Reservoir Road, but cannot explain what it was.",
-        "stance": "He still calls it The Long Coat, though tonight's death makes the naming argument feel unimportant."
+        "belief": "I saw a tall shape beside Reservoir Road. I still can't explain what it was.",
+        "stance": "I called it The Long Coat. Four people are dead at Harold's store, and I don't care what we call it tonight."
       },
       "harold": {
         "witnessed": false,
@@ -734,8 +877,8 @@
       },
       "ellen": {
         "witnessed": false,
-        "belief": "She has not seen the shape and does not claim to know what it was.",
-        "stance": "She prefers The Blank Sleeve and thinks precise wording matters more than Harold's pride."
+        "belief": "I have not seen the shape and won't pretend otherwise.",
+        "stance": "I preferred The Blank Sleeve, but a name is beside the point. Harold is dead, and the store is gone."
       }
     },
     "public_record": [
@@ -793,228 +936,39 @@
           "ellen": "The Blank Sleeve"
         },
         "confirmed_horror_event": "Resident killed after library corridor sealed itself"
+      },
+      {
+        "day": 16,
+        "headline": "Vale Hardware destroyed; owner among confirmed dead",
+        "names": {
+          "sam": "The Long Coat",
+          "harold": "The Reservoir Stilt",
+          "ellen": "The Blank Sleeve"
+        },
+        "confirmed_horror_event": "Vale Hardware destroyed; owner among confirmed dead"
+      },
+      {
+        "day": 17,
+        "headline": "Thirty-seven deaths confirmed in Willow Street incident",
+        "names": {
+          "sam": "The Long Coat",
+          "harold": "The Reservoir Stilt",
+          "ellen": "The Blank Sleeve"
+        },
+        "confirmed_horror_event": "Thirty-seven deaths confirmed in Willow Street incident"
+      },
+      {
+        "day": 18,
+        "headline": "Evacuation convoy returns with missing and deceased passengers",
+        "names": {
+          "sam": "The Long Coat",
+          "harold": "The Reservoir Stilt",
+          "ellen": "The Blank Sleeve"
+        },
+        "confirmed_horror_event": "Evacuation convoy returns with missing and deceased passengers"
       }
     ],
     "recent_dialogue": [
-      {
-        "day": 11,
-        "turns": [
-          {
-            "speaker_id": "host",
-            "text": "Harold, The Reservoir Stilt. Why a stilt?"
-          },
-          {
-            "speaker_id": "harold",
-            "text": "Tall. Reservoir. It\u2019s got a spine to it, unlike a coat that\u2019s apparently wandered off a bus."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "You\u2019re proud of that? You\u2019ve named a thing you never saw after the nearest puddle."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "Reservoir. Not puddle. Words do matter, Sam."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "Harold has mistaken a longer word for a better thought."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "And you\u2019ve named it The Blank Sleeve. You\u2019ve managed to make a sleeve sound unemployed."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "It is a description, not a job reference."
-          },
-          {
-            "speaker_id": "host",
-            "text": "Ellen, why that name?"
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "It\u2019s spare. The shape was tall, according to Sam; a sleeve suggests a person without pretending we know there was one."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "I didn\u2019t say sleeve. I said it was there."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "Then we need a vote. A proper one. I\u2019ll put a box by the register Saturday."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "You\u2019ll put a box by the register so every customer has to see you winning."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "I\u2019m open longer than you are. That\u2019s called convenience."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "It\u2019s also called having your own ballot box beside the nails."
-          },
-          {
-            "speaker_id": "host",
-            "text": "Sam, would a vote bother you?"
-          },
-          {
-            "speaker_id": "sam",
-            "text": "The name doesn\u2019t bother me. It\u2019s that patch of road. I can still point to it without looking."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "That doesn\u2019t make it\u2014"
-          },
-          {
-            "speaker_id": "sam",
-            "text": "Don\u2019t finish that for me."
-          }
-        ]
-      },
-      {
-        "day": 12,
-        "turns": [
-          {
-            "speaker_id": "host",
-            "text": "Harold, you say your name sounds less foolish. Are you worried people are laughing at the name, or at you?"
-          },
-          {
-            "speaker_id": "harold",
-            "text": "I\u2019m worried you\u2019re helping them do both. The Reservoir Stilt has a shape to it. The others sound like things Sam\u2019s misplaced."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "I haven\u2019t misplaced anything. And I didn\u2019t offer garden supplies so you could use me as your example of a town fool."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "I didn\u2019t say that. You\u2019re the one making every sentence sound like a personal injury."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "Harold, you could make a compliment sound like an invoice."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "You\u2019ve been waiting all week to say that."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "No. I thought of it just now. It\u2019s worse for you that way."
-          },
-          {
-            "speaker_id": "host",
-            "text": "Sam, does the garden offer have anything to do with wanting the town to take you seriously?"
-          },
-          {
-            "speaker_id": "sam",
-            "text": "It has to do with the garden needing supplies. That\u2019s all. I don\u2019t need a prize for lending things."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "No, you just need everyone to call it The Long Coat."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "I didn\u2019t ask everyone to do anything. You\u2019re the one trying to turn this into a contest."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "A name is a contest the minute people start choosing sides."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "Then stop standing there with a little flag in your hand."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "I have no flag. I have a hardware store. People know what I sell."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "I know what I saw. I don\u2019t know what it was. Those aren\u2019t the same thing."
-          },
-          {
-            "speaker_id": "host",
-            "text": "When you pass Reservoir Road now, do you look for it?"
-          },
-          {
-            "speaker_id": "sam",
-            "text": "No. I look away before I get there. Then I wonder why I did."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "That still doesn\u2019t make it a\u2014"
-          }
-        ]
-      },
-      {
-        "day": 13,
-        "turns": [
-          {
-            "speaker_id": "host",
-            "text": "The county bulletin says nineteen feet. I want to make sure I read that correctly."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "You did. Nineteen feet is not a bad measurement. That's the part I keep hearing."
-          },
-          {
-            "speaker_id": "host",
-            "text": "You weren't at the reservoir this morning, Sam?"
-          },
-          {
-            "speaker_id": "sam",
-            "text": "No. I know what I saw by Reservoir Road before. I didn't see this thing they found."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "And neither did I. I'm not going to pretend I did just because a bulletin has numbers in it."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "Good. The numbers are already alarming enough without adding your imagination."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "There you go. Can't let a serious evening pass without correcting me."
-          },
-          {
-            "speaker_id": "host",
-            "text": "The tractor stalled forty feet away. The bulletin doesn't say why."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "And the lights went out one by one. That's a crew standing there watching the light go away."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "It says they left. I keep thinking about how long it took to get out of there in the dark."
-          },
-          {
-            "speaker_id": "host",
-            "text": "We don't know how long. The county hasn't said."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "Then don't make it worse by filling in the parts nobody knows."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "You used to fill in plenty when it was only my word against yours."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "This isn't about that now."
-          },
-          {
-            "speaker_id": "host",
-            "text": "No. It isn't. We have the bulletin in front of us, and that's all we can confirm tonight."
-          }
-        ]
-      },
       {
         "day": 14,
         "turns": [
@@ -1148,6 +1102,193 @@
             "text": "No. You didn't. We have the bulletin. The library is closed. I'm sorry, we'll\u2014just give me a moment."
           }
         ]
+      },
+      {
+        "day": 16,
+        "turns": [
+          {
+            "speaker_id": "host",
+            "text": "The bulletin says four people were killed inside Vale Hardware. Harold Vale is one of them."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "I heard you. I keep waiting for you to say the store's still there."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "It says destroyed. Permanently closed. Those are the county's words."
+          },
+          {
+            "speaker_id": "host",
+            "text": "The front door was found on the basement ceiling. Still attached to the frame."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "Harold used to stand in that doorway and tell me I was parking the bus wrong."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "He did tell everyone that. It doesn't make this less awful."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "No. It doesn't."
+          },
+          {
+            "speaker_id": "host",
+            "text": "Four deaths tonight. Seven confirmed deaths now. I\u2014I'm sorry. I have the count in front of me."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "Don't apologize for reading it. Just don't leave out that they're deaths."
+          },
+          {
+            "speaker_id": "host",
+            "text": "They're deaths. The county has ordered residents off the adjoining block."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "I didn't see what happened at his store. I'm not going to make up what it looked like."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "Good. The words in the bulletin are already enough: the storefront folded inward."
+          },
+          {
+            "speaker_id": "host",
+            "text": "The other three people killed have not been named in the bulletin."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "I keep thinking about him opening up in the morning. That's all I can think of."
+          },
+          {
+            "speaker_id": "host",
+            "text": "We don't have more information. Stay with us. No, don't\u2014I'm sorry, I lost my place."
+          }
+        ]
+      },
+      {
+        "day": 17,
+        "turns": [
+          {
+            "speaker_id": "host",
+            "text": "The bulletin says thirty-seven deaths today. I need to say that plainly. Thirty-seven."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "I heard it the first time. I just don't know where to put the number."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "You don't put it anywhere. It's the number. That's the awful part."
+          },
+          {
+            "speaker_id": "host",
+            "text": "Violet Dunn is named among the dead. The bulletin says the residential area has been evacuated."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "She was a retired teacher. They put that in the notice like the words can hold the rest of it."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "They can't. And the description is exact: locked doors, locked windows. The walls weren't damaged."
+          },
+          {
+            "speaker_id": "host",
+            "text": "Responders found rooms empty except for folded clothing and teeth embedded in the floor."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "Don't say it like a list. I'm sorry. I know you have to read it. I can't hear it like a list."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "There isn't a less terrible way to say it."
+          },
+          {
+            "speaker_id": "host",
+            "text": "No. No, there isn't. The total is forty-four confirmed deaths now."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "And I'm still the one people ask to name what I saw. I can't explain it. That doesn't make this any easier."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "A name would not tell anyone how to get through a locked house. It would just be another word."
+          },
+          {
+            "speaker_id": "host",
+            "text": "We have no further details from the county bulletin. We don't have a shelter address to give callers."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "People are going to want to check on somebody. I understand that. Don't send them back there."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "And don't call missing people dead because you are frightened. The confirmed number is already unbearable."
+          },
+          {
+            "speaker_id": "host",
+            "text": "We're staying on the air. If you have a confirmed public notice, call the station. I\u2014I'm sorry. I need to read the bulletin again."
+          }
+        ]
+      },
+      {
+        "day": 18,
+        "turns": [
+          {
+            "speaker_id": "host",
+            "text": "The county says sixty-three people died. I have the line here. I need to keep reading it correctly."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "Then say the number. Don't make it smaller by rushing past it."
+          },
+          {
+            "speaker_id": "host",
+            "text": "One hundred seven confirmed deaths in all. Sam Evers is missing. Not confirmed dead."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "That distinction matters. It doesn't make the waiting kinder."
+          },
+          {
+            "speaker_id": "host",
+            "text": "The vehicles came back from the opposite direction of travel. They were filled with soil to the windows."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "And the people inside had not been on board when they left. That's what the bulletin says. Nothing more."
+          },
+          {
+            "speaker_id": "host",
+            "text": "The eastern highway is gone for two miles. The county calls the replacement surface smooth and warm."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "I keep thinking about Sam driving a bus. Now there is a road where the highway was, and he is missing."
+          },
+          {
+            "speaker_id": "host",
+            "text": "The depot is closed. We don't have a passenger list or a shelter address."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "Then don't fill the silence with guesses. There are already sixty-three deaths in the announcement."
+          },
+          {
+            "speaker_id": "host",
+            "text": "We have no names for those people. I'm sorry. I keep looking at the bulletin as if another line will appear."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "It won't make the number less true."
+          }
+        ]
       }
     ],
     "creature_private": {
@@ -1158,12 +1299,16 @@
   },
   "apocalypse": {
     "first_day": 13,
-    "last_day": 15,
-    "stage": 3,
-    "total_confirmed_dead": 3,
-    "confirmed_missing": [],
+    "last_day": 18,
+    "stage": 6,
+    "total_confirmed_dead": 107,
+    "confirmed_missing": [
+      "sam"
+    ],
     "confirmed_dead": [
-      "ernest"
+      "ernest",
+      "harold",
+      "violet"
     ],
     "closed_places": [
       {
@@ -1176,23 +1321,39 @@
         "place": "library",
         "status": "closed",
         "day": 15
+      },
+      {
+        "place": "hardware",
+        "name": "Vale Hardware",
+        "status": "destroyed",
+        "day": 16
+      },
+      {
+        "place": "residential",
+        "status": "evacuated",
+        "day": 17
+      },
+      {
+        "place": "depot",
+        "status": "closed",
+        "day": 18
       }
     ],
     "entities": {
       "a": {
-        "zone": "library",
+        "zone": "residential",
         "arrived": true,
-        "encounters": 3
+        "encounters": 6
       },
       "b": {
-        "zone": "hardware",
+        "zone": "depot",
         "arrived": true,
-        "encounters": 1
+        "encounters": 4
       },
       "c": {
-        "zone": "eastern_road",
-        "arrived": false,
-        "encounters": 0
+        "zone": "station",
+        "arrived": true,
+        "encounters": 2
       }
     },
     "incidents": [
@@ -1262,6 +1423,98 @@
         "confirmed_missing": [],
         "confirmed_dead": [
           "ernest"
+        ],
+        "classification": "confirmed county incident bulletin"
+      },
+      {
+        "place": "hardware",
+        "time": "18:22",
+        "headline": "Vale Hardware destroyed; owner among confirmed dead",
+        "public_description": "Four people were killed inside Vale Hardware after the storefront folded inward without an explosion. Owner Harold Vale is among the dead. Fire crews located the front door on the basement ceiling, still attached to the frame. The business has been permanently closed. Authorities have ordered residents to leave the adjoining block.",
+        "day": 16,
+        "stage": 4,
+        "confirmed_deaths_today": 4,
+        "confirmed_deaths_total": 7,
+        "verified_changes": [
+          {
+            "resident_id": "harold",
+            "name": "Harold Vale",
+            "previous_status": "home",
+            "status": "dead"
+          },
+          {
+            "place": "hardware",
+            "name": "Vale Hardware",
+            "status": "destroyed",
+            "day": 16
+          }
+        ],
+        "confirmed_missing": [],
+        "confirmed_dead": [
+          "ernest",
+          "harold"
+        ],
+        "classification": "confirmed county incident bulletin"
+      },
+      {
+        "place": "residential",
+        "time": "13:17",
+        "headline": "Thirty-seven deaths confirmed in Willow Street incident",
+        "public_description": "County dispatch confirmed thirty-seven deaths after a series of white figures entered occupied homes on Willow Street. Doors and windows remained locked. Responders reported that the figures passed through interior walls without damaging them. Several rooms were found empty except for neatly folded clothing and human teeth embedded in the floor. Violet Dunn is among those confirmed dead.",
+        "day": 17,
+        "stage": 5,
+        "confirmed_deaths_today": 37,
+        "confirmed_deaths_total": 44,
+        "verified_changes": [
+          {
+            "resident_id": "violet",
+            "name": "Violet Dunn",
+            "previous_status": "home",
+            "status": "dead"
+          },
+          {
+            "place": "residential",
+            "status": "evacuated",
+            "day": 17
+          }
+        ],
+        "confirmed_missing": [],
+        "confirmed_dead": [
+          "ernest",
+          "harold",
+          "violet"
+        ],
+        "classification": "confirmed county incident bulletin"
+      },
+      {
+        "place": "eastern_road",
+        "time": "07:12",
+        "headline": "Evacuation convoy returns with missing and deceased passengers",
+        "public_description": "Sixty-three deaths were confirmed after the county evacuation convoy returned to Bramhollow from the opposite direction of travel. Several vehicles were filled with soil to the windows. Their occupants had not been aboard at departure. The eastern highway has been replaced for two miles by a smooth, warm surface. Transit driver Sam Evers remains missing; no death has been confirmed.",
+        "day": 18,
+        "stage": 6,
+        "confirmed_deaths_today": 63,
+        "confirmed_deaths_total": 107,
+        "verified_changes": [
+          {
+            "resident_id": "sam",
+            "name": "Sam Evers",
+            "previous_status": "home",
+            "status": "missing"
+          },
+          {
+            "place": "depot",
+            "status": "closed",
+            "day": 18
+          }
+        ],
+        "confirmed_missing": [
+          "sam"
+        ],
+        "confirmed_dead": [
+          "ernest",
+          "harold",
+          "violet"
         ],
         "classification": "confirmed county incident bulletin"
       }
