@@ -3,12 +3,12 @@
   "town": "Bramhollow",
   "county": "Morrow County",
   "station": "BRD TV 8",
-  "broadcast_day": 18,
+  "broadcast_day": 21,
   "fictional_start_date": "1996-10-01",
   "seed": 81381996,
   "surreal_chance": 0.17,
   "weather": {
-    "condition": "clear",
+    "condition": "cloudy",
     "temperature_f": 58
   },
   "residents": {
@@ -24,7 +24,7 @@
       "job": "Librarian",
       "status": "home",
       "away_until": 0,
-      "mentions": 2
+      "mentions": 3
     },
     "harold": {
       "name": "Harold Vale",
@@ -69,8 +69,8 @@
     "david": {
       "name": "David Bell",
       "job": "Recreation director",
-      "status": "home",
-      "away_until": 0,
+      "status": "away",
+      "away_until": 24,
       "mentions": 4
     },
     "oscar": {
@@ -78,7 +78,7 @@
       "job": "Sign painter",
       "status": "home",
       "away_until": 0,
-      "mentions": 1
+      "mentions": 2
     }
   },
   "businesses": {
@@ -103,8 +103,8 @@
     "cinema": {
       "name": "Regent Picture House",
       "owner": null,
-      "status": "open",
-      "reopen_day": 0
+      "status": "temporary_closed",
+      "reopen_day": 23
     },
     "garden": {
       "name": "Dunn Garden Supply",
@@ -134,25 +134,30 @@
     "School bus safety meeting scheduled": 15,
     "Youth bowling league registration opens": 16,
     "Street market changes opening time": 17,
-    "Birdwatching society schedules outing": 18
+    "Birdwatching society schedules outing": 18,
+    "Historical society seeks volunteers": 19,
+    "Bramhollow school announces book drive": 20,
+    "Local cinema adds Sunday matinee": 21
   },
   "business_last_mentioned": {
     "cinema": 18,
     "laundry": 14,
-    "bakery": 17,
-    "garden": 9,
+    "bakery": 21,
+    "garden": 19,
     "hardware": 16
   },
   "threads": {
     "orchard": {
-      "stage": 4,
-      "due_day": 20,
-      "done": false,
-      "last_day": 17
+      "stage": 5,
+      "due_day": 25,
+      "done": true,
+      "last_day": 20
     }
   },
-  "threads_completed": [],
-  "last_thread_day": 17,
+  "threads_completed": [
+    "orchard"
+  ],
+  "last_thread_day": 20,
   "history": [
     {
       "day": 1,
@@ -851,6 +856,143 @@
       "category": "community",
       "surreal": false,
       "thread": "cryptid_naming"
+    },
+    {
+      "day": 19,
+      "headline": "Historical society seeks volunteers",
+      "text": "The Morrow County Historical Society is asking for help indexing photographs and maps.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 19,
+      "headline": "David Bell visiting relatives",
+      "text": "David Bell will be away from town for several days to visit family.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 19,
+      "headline": "Dunn Garden Supply seeks weekend staff",
+      "text": "Dunn Garden Supply is accepting applications for part-time weekend help.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 19,
+      "headline": "BRD TV 8 transmitter building sealed during live broadcast",
+      "text": "Eleven deaths were confirmed in and around the BRD TV 8 transmitter building. Emergency teams found the stairwell filled with interlocking white material that moved when touched. The building's doors no longer connect to the lobby. The studio remains on auxiliary power and continues transmitting recorded material.",
+      "category": "emergency",
+      "surreal": true,
+      "thread": "county_emergency",
+      "location": "station",
+      "time": "23:43",
+      "confirmed_deaths": 11
+    },
+    {
+      "day": 19,
+      "headline": "BRD TV 8 transmitter building sealed during live broadcast",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
+    },
+    {
+      "day": 20,
+      "headline": "Orchard survey completed",
+      "text": "The agricultural office has finalized its updated tree inventory. The bell will remain where it was found.",
+      "category": "county",
+      "surreal": true,
+      "thread": "orchard"
+    },
+    {
+      "day": 20,
+      "headline": "Community volunteer: Ellen Price",
+      "text": "Ellen Price, a local librarian, has offered to lend supplies to the community garden.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 20,
+      "headline": "Bramhollow school announces book drive",
+      "text": "The school is collecting used books for its winter reading program. Donations may be dropped off at the office.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 20,
+      "headline": "Regent Picture House closes briefly for repairs",
+      "text": "Regent Picture House will be closed for several days while its front entrance is repaired. Employees expect to reopen shortly.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 20,
+      "headline": "Courthouse basement recovered without building above it",
+      "text": "Nine deaths are confirmed after the upper floors of Town Hall vanished. The basement and its utility connections remain undamaged. The missing floors were last seen from the county road at 4:12 this morning.",
+      "category": "emergency",
+      "surreal": true,
+      "thread": "county_emergency",
+      "location": "town_hall",
+      "time": "04:12",
+      "confirmed_deaths": 9
+    },
+    {
+      "day": 20,
+      "headline": "Courthouse basement recovered without building above it",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
+    },
+    {
+      "day": 21,
+      "headline": "Local cinema adds Sunday matinee",
+      "text": "The Regent Picture House has added an afternoon screening to its Sunday program.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 21,
+      "headline": "Community volunteer: Oscar Reed",
+      "text": "Oscar Reed, a local sign painter, is assisting with preparations for the county fair.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 21,
+      "headline": "Bell Street Bakery replaces store sign",
+      "text": "Bell Street Bakery has installed a new sign near its entrance.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 21,
+      "headline": "Courthouse basement recovered without building above it",
+      "text": "Nine deaths are confirmed after the upper floors of Town Hall vanished. The basement and its utility connections remain undamaged. The missing floors were last seen from the county road at 4:12 this morning.",
+      "category": "emergency",
+      "surreal": true,
+      "thread": "county_emergency",
+      "location": "town_hall",
+      "time": "04:12",
+      "confirmed_deaths": 9
+    },
+    {
+      "day": 21,
+      "headline": "Courthouse basement recovered without building above it",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
     }
   ],
   "metadata": {
@@ -877,8 +1019,8 @@
       },
       "ellen": {
         "witnessed": false,
-        "belief": "I have not seen the shape and won't pretend otherwise.",
-        "stance": "I preferred The Blank Sleeve, but a name is beside the point. Harold is dead, and the store is gone."
+        "belief": "I have not seen the shape, and I won't pretend otherwise.",
+        "stance": "Harold is dead, Vale Hardware is gone, and nine more deaths are confirmed today. A name is beside the point."
       }
     },
     "public_record": [
@@ -966,208 +1108,39 @@
           "ellen": "The Blank Sleeve"
         },
         "confirmed_horror_event": "Evacuation convoy returns with missing and deceased passengers"
+      },
+      {
+        "day": 19,
+        "headline": "BRD TV 8 transmitter building sealed during live broadcast",
+        "names": {
+          "sam": "The Long Coat",
+          "harold": "The Reservoir Stilt",
+          "ellen": "The Blank Sleeve"
+        },
+        "confirmed_horror_event": "BRD TV 8 transmitter building sealed during live broadcast"
+      },
+      {
+        "day": 20,
+        "headline": "Courthouse basement recovered without building above it",
+        "names": {
+          "sam": "The Long Coat",
+          "harold": "The Reservoir Stilt",
+          "ellen": "The Blank Sleeve"
+        },
+        "confirmed_horror_event": "Courthouse basement recovered without building above it"
+      },
+      {
+        "day": 21,
+        "headline": "Courthouse basement recovered without building above it",
+        "names": {
+          "sam": "The Long Coat",
+          "harold": "The Reservoir Stilt",
+          "ellen": "The Blank Sleeve"
+        },
+        "confirmed_horror_event": "Courthouse basement recovered without building above it"
       }
     ],
     "recent_dialogue": [
-      {
-        "day": 14,
-        "turns": [
-          {
-            "speaker_id": "host",
-            "text": "We have the county bulletin in front of us. Two people are dead. June Mercer is hospitalized following exposure."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "I heard the words. I don't know what to do with them."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "They were standing at the door. That's what the bulletin says. Standing there."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "Against a locked service door. And their clothing was fused to the metal. Please don't make it sound less terrible by leaving out the words."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "I wasn't trying to make it less terrible."
-          },
-          {
-            "speaker_id": "host",
-            "text": "The bulletin says knocking was heard from inside the wall after the building was evacuated. We don't know more than that."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "Somebody got out of that building and still had to hear knocking. I keep trying to picture leaving."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "Don't picture a person the bulletin doesn't identify. We know two people died. We don't know their names."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "Right. Sorry. Two people. And June's in the hospital."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "I know that place. I've sold soap to people going there. You walk in to get clean. I don't have anything useful to say."
-          },
-          {
-            "speaker_id": "host",
-            "text": "No. None of us has an explanation."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "Then say that. Don't turn it into a riddle. Two people are dead."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "Yesterday I was arguing about what to call something I saw by the road. That feels stupid now."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "It wasn't stupid then. But I'm done arguing about the name tonight."
-          },
-          {
-            "speaker_id": "host",
-            "text": "We have no confirmed reopening time for the laundromat. We will read the bulletin again if we need to. I'm sorry. I\u2014let's keep the line open."
-          }
-        ]
-      },
-      {
-        "day": 15,
-        "turns": [
-          {
-            "speaker_id": "host",
-            "text": "The county says Ernest Pike is dead. Ellen, I know the library is your workplace. Were you there tonight?"
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "No. I wasn't there. I want that clear. I read the bulletin like everybody else."
-          },
-          {
-            "speaker_id": "host",
-            "text": "It says the wall crossed the doorway. His body was on the other side."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "Without a break in the plaster. Yes. Those words are already bad enough."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "And the wall was warm. That's not a sentence I ever expected to hear about the library."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "I don't know what you're supposed to do with that. I don't know what to say."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "You could stop trying to make it sound ordinary."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "I'm not. I'm trying not to say something stupid."
-          },
-          {
-            "speaker_id": "host",
-            "text": "Three confirmed deaths now. One today. Ernest Pike is named in the bulletin."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "Yesterday it was that laundromat. Today the library. You go to those places because they're just there."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "People came in to return books. They came in to sit somewhere quiet. I keep thinking about the books still on the carts."
-          },
-          {
-            "speaker_id": "host",
-            "text": "Ellen, I'm sorry. I don't know what to\u2014"
-          },
-          {
-            "speaker_id": "harold",
-            "text": "My store's open in the morning. That's all I can tell you. I don't know if anyone should go anywhere."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "Don't tell people it's safe because you don't know what else to tell them."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "I didn't say safe, Sam."
-          },
-          {
-            "speaker_id": "host",
-            "text": "No. You didn't. We have the bulletin. The library is closed. I'm sorry, we'll\u2014just give me a moment."
-          }
-        ]
-      },
-      {
-        "day": 16,
-        "turns": [
-          {
-            "speaker_id": "host",
-            "text": "The bulletin says four people were killed inside Vale Hardware. Harold Vale is one of them."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "I heard you. I keep waiting for you to say the store's still there."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "It says destroyed. Permanently closed. Those are the county's words."
-          },
-          {
-            "speaker_id": "host",
-            "text": "The front door was found on the basement ceiling. Still attached to the frame."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "Harold used to stand in that doorway and tell me I was parking the bus wrong."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "He did tell everyone that. It doesn't make this less awful."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "No. It doesn't."
-          },
-          {
-            "speaker_id": "host",
-            "text": "Four deaths tonight. Seven confirmed deaths now. I\u2014I'm sorry. I have the count in front of me."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "Don't apologize for reading it. Just don't leave out that they're deaths."
-          },
-          {
-            "speaker_id": "host",
-            "text": "They're deaths. The county has ordered residents off the adjoining block."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "I didn't see what happened at his store. I'm not going to make up what it looked like."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "Good. The words in the bulletin are already enough: the storefront folded inward."
-          },
-          {
-            "speaker_id": "host",
-            "text": "The other three people killed have not been named in the bulletin."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "I keep thinking about him opening up in the morning. That's all I can think of."
-          },
-          {
-            "speaker_id": "host",
-            "text": "We don't have more information. Stay with us. No, don't\u2014I'm sorry, I lost my place."
-          }
-        ]
-      },
       {
         "day": 17,
         "turns": [
@@ -1289,19 +1262,206 @@
             "text": "It won't make the number less true."
           }
         ]
+      },
+      {
+        "day": 19,
+        "caller": "ellen",
+        "turns": [
+          {
+            "speaker_id": "host",
+            "text": "The station is transmitting recorded material. This Night Line exchange is not live. Ellen Price, what made you call?"
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "I wanted to ask what people are supposed to do for reliable bulletins when the station itself is closed."
+          },
+          {
+            "speaker_id": "host",
+            "text": "You mean the transmitter building is closed, but the station is still broadcasting recordings?"
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "Yes. I heard the bulletin. I don't know where else people can hear a correction if one comes."
+          },
+          {
+            "speaker_id": "host",
+            "text": "Is there a particular correction you are waiting for?"
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "No. I'm asking how a person can tell whether an announcement is current, not whether a rumor is frightening."
+          },
+          {
+            "speaker_id": "host",
+            "text": "What would make it clear to you that it was current?"
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "A date and a source. The bulletin gave a date and said county. Anything less is a voice saying words."
+          },
+          {
+            "speaker_id": "host",
+            "text": "So if someone gives you an instruction without those, you won't pass it on?"
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "I won't pass it on as fact. People hear a confident voice and stop asking who said it."
+          },
+          {
+            "speaker_id": "host",
+            "text": "Has anyone asked you to verify something specific tonight?"
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "No. I'm trying to prevent that from becoming my job just because I work in a library."
+          },
+          {
+            "speaker_id": "host",
+            "text": "The library is closed, too. What can we tell someone who needs a place to check?"
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "I don't know. That's the problem. Don't make up an answer because the question is hard."
+          }
+        ]
+      },
+      {
+        "day": 20,
+        "caller": "mara",
+        "turns": [
+          {
+            "speaker_id": "host",
+            "text": "Mara Voss, what made you call?"
+          },
+          {
+            "speaker_id": "mara",
+            "text": "That phrase, \u201cbasement recovered.\u201d It sounds as if the contents were recovered. That isn't what the bulletin says."
+          },
+          {
+            "speaker_id": "host",
+            "text": "What's happening on your end\u2014are people asking you about records?"
+          },
+          {
+            "speaker_id": "mara",
+            "text": "One person asked whether Town Hall's files are safe. I can't answer that from this bulletin."
+          },
+          {
+            "speaker_id": "host",
+            "text": "Did you see the basement yourself?"
+          },
+          {
+            "speaker_id": "mara",
+            "text": "No. I'm at home. I read the same county wording you did."
+          },
+          {
+            "speaker_id": "host",
+            "text": "So when you say \u201crecovered,\u201d you mean the wording is misleading\u2014not that you have another report?"
+          },
+          {
+            "speaker_id": "mara",
+            "text": "Yes. It says the basement and utility connections are undamaged. It says nothing about papers."
+          },
+          {
+            "speaker_id": "host",
+            "text": "You said someone asked about files. Did they need a record for something tonight?"
+          },
+          {
+            "speaker_id": "mara",
+            "text": "They asked if a deed could be checked. I told them I don't know where the records are."
+          },
+          {
+            "speaker_id": "host",
+            "text": "You told them you don't know where the records are. Have you been told they were in the building?"
+          },
+          {
+            "speaker_id": "mara",
+            "text": "No. I haven't been told anything about the records. I don't know, and I won't turn a guess into an answer."
+          },
+          {
+            "speaker_id": "host",
+            "text": "Can I tell them to call you?"
+          },
+          {
+            "speaker_id": "mara",
+            "text": "No. I don't know what number you're taking, and I still don't know where they can ask instead."
+          }
+        ]
+      },
+      {
+        "day": 21,
+        "caller": "oscar",
+        "turns": [
+          {
+            "speaker_id": "host",
+            "text": "Oscar Reed, what made you call?"
+          },
+          {
+            "speaker_id": "oscar",
+            "text": "I'm helping with county fair signs. I can't make myself paint the dates on the boards tonight."
+          },
+          {
+            "speaker_id": "host",
+            "text": "What's happening with the signs?"
+          },
+          {
+            "speaker_id": "oscar",
+            "text": "They're stacked in my garage. Nothing happened to them. It's me. I keep hearing nine and staring at the brush."
+          },
+          {
+            "speaker_id": "host",
+            "text": "You said they're in your garage. Are you asking if the fair is canceled?"
+          },
+          {
+            "speaker_id": "oscar",
+            "text": "Yes. I don't know if it is. I need somebody to tell me whether to finish them."
+          },
+          {
+            "speaker_id": "host",
+            "text": "Has anyone from the fair called you?"
+          },
+          {
+            "speaker_id": "oscar",
+            "text": "No. I haven't spoken to them."
+          },
+          {
+            "speaker_id": "host",
+            "text": "So you're waiting on an answer before you paint the dates?"
+          },
+          {
+            "speaker_id": "oscar",
+            "text": "The dates, and the big word WELCOME. I can't write it."
+          },
+          {
+            "speaker_id": "host",
+            "text": "You said you can't write it. Is the board still blank?"
+          },
+          {
+            "speaker_id": "oscar",
+            "text": "No. I started it in pencil. You can see WEL through the paper."
+          },
+          {
+            "speaker_id": "host",
+            "text": "You said it's pencil. Can you turn the board over?"
+          },
+          {
+            "speaker_id": "oscar",
+            "text": "I can. I don't want to. And I still don't know whether to finish the signs."
+          }
+        ]
       }
     ],
     "creature_private": {
       "exists": true,
       "habitat": "wooded drainage near reservoir",
       "behavior": "avoids lit areas; mostly nocturnal"
-    }
+    },
+    "last_nightline_guest": "oscar"
   },
   "apocalypse": {
     "first_day": 13,
-    "last_day": 18,
-    "stage": 6,
-    "total_confirmed_dead": 107,
+    "last_day": 21,
+    "stage": 7,
+    "total_confirmed_dead": 136,
     "confirmed_missing": [
       "sam"
     ],
@@ -1337,23 +1497,33 @@
         "place": "depot",
         "status": "closed",
         "day": 18
+      },
+      {
+        "place": "station",
+        "status": "closed",
+        "day": 19
+      },
+      {
+        "place": "town_hall",
+        "status": "destroyed",
+        "day": 21
       }
     ],
     "entities": {
       "a": {
-        "zone": "residential",
+        "zone": "school",
         "arrived": true,
-        "encounters": 6
+        "encounters": 9
       },
       "b": {
-        "zone": "depot",
+        "zone": "hardware",
         "arrived": true,
-        "encounters": 4
+        "encounters": 7
       },
       "c": {
-        "zone": "station",
+        "zone": "town_hall",
         "arrived": true,
-        "encounters": 2
+        "encounters": 5
       }
     },
     "incidents": [
@@ -1506,6 +1676,84 @@
             "place": "depot",
             "status": "closed",
             "day": 18
+          }
+        ],
+        "confirmed_missing": [
+          "sam"
+        ],
+        "confirmed_dead": [
+          "ernest",
+          "harold",
+          "violet"
+        ],
+        "classification": "confirmed county incident bulletin"
+      },
+      {
+        "place": "station",
+        "time": "23:43",
+        "headline": "BRD TV 8 transmitter building sealed during live broadcast",
+        "public_description": "Eleven deaths were confirmed in and around the BRD TV 8 transmitter building. Emergency teams found the stairwell filled with interlocking white material that moved when touched. The building's doors no longer connect to the lobby. The studio remains on auxiliary power and continues transmitting recorded material.",
+        "day": 19,
+        "stage": 7,
+        "confirmed_deaths_today": 11,
+        "confirmed_deaths_total": 118,
+        "verified_changes": [
+          {
+            "place": "station",
+            "status": "closed",
+            "day": 19
+          }
+        ],
+        "confirmed_missing": [
+          "sam"
+        ],
+        "confirmed_dead": [
+          "ernest",
+          "harold",
+          "violet"
+        ],
+        "classification": "confirmed county incident bulletin"
+      },
+      {
+        "place": "town_hall",
+        "time": "04:12",
+        "headline": "Courthouse basement recovered without building above it",
+        "public_description": "Nine deaths are confirmed after the upper floors of Town Hall vanished. The basement and its utility connections remain undamaged. The missing floors were last seen from the county road at 4:12 this morning.",
+        "day": 20,
+        "stage": 7,
+        "confirmed_deaths_today": 9,
+        "confirmed_deaths_total": 127,
+        "verified_changes": [
+          {
+            "place": "town_hall",
+            "status": "destroyed",
+            "day": 20
+          }
+        ],
+        "confirmed_missing": [
+          "sam"
+        ],
+        "confirmed_dead": [
+          "ernest",
+          "harold",
+          "violet"
+        ],
+        "classification": "confirmed county incident bulletin"
+      },
+      {
+        "place": "town_hall",
+        "time": "04:12",
+        "headline": "Courthouse basement recovered without building above it",
+        "public_description": "Nine deaths are confirmed after the upper floors of Town Hall vanished. The basement and its utility connections remain undamaged. The missing floors were last seen from the county road at 4:12 this morning.",
+        "day": 21,
+        "stage": 7,
+        "confirmed_deaths_today": 9,
+        "confirmed_deaths_total": 136,
+        "verified_changes": [
+          {
+            "place": "town_hall",
+            "status": "destroyed",
+            "day": 21
           }
         ],
         "confirmed_missing": [
