@@ -102,6 +102,10 @@ def format_spoken_copy(text, speaker):
         lines.append(line)
     return "\n".join(lines)
 
+class SpeechMismatchError(RuntimeError):
+    """Realtime audio transcript diverged from the supplied script."""
+
+
 def _generate_pcm(text, profile, model=MODEL):
     """Get one isolated speech-only 24kHz PCM sample from the Realtime API."""
     if not os.environ.get("OPENAI_API_KEY"):
@@ -170,18 +174,85 @@ def _generate_pcm(text, profile, model=MODEL):
         if spoken:
             similarity = difflib.SequenceMatcher(None, _normalize(text), _normalize(spoken)).ratio()
             if similarity < 0.80:
-                raise RuntimeError(
+                raise SpeechMismatchError(
                     f"Speech substantially changed the original script (similarity {similarity:.2f})"
                 )
         return b"".join(audio_chunks)
     finally:
         ws.close()
 
+def _split_spoken_copy(text, max_chars=300):
+    """Split on sentence/clause boundaries, preserving every original word.
+
+    A Realtime request sometimes voices only part of a long news script.
+    Small speech-only chunks are safer, and can be stitched in PCM space.
+    """
+    if not text.strip():
+        raise ValueError("Empty speech")
+    pieces = re.split(r"(?<=[.!?;,])\s+|\n+", text.strip())
+    chunks, current = [], ""
+    def add(part):
+        nonlocal current
+        if not part:
+            return
+        candidate = (current + " " + part).strip() if current else part
+        if current and len(candidate) > max_chars:
+            chunks.append(current)
+            current = part
+        else:
+            current = candidate
+    for piece in pieces:
+        if len(piece) <= max_chars:
+            add(piece)
+        else:
+            # Very long unpunctuated passage: use word boundaries instead.
+            for word in piece.split():
+                add(word)
+    if current:
+        chunks.append(current)
+    return chunks
+
+
+def _reliable_pcm(text, profile):
+    """Retry rare misreads, then segment only the failing recording.
+
+    Never accept audio with a transcript mismatch merely to finish a video.
+    Only a mismatch (not an invalid key or API failure) triggers extra calls.
+    """
+    def attempt(fragment, remaining_splits=2):
+        try:
+            return _generate_pcm(fragment, profile)
+        except SpeechMismatchError:
+            cap = 300 if len(fragment) > 300 else 120
+            if remaining_splits and len(fragment) > cap:
+                pieces = _split_spoken_copy(fragment, cap)
+                if len(pieces) > 1:
+                    print(
+                        f"Voice transcript mismatch; retrying as "
+                        f"{len(pieces)} smaller segments (verified individually).",
+                        flush=True,
+                    )
+                    # Output is raw signed 16-bit mono PCM at 24 kHz.
+                    gap = b"\x00" * (24000 * 2 // 6)  # ~167 ms silence
+                    return gap.join(attempt(piece, remaining_splits-1) for piece in pieces)
+            # Short fragments: request a fresh take, still checking transcript.
+            for _ in range(2):
+                try:
+                    return _generate_pcm(fragment, profile)
+                except SpeechMismatchError:
+                    pass
+            raise SpeechMismatchError(
+                "Speech remained inconsistent with the requested script after "
+                "retries; no mismatched audio was accepted."
+            ) from None
+    return attempt(text)
+
+
 def _make_wave(text, speaker, destination):
     """Write clean 24kHz mono WAV with no AI voice alteration after generation."""
     profile = profile_for(speaker)
     spoken_copy = format_spoken_copy(text, speaker)
-    audio = _generate_pcm(spoken_copy, profile)
+    audio = _reliable_pcm(spoken_copy, profile)
     with wave.open(str(destination), "wb") as dest:
         dest.setnchannels(1)
         dest.setsampwidth(2)
