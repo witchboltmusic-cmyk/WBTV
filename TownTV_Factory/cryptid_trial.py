@@ -189,7 +189,9 @@ HUMAN CHARACTER RULES:
 - HAROLD VALE: hardware-store owner, petty and loud, never saw the original shape.
 - ELLEN PRICE: librarian, cutting and precise, never saw the original shape.
 - HOST: strained late-night host, may interrupt, panic, lose track of who's on air.
-ONLY characters in 'available_speakers' may speak LIVE. DEAD and MISSING
+The single live Night Line caller is identified in 'call_in_guest'. Only that
+caller and the host can speak on that day's call. The 'available_speakers'
+list is for opinions from the original three residents. DEAD and MISSING
 characters never speak. A recorded archival quote, if needed, must be explicitly
 identified by a surviving speaker as an old recording, not a live turn.
 Characters know only what public officials or their own lived experiences reveal.
@@ -217,13 +219,25 @@ OUTPUT:
 - Swap Shop: 40-100 words. Initially mundane, later becomes lost-property,
   shelter, evacuation-related and practical personal announcements. Never casually
   sell household goods while the town is collapsing; never invent confirmed rescues.
-- Night Line: usually 12-20 rapid conversational turns, with host and available
-  named speakers; 6-12 if fewer than two people remain. Not everyone needs to
-  agree. The host can lose composure or be cut off by callers. Use concrete fear,
-  sharp argument, faltering attempts to remain normal, specific losses.
-  No voices from dead or missing people, no omniscience, no tidy closing speech.
-  If nobody from the original trio is available, write a distressed
-  station-only emergency broadcast with host turns.
+- Night Line is a LIVE ONE-TO-ONE telephone conversation between the host
+  and exactly ONE caller: call_in_guest. Absolutely no three-way panel.
+  Produce 12-18 short turns strictly alternating host, that caller, host,
+  that caller, etc., beginning with the host. Do NOT re-read the news bulletin.
+  The caller needs ONE concrete personal reason for calling: something they
+  saw, a practical problem, a missing neighbor, an unanswered question or
+  an argument. They do not know hidden truth. The host asks what's happening,
+  listens to the caller's actual answer, then asks a follow-up that depends on
+  the caller's SPECIFIC last words. The caller must answer it directly before
+  moving on. This exchange must happen more than once.
+  Make dialogue natural and imperfect. Short answers are welcome: 'No', 'Wait',
+  'Who told you?', 'The back door', 'I said it was locked.' Let people correct
+  each other, get distracted, ask for details, disagree or lose patience.
+  NO bulletin recitals, no synchronized casualty-count speeches, no polished
+  monologues, no lines that would fit anywhere in the conversation. The host
+  must not know more than the caller has revealed. Stay in one evolving scene
+  or practical problem; end with an unresolved issue, not a neat speech.
+  If call_in_guest is null, create 6-10 host-only emergency lines instead.
+  Never invent confirmed deaths, new attacks or rescues in the phone call.
 - Return JSON conforming exactly to schema, no stage directions or markdown.
 Keep every verified incident fact and causal ambiguity consistent across shows."""
 
@@ -319,13 +333,22 @@ def apply_response(state, daily, context, data):
         raise ValueError("One opinion is required from each available named resident")
     shows = data["shows"]
     turns = shows["night_line"]["turns"]
-    speakers = {item["speaker_id"] for item in turns}
-    minimum = 14 if len(available) >= 3 else (10 if len(available) == 2 else
-              6 if len(available) == 1 else 6)
-    if not minimum <= len(turns) <= 20 or not {"host", *available}.issubset(speakers):
-        raise ValueError("Night Line needs host and currently available speakers")
-    if not speakers.issubset({"host", *available}):
-        raise ValueError("Dead, missing, evacuated or otherwise absent resident cannot call live")
+    guest = context.get("call_in_guest")
+    caller = guest["resident_id"] if guest else None
+    if caller:
+        if not 12 <= len(turns) <= 18:
+            raise ValueError("Night Line requires 12-18 two-person conversational turns")
+        for index, turn in enumerate(turns):
+            expected_speaker = "host" if index % 2 == 0 else caller
+            if turn["speaker_id"] != expected_speaker:
+                raise ValueError("Night Line requires the host and ONE live caller, alternating")
+    else:
+        if not 6 <= len(turns) <= 10 or any(
+            turn["speaker_id"] != "host" for turn in turns
+        ):
+            raise ValueError("No living caller: host-only emergency announcement required")
+    if any(not turn["text"].strip() for turn in turns):
+        raise ValueError("Night Line has an empty spoken turn")
     if sum(len(item["text"]) for item in turns) > 4800:
         raise ValueError("Night Line is too long")
     for key in ("news", "weather", "swap_shop"):
