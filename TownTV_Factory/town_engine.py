@@ -199,7 +199,8 @@ def upgrade_state(raw):
         if k in raw: state[k]=raw[k]
     if raw.get('schema_version') == 2:
         for k in ('weather','residents','businesses','threads','threads_completed',
-                  'last_thread_day','history','metadata','town_flags','mundane_last_used','business_last_mentioned'):
+                  'last_thread_day','history','metadata','town_flags','mundane_last_used','business_last_mentioned',
+                  'cryptid_trial','apocalypse'):
             if k in raw: state[k]=raw[k]
     # One-time subtle tonal upgrade for pre-existing v2 saves, without changing custom settings.
     if not state.get('metadata', {}).get('tone_upgrade_v2'):
@@ -294,7 +295,10 @@ def resident_activity(state, day, rng):
         r = rng.choice(eligible)
         r['status']='away'; r['away_until'] = day + rng.randint(3,6)
         return evt(day, f'{r["name"]} visiting relatives', f'{r["name"]} will be away from town for several days to visit family.', 'people')
-    r = rng.choice(eligible or list(residents.values()))
+    if not eligible:
+        return evt(day, 'Community offices suspend appointments',
+                   'Most public offices are not accepting routine appointments at this time.', 'people')
+    r = rng.choice(eligible)
     r['mentions'] += 1
     action = rng.choice([
        'will help organize the annual neighborhood cleanup',
@@ -328,7 +332,9 @@ def weather_update(state, day, rng, focus):
 
 def make_swap(state, day, rng, focus):
     residents=[r for r in state['residents'].values() if r['status']=='home']
-    seller = rng.choice(residents or list(state['residents'].values()))['name']
+    if not residents:
+        return 'County Swap Shop is not accepting new listings during the emergency.'
+    seller = rng.choice(residents)['name']
     action=rng.choice(SWAP_ACTIONS)
     item=rng.choice(SWAP_OBJECTS)
     notes = rng.choice(['Please call after six.','Pickup is available on Saturdays.',
@@ -341,7 +347,11 @@ def make_swap(state, day, rng, focus):
 
 def make_call(state, day, rng, focus, routine):
     residents=[r for r in state['residents'].values() if r['status']=='home']
-    caller=rng.choice(residents or list(state['residents'].values()))['name']
+    if not residents:
+        return {'caller':'Station Notice', 'caller_text':
+                'Telephone lines are unavailable; the station cannot accept new callers.',
+                'host_text':'This program will remain on the air as conditions permit.'}
+    caller=rng.choice(residents)['name']
     if focus and focus['thread'] and rng.random()<.75:
         message=THREADS[focus['thread']]['call']
     else:
