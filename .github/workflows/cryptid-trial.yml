@@ -1,4 +1,4 @@
-name: BRD TV 8 - cryptid naming trial
+name: BRD TV 8 - new horror episodes with AI voices
 
 on:
   workflow_dispatch:
@@ -13,10 +13,11 @@ concurrency:
 jobs:
   render-cryptid-pilot:
     runs-on: ubuntu-latest
-    timeout-minutes: 55
+    timeout-minutes: 180
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       OPENAI_MODEL: gpt-6-luna
+      BRD_VOICE_MODEL: gpt-realtime-2.1-mini
     steps:
       - name: Check out the repository
         uses: actions/checkout@v4
@@ -26,12 +27,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - name: Install video and speech tools
+      - name: Install video and OpenAI Realtime voice tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y ffmpeg espeak
-          python -m pip install -r TownTV_Factory/requirements.txt 'openai>=2,<4' piper-tts
-          python -m piper.download_voices en_US-john-medium en_US-kristin-medium en_US-joe-medium en_US-mike-medium en_US-amy-medium --data-dir TownTV_Factory/voices
+          sudo apt-get install -y ffmpeg
+          python -m pip install -r TownTV_Factory/requirements.txt 'openai>=2,<4' websocket-client
       - name: Check for private API key
         run: |
           if [ -z "$OPENAI_API_KEY" ]; then
@@ -40,12 +40,24 @@ jobs:
           fi
       - name: Run normal town continuity tests
         run: python -m unittest discover -s TownTV_Factory/tests -v
-      - name: Generate unscripted three-day cryptid pilot
-        run: python TownTV_Factory/cryptid_trial.py --days 3 --voice piper
-      - name: Upload episodes and scripts for preview
+      - name: Generate three new horror days with the OpenAI voices
+        run: python TownTV_Factory/cryptid_trial.py --days 3 --voice realtime
+      - name: Confirm all generated videos use OpenAI voices
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          data = json.loads(Path('TownTV_Factory/output/cryptid_trial_manifest.json').read_text())
+          clips = [clip for day in data['reports'] for clip in day['clips']]
+          assert len(data['reports']) == 3 and len(clips) == 12, (len(data['reports']), len(clips))
+          assert all(c['voice_engine'] == 'realtime' for c in clips), clips
+          print('Verified 12 new broadcasts use OpenAI Realtime voices')
+          PY
+          printf '%s\n' 'BRD TV 8 features synthetic AI-generated voices, not human recordings.' > TownTV_Factory/output/VOICE_DISCLOSURE.txt
+      - name: Upload new horror episodes with OpenAI speech
         uses: actions/upload-artifact@v4
         with:
-          name: brd-tv8-cryptid-pilot
+          name: brd-tv8-horror-openai-voices
           retention-days: 30
           path: |
             TownTV_Factory/output/day_*_cryptid_*.txt
@@ -55,14 +67,15 @@ jobs:
             TownTV_Factory/output/day_*_swap_shop.mp4
             TownTV_Factory/output/day_*_night_line.mp4
             TownTV_Factory/output/cryptid_trial_manifest.json
-      - name: Preserve pilot-only memories
+            TownTV_Factory/output/VOICE_DISCLOSURE.txt
+      - name: Save horror story continuity for the following run
         shell: bash
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git config user.name "github-actions[bot]"
           git add TownTV_Factory/cryptid_trial_state.json
           if ! git diff --cached --quiet; then
-            git commit -m "Keep BRD TV 8 cryptid pilot history [skip ci]"
+            git commit -m "Preserve BRD TV 8 ongoing horror history [skip ci]"
             git pull --rebase
             git push
           fi
