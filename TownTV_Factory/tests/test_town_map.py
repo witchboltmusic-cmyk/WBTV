@@ -31,10 +31,11 @@ class TownMapTests(unittest.TestCase):
         self.assertEqual(one["ellen"][1][1], "library")
         self.assertEqual(one["sam"][-1][1], one["sam"][0][1])
 
-    def test_people_out_of_town_are_not_on_map(self):
-        self.state["residents"]["harold"]["status"] = "away"
-        schedule = build_schedules(self.state, self.daily)
-        self.assertNotIn("harold", schedule)
+    def test_people_out_of_town_or_dead_are_not_on_map(self):
+        for status in ("away", "moved", "dead", "missing", "injured", "evacuated"):
+            self.state["residents"]["harold"]["status"] = status
+            schedule = build_schedules(self.state, self.daily)
+            self.assertNotIn("harold", schedule)
 
     def test_routes_use_actual_streets_not_diagonal_teleporting(self):
         points = walking_path("hardware", "cinema")
