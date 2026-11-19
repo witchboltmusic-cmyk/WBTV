@@ -1,0 +1,53 @@
+name: BRD TV 8 - Channel 02 overhead town preview
+
+on:
+  pull_request:
+    paths:
+      - 'TownTV_Factory/town_map.py'
+      - 'TownTV_Factory/tests/test_town_map.py'
+      - '.github/workflows/town-map-preview.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  overhead-map-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout town simulator
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install free image and video tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg fonts-dejavu-core
+          python -m pip install -r TownTV_Factory/requirements.txt
+      - name: Run offline town-map continuity tests
+        run: python -m unittest discover -s TownTV_Factory/tests -p test_town_map.py -v
+      - name: Read the saved town record without advancing it
+        run: |
+          python -c "import json; s=json.load(open('TownTV_Factory/cryptid_trial_state.json')); print('Recorded day',s['broadcast_day'],'events',len(s.get('history',[])))"
+      - name: Render CH 02 animated neighborhood view
+        shell: bash
+        run: |
+          set -euo pipefail
+          python TownTV_Factory/town_map.py \
+            --state TownTV_Factory/cryptid_trial_state.json \
+            --seconds 55 --fps 8 \
+            --output TownTV_Factory/output/bramhollow_channel_02.mp4 \
+            --preview TownTV_Factory/output/bramhollow_channel_02_preview.png
+      - name: Downloadable video and map preview
+        uses: actions/upload-artifact@v4
+        with:
+          name: bramhollow-channel-02-overhead-preview
+          retention-days: 30
+          if-no-files-found: error
+          path: |
+            TownTV_Factory/output/bramhollow_channel_02.mp4
+            TownTV_Factory/output/bramhollow_channel_02.json
+            TownTV_Factory/output/bramhollow_channel_02_preview.png
