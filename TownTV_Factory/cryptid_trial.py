@@ -353,11 +353,22 @@ def apply_response(state, daily, context, data):
     })
     return scripts
 
+def configure_voice_renderer(choice):
+    """Select verified Realtime speech or explicitly requested offline Piper."""
+    if choice == "realtime":
+        import openai_voice
+        tv.synthesize = openai_voice.synthesize
+        return "realtime"
+    engine = active_voice_engine(choice)
+    tv.synthesize = speak
+    return engine
+
+
 def main():
     p = argparse.ArgumentParser(description="BRD TV 8 isolated LLM cryptid trial")
     p.add_argument("--days", type=int, default=3)
     p.add_argument("--model", default=os.getenv("OPENAI_MODEL", "gpt-6-luna"))
-    p.add_argument("--voice", choices=("auto", "espeak", "piper"), default="auto")
+    p.add_argument("--voice", choices=("auto", "espeak", "piper", "realtime"), default="realtime")
     p.add_argument("--no-video", action="store_true")
     p.add_argument("--state", type=Path, default=TRIAL_STATE)
     args = p.parse_args()
@@ -369,8 +380,8 @@ def main():
     if not args.no_video:
         if not shutil.which("ffmpeg"):
             p.error("ffmpeg is required to render")
-        active_voice_engine(args.voice)
-        tv.synthesize = speak  # confine the voice extension to this pilot process
+        selected = configure_voice_renderer(args.voice)
+        print("BRD TV 8 voice engine:", selected, flush=True)
     state = (upgrade_state(json.loads(args.state.read_text("utf-8")))
              if args.state.exists() else initial_state())
     state["town"], state["station"] = "Bramhollow", "BRD TV 8"
