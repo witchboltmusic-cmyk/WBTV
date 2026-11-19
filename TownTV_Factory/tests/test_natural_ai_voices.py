@@ -69,6 +69,30 @@ class VoiceAuditionTests(unittest.TestCase):
                 openai_voice._reliable_pcm("Hello.", openai_voice.PROFILE["host"])
         self.assertEqual(generator.call_count, 1)
 
+    def test_all_resident_callers_have_persistent_audio_identity(self):
+        from cryptid_trial import CALLER_CAST
+        for speaker in CALLER_CAST:
+            profile = openai_voice.profile_for(speaker)
+            self.assertTrue(profile["telephone"])
+            self.assertTrue(profile["voice"])
+            self.assertTrue(profile["style"])
+
+    def test_phone_turn_passes_prior_spoken_line_for_conversational_delivery(self):
+        from tempfile import TemporaryDirectory
+        from unittest.mock import patch
+        with TemporaryDirectory() as temp:
+            dest = Path(temp) / "voice.wav"
+            captured = []
+            def fake_audio(text, profile):
+                captured.append((text, profile.get("previous_turn")))
+                return b"\\x00\\x00" * 24000
+            with patch.object(openai_voice, "_reliable_pcm", side_effect=fake_audio):
+                openai_voice._make_wave("Did you see the door?", "host", dest,
+                                        previous_turn="oscar: The door was gone.")
+            self.assertEqual(captured[0][0], "Did you see the door?")
+            self.assertEqual(captured[0][1], "oscar: The door was gone.")
+            self.assertTrue(dest.exists())
+
     def test_rejects_unknown_speaker(self):
         with self.assertRaises(ValueError):
             openai_voice.profile_for("unknown")
