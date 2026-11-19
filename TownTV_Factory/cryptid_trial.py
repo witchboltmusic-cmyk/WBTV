@@ -280,7 +280,7 @@ def apply_response(state, daily, context, data):
     turns = shows["night_line"]["turns"]
     speakers = {item["speaker_id"] for item in turns}
     minimum = 14 if len(available) >= 3 else (10 if len(available) == 2 else
-              7 if len(available) == 1 else 5)
+              6 if len(available) == 1 else 6)
     if not minimum <= len(turns) <= 20 or not {"host", *available}.issubset(speakers):
         raise ValueError("Night Line needs host and currently available speakers")
     if not speakers.issubset({"host", *available}):
@@ -299,7 +299,9 @@ def apply_response(state, daily, context, data):
     c["minds"]["sam"]["witnessed"] = True
     c["minds"]["harold"]["witnessed"] = False
     c["minds"]["ellen"]["witnessed"] = False
-    headline = " ".join(data["lead_headline"].split())
+    headline = (" ".join(daily["horror"]["headline"].split())
+                if daily.get("horror") else
+                " ".join(data["lead_headline"].split()))
     if not 20 <= len(headline) <= 110:
         raise ValueError("Lead headline length outside permitted broadcast format")
     if not daily.get("horror") and not any(
