@@ -3,13 +3,13 @@
   "town": "Bramhollow",
   "county": "Morrow County",
   "station": "BRD TV 8",
-  "broadcast_day": 12,
+  "broadcast_day": 15,
   "fictional_start_date": "1996-10-01",
   "seed": 81381996,
   "surreal_chance": 0.17,
   "weather": {
-    "condition": "clear",
-    "temperature_f": 53
+    "condition": "fog",
+    "temperature_f": 55
   },
   "residents": {
     "mara": {
@@ -24,7 +24,7 @@
       "job": "Librarian",
       "status": "home",
       "away_until": 0,
-      "mentions": 0
+      "mentions": 1
     },
     "harold": {
       "name": "Harold Vale",
@@ -50,30 +50,32 @@
     "ernest": {
       "name": "Ernest Pike",
       "job": "Garden club president",
-      "status": "home",
+      "status": "dead",
       "away_until": 0,
-      "mentions": 1
+      "mentions": 1,
+      "fate_day": 15
     },
     "june": {
       "name": "June Mercer",
       "job": "Postal worker",
-      "status": "home",
+      "status": "injured",
       "away_until": 0,
-      "mentions": 3
+      "mentions": 3,
+      "fate_day": 14
     },
     "david": {
       "name": "David Bell",
       "job": "Recreation director",
       "status": "home",
       "away_until": 0,
-      "mentions": 2
+      "mentions": 3
     },
     "oscar": {
       "name": "Oscar Reed",
       "job": "Sign painter",
       "status": "home",
       "away_until": 0,
-      "mentions": 0
+      "mentions": 1
     }
   },
   "businesses": {
@@ -92,8 +94,8 @@
     "laundry": {
       "name": "West End Laundromat",
       "owner": null,
-      "status": "open",
-      "reopen_day": 0
+      "status": "temporary_closed",
+      "reopen_day": 1000000000
     },
     "cinema": {
       "name": "Regent Picture House",
@@ -123,12 +125,15 @@
     "Roadside flower beds replanted": 9,
     "County fair announces flower competition": 10,
     "Downtown sidewalk repairs begin": 11,
-    "Community theater schedules auditions": 12
+    "Community theater schedules auditions": 12,
+    "High school band fund-raiser begins": 13,
+    "Post office adjusts collection time": 14,
+    "School bus safety meeting scheduled": 15
   },
   "business_last_mentioned": {
-    "cinema": 12,
-    "laundry": 10,
-    "bakery": 7,
+    "cinema": 15,
+    "laundry": 14,
+    "bakery": 13,
     "garden": 9,
     "hardware": 11
   },
@@ -566,6 +571,143 @@
       "category": "community",
       "surreal": false,
       "thread": "cryptid_naming"
+    },
+    {
+      "day": 13,
+      "headline": "High school band fund-raiser begins",
+      "text": "Students are selling raffle tickets to help pay for new marching band uniforms.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 13,
+      "headline": "Community volunteer: Ellen Price",
+      "text": "Ellen Price, a local librarian, has offered to lend supplies to the community garden.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 13,
+      "headline": "Bell Street Bakery replaces store sign",
+      "text": "Bell Street Bakery has installed a new sign near its entrance.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 13,
+      "headline": "County crews abandon reservoir inspection after equipment failure",
+      "text": "A county inspection crew found an upright white structure standing behind the reservoir pump building. It measured approximately nineteen feet from the ground to its highest visible point. Six folded projections extended from its back. A tractor stalled forty feet away. The crew left the site when every work light failed in sequence. No injuries were reported.",
+      "category": "emergency",
+      "surreal": true,
+      "thread": "county_emergency",
+      "location": "reservoir",
+      "time": "05:41",
+      "confirmed_deaths": 0
+    },
+    {
+      "day": 13,
+      "headline": "County crews abandon reservoir inspection after equipment failure",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
+    },
+    {
+      "day": 14,
+      "headline": "West End Laundromat joins county fair",
+      "text": "West End Laundromat will sponsor a table at the next county fair.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 14,
+      "headline": "Community volunteer: Oscar Reed",
+      "text": "Oscar Reed, a local sign painter, has volunteered to sort records at the historical society.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 14,
+      "headline": "Post office adjusts collection time",
+      "text": "The Main Street post office has moved its final weekday collection back by fifteen minutes.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 14,
+      "headline": "Two confirmed dead following West End Laundromat emergency",
+      "text": "Emergency workers recovered two bodies at West End Laundromat. Both were found standing against a locked service door. The medical examiner reported that their clothing was fused to the painted metal. The victims had been heard knocking from inside the wall after the building was evacuated. The structure is closed, and June Mercer was hospitalized following exposure.",
+      "category": "emergency",
+      "surreal": true,
+      "thread": "county_emergency",
+      "location": "laundry",
+      "time": "19:06",
+      "confirmed_deaths": 2
+    },
+    {
+      "day": 14,
+      "headline": "Two confirmed dead following West End Laundromat emergency",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
+    },
+    {
+      "day": 15,
+      "headline": "School bus safety meeting scheduled",
+      "text": "Parents are invited to a short meeting with transportation staff at the school cafeteria.",
+      "category": "community",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 15,
+      "headline": "Public Works retrieves duplicate street marker",
+      "text": "A second Maple Street sign was found in storage. Officials have not determined when it was installed.",
+      "category": "county",
+      "surreal": true,
+      "thread": null
+    },
+    {
+      "day": 15,
+      "headline": "Community volunteer: David Bell",
+      "text": "David Bell, a local recreation director, is assisting with preparations for the county fair.",
+      "category": "people",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 15,
+      "headline": "Regent Picture House replaces store sign",
+      "text": "Regent Picture House has installed a new sign near its entrance.",
+      "category": "business",
+      "surreal": false,
+      "thread": null
+    },
+    {
+      "day": 15,
+      "headline": "Resident killed after library corridor sealed itself",
+      "text": "Ernest Pike was confirmed dead in an incident at Bramhollow Library. A corridor wall was found extending through a doorway that had been open minutes earlier. His body was located on the opposite side without any break in the plaster. A maintenance worker said the wall was still warm. The library has closed until further notice.",
+      "category": "emergency",
+      "surreal": true,
+      "thread": "county_emergency",
+      "location": "library",
+      "time": "21:38",
+      "confirmed_deaths": 1
+    },
+    {
+      "day": 15,
+      "headline": "Resident killed after library corridor sealed itself",
+      "text": "Unconfirmed Reservoir Road animal report; residents debate names.",
+      "category": "community",
+      "surreal": false,
+      "thread": "cryptid_naming"
     }
   ],
   "metadata": {
@@ -582,18 +724,18 @@
     "minds": {
       "sam": {
         "witnessed": true,
-        "belief": "He saw a tall shape beside Reservoir Road after his bus route, but cannot explain what it was.",
-        "stance": "He still calls it The Long Coat and resents Harold and Ellen treating the name as a public joke. He is more uneasy than he lets on about passing the road again."
+        "belief": "He saw a tall shape beside Reservoir Road, but cannot explain what it was.",
+        "stance": "He still calls it The Long Coat, though tonight's death makes the naming argument feel unimportant."
       },
       "harold": {
         "witnessed": false,
         "belief": "He has not seen the shape and has no firsthand idea what it was.",
-        "stance": "He still prefers The Reservoir Stilt and wants his name taken seriously, but worries the whole argument makes him look ridiculous."
+        "stance": "He prefers The Reservoir Stilt, but has little appetite for arguing over names tonight."
       },
       "ellen": {
         "witnessed": false,
         "belief": "She has not seen the shape and does not claim to know what it was.",
-        "stance": "She still prefers The Blank Sleeve. She thinks Harold is more concerned with protecting his pride than choosing a useful name, and she is willing to needle him about it."
+        "stance": "She prefers The Blank Sleeve and thinks precise wording matters more than Harold's pride."
       }
     },
     "public_record": [
@@ -621,86 +763,39 @@
           "harold": "The Reservoir Stilt",
           "ellen": "The Blank Sleeve"
         }
+      },
+      {
+        "day": 13,
+        "headline": "County crews abandon reservoir inspection after equipment failure",
+        "names": {
+          "sam": "The Long Coat",
+          "harold": "The Reservoir Stilt",
+          "ellen": "The Blank Sleeve"
+        },
+        "confirmed_horror_event": "County crews abandon reservoir inspection after equipment failure"
+      },
+      {
+        "day": 14,
+        "headline": "Two confirmed dead following West End Laundromat emergency",
+        "names": {
+          "sam": "The Long Coat",
+          "harold": "The Reservoir Stilt",
+          "ellen": "The Blank Sleeve"
+        },
+        "confirmed_horror_event": "Two confirmed dead following West End Laundromat emergency"
+      },
+      {
+        "day": 15,
+        "headline": "Resident killed after library corridor sealed itself",
+        "names": {
+          "sam": "The Long Coat",
+          "harold": "The Reservoir Stilt",
+          "ellen": "The Blank Sleeve"
+        },
+        "confirmed_horror_event": "Resident killed after library corridor sealed itself"
       }
     ],
     "recent_dialogue": [
-      {
-        "day": 10,
-        "turns": [
-          {
-            "speaker_id": "host",
-            "text": "Sam, you\u2019ve called it The Long Coat. Why that?"
-          },
-          {
-            "speaker_id": "sam",
-            "text": "Because it was tall and narrow. That\u2019s what I saw. I\u2019m not dressing it up for Harold\u2019s approval."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "You\u2019ve named a thing you can\u2019t identify. That\u2019s not naming, Sam. That\u2019s hanging a coat on a fence."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "You weren\u2019t there."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "No, I was at work, where people come in asking for nails instead of a bedtime story."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "Harold, you sell screws by the inch and still manage to make every conversation about your own importance."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "Thank you, Ellen. That\u2019s almost a sentence."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "It was a complete one. You may keep it."
-          },
-          {
-            "speaker_id": "host",
-            "text": "Sam, what made you sure it was a shape and not something beside the road?"
-          },
-          {
-            "speaker_id": "sam",
-            "text": "I don\u2019t know what it was. I know where it stood. I keep remembering the exact patch of road, and that\u2019s the bit I don\u2019t like."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "That\u2019s a patch of road, not a name."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "You could try shutting up long enough to hear what I\u2019m saying."
-          },
-          {
-            "speaker_id": "harold",
-            "text": "I heard you. You want a name before anyone laughs."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "I don\u2019t care if they laugh."
-          },
-          {
-            "speaker_id": "ellen",
-            "text": "You\u2019ve said that three times, Sam. It sounds less convincing each time."
-          },
-          {
-            "speaker_id": "host",
-            "text": "Harold, if you haven\u2019t seen it, what exactly are you objecting to?"
-          },
-          {
-            "speaker_id": "harold",
-            "text": "The name. It sounds like something left on a bus."
-          },
-          {
-            "speaker_id": "sam",
-            "text": "Then don\u2019t pick it up."
-          }
-        ]
-      },
       {
         "day": 11,
         "turns": [
@@ -854,6 +949,205 @@
             "text": "That still doesn\u2019t make it a\u2014"
           }
         ]
+      },
+      {
+        "day": 13,
+        "turns": [
+          {
+            "speaker_id": "host",
+            "text": "The county bulletin says nineteen feet. I want to make sure I read that correctly."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "You did. Nineteen feet is not a bad measurement. That's the part I keep hearing."
+          },
+          {
+            "speaker_id": "host",
+            "text": "You weren't at the reservoir this morning, Sam?"
+          },
+          {
+            "speaker_id": "sam",
+            "text": "No. I know what I saw by Reservoir Road before. I didn't see this thing they found."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "And neither did I. I'm not going to pretend I did just because a bulletin has numbers in it."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "Good. The numbers are already alarming enough without adding your imagination."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "There you go. Can't let a serious evening pass without correcting me."
+          },
+          {
+            "speaker_id": "host",
+            "text": "The tractor stalled forty feet away. The bulletin doesn't say why."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "And the lights went out one by one. That's a crew standing there watching the light go away."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "It says they left. I keep thinking about how long it took to get out of there in the dark."
+          },
+          {
+            "speaker_id": "host",
+            "text": "We don't know how long. The county hasn't said."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "Then don't make it worse by filling in the parts nobody knows."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "You used to fill in plenty when it was only my word against yours."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "This isn't about that now."
+          },
+          {
+            "speaker_id": "host",
+            "text": "No. It isn't. We have the bulletin in front of us, and that's all we can confirm tonight."
+          }
+        ]
+      },
+      {
+        "day": 14,
+        "turns": [
+          {
+            "speaker_id": "host",
+            "text": "We have the county bulletin in front of us. Two people are dead. June Mercer is hospitalized following exposure."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "I heard the words. I don't know what to do with them."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "They were standing at the door. That's what the bulletin says. Standing there."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "Against a locked service door. And their clothing was fused to the metal. Please don't make it sound less terrible by leaving out the words."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "I wasn't trying to make it less terrible."
+          },
+          {
+            "speaker_id": "host",
+            "text": "The bulletin says knocking was heard from inside the wall after the building was evacuated. We don't know more than that."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "Somebody got out of that building and still had to hear knocking. I keep trying to picture leaving."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "Don't picture a person the bulletin doesn't identify. We know two people died. We don't know their names."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "Right. Sorry. Two people. And June's in the hospital."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "I know that place. I've sold soap to people going there. You walk in to get clean. I don't have anything useful to say."
+          },
+          {
+            "speaker_id": "host",
+            "text": "No. None of us has an explanation."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "Then say that. Don't turn it into a riddle. Two people are dead."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "Yesterday I was arguing about what to call something I saw by the road. That feels stupid now."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "It wasn't stupid then. But I'm done arguing about the name tonight."
+          },
+          {
+            "speaker_id": "host",
+            "text": "We have no confirmed reopening time for the laundromat. We will read the bulletin again if we need to. I'm sorry. I\u2014let's keep the line open."
+          }
+        ]
+      },
+      {
+        "day": 15,
+        "turns": [
+          {
+            "speaker_id": "host",
+            "text": "The county says Ernest Pike is dead. Ellen, I know the library is your workplace. Were you there tonight?"
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "No. I wasn't there. I want that clear. I read the bulletin like everybody else."
+          },
+          {
+            "speaker_id": "host",
+            "text": "It says the wall crossed the doorway. His body was on the other side."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "Without a break in the plaster. Yes. Those words are already bad enough."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "And the wall was warm. That's not a sentence I ever expected to hear about the library."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "I don't know what you're supposed to do with that. I don't know what to say."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "You could stop trying to make it sound ordinary."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "I'm not. I'm trying not to say something stupid."
+          },
+          {
+            "speaker_id": "host",
+            "text": "Three confirmed deaths now. One today. Ernest Pike is named in the bulletin."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "Yesterday it was that laundromat. Today the library. You go to those places because they're just there."
+          },
+          {
+            "speaker_id": "ellen",
+            "text": "People came in to return books. They came in to sit somewhere quiet. I keep thinking about the books still on the carts."
+          },
+          {
+            "speaker_id": "host",
+            "text": "Ellen, I'm sorry. I don't know what to\u2014"
+          },
+          {
+            "speaker_id": "harold",
+            "text": "My store's open in the morning. That's all I can tell you. I don't know if anyone should go anywhere."
+          },
+          {
+            "speaker_id": "sam",
+            "text": "Don't tell people it's safe because you don't know what else to tell them."
+          },
+          {
+            "speaker_id": "harold",
+            "text": "I didn't say safe, Sam."
+          },
+          {
+            "speaker_id": "host",
+            "text": "No. You didn't. We have the bulletin. The library is closed. I'm sorry, we'll\u2014just give me a moment."
+          }
+        ]
       }
     ],
     "creature_private": {
@@ -861,5 +1155,116 @@
       "habitat": "wooded drainage near reservoir",
       "behavior": "avoids lit areas; mostly nocturnal"
     }
+  },
+  "apocalypse": {
+    "first_day": 13,
+    "last_day": 15,
+    "stage": 3,
+    "total_confirmed_dead": 3,
+    "confirmed_missing": [],
+    "confirmed_dead": [
+      "ernest"
+    ],
+    "closed_places": [
+      {
+        "place": "laundry",
+        "name": "West End Laundromat",
+        "status": "temporary_closed",
+        "day": 14
+      },
+      {
+        "place": "library",
+        "status": "closed",
+        "day": 15
+      }
+    ],
+    "entities": {
+      "a": {
+        "zone": "library",
+        "arrived": true,
+        "encounters": 3
+      },
+      "b": {
+        "zone": "hardware",
+        "arrived": true,
+        "encounters": 1
+      },
+      "c": {
+        "zone": "eastern_road",
+        "arrived": false,
+        "encounters": 0
+      }
+    },
+    "incidents": [
+      {
+        "place": "reservoir",
+        "time": "05:41",
+        "headline": "County crews abandon reservoir inspection after equipment failure",
+        "public_description": "A county inspection crew found an upright white structure standing behind the reservoir pump building. It measured approximately nineteen feet from the ground to its highest visible point. Six folded projections extended from its back. A tractor stalled forty feet away. The crew left the site when every work light failed in sequence. No injuries were reported.",
+        "day": 13,
+        "stage": 1,
+        "confirmed_deaths_today": 0,
+        "confirmed_deaths_total": 0,
+        "verified_changes": [],
+        "confirmed_missing": [],
+        "confirmed_dead": [],
+        "classification": "confirmed county incident bulletin"
+      },
+      {
+        "place": "laundry",
+        "time": "19:06",
+        "headline": "Two confirmed dead following West End Laundromat emergency",
+        "public_description": "Emergency workers recovered two bodies at West End Laundromat. Both were found standing against a locked service door. The medical examiner reported that their clothing was fused to the painted metal. The victims had been heard knocking from inside the wall after the building was evacuated. The structure is closed, and June Mercer was hospitalized following exposure.",
+        "day": 14,
+        "stage": 2,
+        "confirmed_deaths_today": 2,
+        "confirmed_deaths_total": 2,
+        "verified_changes": [
+          {
+            "resident_id": "june",
+            "name": "June Mercer",
+            "previous_status": "home",
+            "status": "injured"
+          },
+          {
+            "place": "laundry",
+            "name": "West End Laundromat",
+            "status": "temporary_closed",
+            "day": 14
+          }
+        ],
+        "confirmed_missing": [],
+        "confirmed_dead": [],
+        "classification": "confirmed county incident bulletin"
+      },
+      {
+        "place": "library",
+        "time": "21:38",
+        "headline": "Resident killed after library corridor sealed itself",
+        "public_description": "Ernest Pike was confirmed dead in an incident at Bramhollow Library. A corridor wall was found extending through a doorway that had been open minutes earlier. His body was located on the opposite side without any break in the plaster. A maintenance worker said the wall was still warm. The library has closed until further notice.",
+        "day": 15,
+        "stage": 3,
+        "confirmed_deaths_today": 1,
+        "confirmed_deaths_total": 3,
+        "verified_changes": [
+          {
+            "resident_id": "ernest",
+            "name": "Ernest Pike",
+            "previous_status": "home",
+            "status": "dead"
+          },
+          {
+            "place": "library",
+            "status": "closed",
+            "day": 15
+          }
+        ],
+        "confirmed_missing": [],
+        "confirmed_dead": [
+          "ernest"
+        ],
+        "classification": "confirmed county incident bulletin"
+      }
+    ]
   }
 }
