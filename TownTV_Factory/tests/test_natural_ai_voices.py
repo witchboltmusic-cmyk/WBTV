@@ -29,6 +29,46 @@ class VoiceAuditionTests(unittest.TestCase):
         self.assertEqual(" ".join(spoken.split()), original)
         self.assertEqual(openai_voice.format_spoken_copy(original, "sam"), original)
 
+    def test_split_retries_mismatched_long_transcript(self):
+        large = "The building is closed and county crews remain outside. " * 14
+        calls = []
+        def fake(fragment, profile):
+            calls.append(fragment)
+            if len(fragment) > 300:
+                raise openai_voice.SpeechMismatchError("mismatch 0.44")
+            return b"\x10\x00" * 48  # valid-sized fake signed-16 PCM
+        with patch.object(openai_voice, "_generate_pcm", side_effect=fake):
+            audio = openai_voice._reliable_pcm(large, openai_voice.PROFILE["anchor"])
+        self.assertGreater(len(calls), 2)
+        self.assertEqual(calls[0], large)
+        self.assertTrue(all(len(x) <= 300 for x in calls[1:]))
+        self.assertGreater(len(audio), 96)
+        self.assertEqual(
+            openai_voice._normalize(" ".join(calls[1:])),
+            openai_voice._normalize(large),
+        )
+
+    def test_repeated_short_mismatch_still_fails_closed(self):
+        text = "This is a verified report."
+        with patch.object(
+            openai_voice, "_generate_pcm",
+            side_effect=openai_voice.SpeechMismatchError("mismatch"),
+        ) as generator:
+            with self.assertRaisesRegex(
+                openai_voice.SpeechMismatchError, "no mismatched audio",
+            ):
+                openai_voice._reliable_pcm(text, openai_voice.PROFILE["anchor"])
+        self.assertEqual(generator.call_count, 3)
+
+    def test_no_retry_on_unrelated_api_error(self):
+        with patch.object(
+            openai_voice, "_generate_pcm",
+            side_effect=RuntimeError("Invalid API key"),
+        ) as generator:
+            with self.assertRaisesRegex(RuntimeError, "Invalid API key"):
+                openai_voice._reliable_pcm("Hello.", openai_voice.PROFILE["host"])
+        self.assertEqual(generator.call_count, 1)
+
     def test_rejects_unknown_speaker(self):
         with self.assertRaises(ValueError):
             openai_voice.profile_for("unknown")
