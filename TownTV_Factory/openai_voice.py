@@ -34,7 +34,7 @@ PROFILE = {
     },
     "host": {
         "voice": "echo",
-        "style": "Male 1990s late-night local phone-in host. Relaxed, dry, patient, naturally curious. Let callers finish; never sound like a comedy character.",
+        "style": "Male 1990s late-night local phone-in host. Speak as though you are listening to an actual caller, reacting to their last sentence, sometimes impatient or worried. Quick, natural questions, occasional hesitation, slight overlap implied by an urgent start. Never sound like a formal newsreader, detached panel moderator or comedy character.",
         "telephone": False,
         "sample": "Good evening, you're on Night Line. We seem to have several names for an animal that only one person claims to have seen.",
     },
@@ -67,6 +67,42 @@ PROFILE = {
         "style": "Adult American woman, librarian. Articulate, precise, dryly amused but extremely serious about terminology. Distinct natural speaking rhythm.",
         "telephone": True,
         "sample": "Neither of you has considered how this animal would appear in a catalogue. Unidentified Tall Shape is clearly more responsible.",
+    },
+    "mara": {
+        "voice": "coral",
+        "style": "Adult American woman, county clerk on a telephone line. Tired, brisk, precise, unpolished conversational replies. Sound as if actually speaking to the host, not reading copy.",
+        "telephone": True,
+        "sample": "I need you to listen to me. The notice they put out this morning was not approved by our office.",
+    },
+    "david": {
+        "voice": "ash",
+        "style": "Adult American man, recreation director calling local radio. Social and flustered, natural spontaneous back-and-forth; responds directly to the host.",
+        "telephone": True,
+        "sample": "No, listen, the doors were locked. That's the whole reason I called you.",
+    },
+    "oscar": {
+        "voice": "sage",
+        "style": "Adult American man, sign painter on the phone. Direct, deliberate, a little annoyed. Answers host questions in ordinary spoken fragments.",
+        "telephone": True,
+        "sample": "I painted that road sign myself. It's not supposed to be facing the other direction.",
+    },
+    "june": {
+        "voice": "shimmer",
+        "style": "Adult American woman, postal worker speaking over telephone. Dry, practical, cautious, with real stops and corrections rather than a polished monologue.",
+        "telephone": True,
+        "sample": "I didn't say he was dead. I said I couldn't find his house.",
+    },
+    "violet": {
+        "voice": "marin",
+        "style": "Older American woman, retired schoolteacher over telephone. Firm and quietly upset. Plainspoken live responses, not polished announcements.",
+        "telephone": True,
+        "sample": "No, that is not what I said. There were nine of them. I counted.",
+    },
+    "ernest": {
+        "voice": "echo",
+        "style": "Older American man, garden club president over telephone. Fussy, practical, growing impatient, talks like someone correcting the host.",
+        "telephone": True,
+        "sample": "I can hear you, yes. Now would you please listen to the question.",
     },
 }
 
@@ -127,7 +163,12 @@ def _generate_pcm(text, profile, model=MODEL):
         "are silent breathing and phrasing cues, not words to speak. "
         "Do not rush sentences. End statements naturally, not as questions. "
         "Delivery style: " + profile["style"] + "\n\n"
-        "READ THIS EXACT SCRIPT:\n" + text
+        + (("CONVERSATION CONTEXT - do NOT speak, quote or paraphrase this: "
+            + profile["previous_turn"][:380] + "\n"
+            + "Deliver your line as a direct reply to that person. "
+            + "Only speak the READ THIS EXACT SCRIPT section.\n\n")
+           if profile.get("previous_turn") else "")
+        + "READ THIS EXACT SCRIPT:\n" + text
     )
     ws = websocket.create_connection(
         f"wss://api.openai.com/v1/realtime?model={model}",
@@ -248,9 +289,11 @@ def _reliable_pcm(text, profile):
     return attempt(text)
 
 
-def _make_wave(text, speaker, destination):
-    """Write clean 24kHz mono WAV with no AI voice alteration after generation."""
-    profile = profile_for(speaker)
+def _make_wave(text, speaker, destination, previous_turn=None):
+    """Write clean 24kHz mono WAV, optionally reacting to the prior phone turn."""
+    profile = dict(profile_for(speaker))
+    if previous_turn:
+        profile["previous_turn"] = previous_turn
     spoken_copy = format_spoken_copy(text, speaker)
     audio = _reliable_pcm(spoken_copy, profile)
     with wave.open(str(destination), "wb") as dest:
@@ -270,7 +313,11 @@ def synthesize(segments, dest, voice_choice="realtime"):
         for n, (speaker, text) in enumerate(segments):
             original = Path(work) / f"speech_{n:03d}.wav"
             normalized = Path(work) / f"normalized_{n:03d}.wav"
-            _make_wave(text, speaker, original)
+            previous_turn = (
+                f"{segments[n-1][0]}: {segments[n-1][1]}"
+                if n and len(segments) > 2 else None
+            )
+            _make_wave(text, speaker, original, previous_turn=previous_turn)
             # Only telephone equalization for call-in guests; no robotic pitch shifting.
             sound = ("highpass=f=250,lowpass=f=3500"
                      if profile_for(speaker)["telephone"] else
@@ -282,7 +329,9 @@ def synthesize(segments, dest, voice_choice="realtime"):
                 if (w.getnchannels(),w.getsampwidth(),w.getframerate()) != (1,2,44100):
                     raise ValueError("Wrong normalized WAV format")
                 pieces.append(w.readframes(w.getnframes()))
-        gap = int(0.34 * 44100) * 2
+        # Call-in shows need conversational timing, not an announcer pause
+        # after every sentence. Keep slightly longer rests for other shows.
+        gap = int((0.18 if len(segments) > 2 else 0.34) * 44100) * 2
         dest = Path(dest)
         dest.parent.mkdir(parents=True, exist_ok=True)
         with wave.open(str(dest),"wb") as final:
