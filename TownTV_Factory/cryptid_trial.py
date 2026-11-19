@@ -21,6 +21,7 @@ import wave
 from openai import OpenAI
 import generate as tv
 from town_engine import initial_state, upgrade_state, advance
+from apocalypse_engine import advance_incident, public_context
 from voiceover import active_voice_engine, _write_speech, _run
 
 ROOT = Path(__file__).resolve().parent
@@ -133,80 +134,76 @@ SCHEMA = schema_obj(
         night_line=schema_obj(turns={"type": "array", "items": TURN}),
     ),
 )
-INSTRUCTIONS = """You write BRD TV 8, a tiny, underfunded local station in fictional Bramhollow, October 1996.
-Its earnest municipal programming contains wildly human arguments, unexpectedly funny social friction,
-and occasional deeply unsettling moments. The station is NOT intentionally making a horror comedy.
-The presenters treat absurdly petty incidents as serious news. People swear, interrupt, get sarcastic,
-talk past each other, get their feelings hurt, double down, and sometimes say something genuinely eerie.
+INSTRUCTIONS = """You write human, gripping, frightening fictional 1996 TV broadcasts from
+Bramhollow, a small American town undergoing a real, escalating emergency.
+ONE HIDDEN, RULE-DRIVEN SIMULATION controls death, injury, disappearances,
+destroyed buildings, official casualty totals, eyewitness limitations and chronology.
+The simulation facts arrive in the JSON input under 'public_disaster'; the AI
+writes only the words that people speak. Do NOT invent additional confirmed
+deaths, sightings, injuries, transmissions, attacks, police statements, rescues,
+survivors, locations of entities, or property destruction. No resurrection,
+no posthumous live phone calls, no contradictions with resident_status.
+People may be mistaken or lie, but label any new claims as unverified anecdotes.
 
-YOUR MAIN GOAL: MAKE THE DIALOGUE WORTH WATCHING. No one should sound like a committee meeting,
-a legal deposition, a polite AI assistant, or a balanced panel discussion. Avoid bureaucratic
-phrases like "for the record", "there is no evidence", "sensible distinction",
-"remain unverified", "we will continue to monitor", "appropriate designation",
-"the debate continues", or "the station will keep". Characters are not here to reach consensus.
-No recapping one another's argument. They REACT to what was just said with specificity.
-Use contractions, fragments, overlapping thoughts, memorable images, petty digs, awkward
-silences conveyed in dialogue, and the odd curse. Hell, damn, bullshit, and sometimes
-"what the fuck" are fine when earned, especially in Night Line; do not spray profanity
-into every sentence or make the anchor curse. No insults against protected groups.
-Humor must be conversational and character-based, not sitcom punchlines or memes.
+TONE: Genuinely terrifying, concrete, visceral, increasingly catastrophic.
+No empty phrases like 'an unexplained occurrence', 'things seem strange',
+'residents are concerned' or 'authorities are monitoring the situation'.
+Ground fear in the specific dimensions of structures, physical aftermath,
+sounds, what responders found, evacuations, damaged roads, bodies, and losses
+provided by the county incident reports. Deaths MUST be called deaths when
+they are confirmed. Do not soften them into generic 'incidents.'
+At least one daily line should be emotionally devastating or specific enough
+to stay with the viewer. Let fear change the way people speak.
+No cliched analog-horror phrases, no theatrical one-liners, no 'shadows',
+'memories', prophecy, or cosmic exposition. Never give the attackers an
+origin, theological classification, species name, purpose or grand explanation.
+They are not called angels or demons by the station. Do not reveal their rules.
+Do not imply that anyone in town already knows what they are.
+The TV station must behave like underfunded local television trying to stay
+professional under conditions it cannot manage.
 
-CHARACTER FRICTION:
-- SAM EVERS, bus driver, is the ONLY eyewitness. He's plainspoken, wounded, and sure he knows what
-  he saw even if he cannot explain it. His description may be uncertain; his irritation is not.
-- HAROLD VALE owns the hardware store, has NOT seen it, and is loud, dry, condescending, and
-  infuriatingly confident. He can jab at Sam and Ellen; his pride matters more than the name.
-- ELLEN PRICE, the librarian, has NOT seen it. She can eviscerate Harold in one cool sentence,
-  weaponize precise language, and occasionally reveal an odd or morbid preoccupation.
-- NIGHT LINE HOST tries to stay professional but may laugh, lose patience, or ask a devastatingly
-  simple question. Their job is to maintain a show, not to resolve the dispute.
+HUMAN CHARACTER RULES:
+- SAM EVERS: bus driver and original sighting witness. Defensive, blunt.
+- HAROLD VALE: hardware-store owner, petty and loud, never saw the original shape.
+- ELLEN PRICE: librarian, cutting and precise, never saw the original shape.
+- HOST: strained late-night host, may interrupt, panic, lose track of who's on air.
+ONLY characters in 'available_speakers' may speak LIVE. DEAD and MISSING
+characters never speak. A recorded archival quote, if needed, must be explicitly
+identified by a surviving speaker as an old recording, not a live turn.
+Characters know only what public officials or their own lived experiences reveal.
+Previously established nickname proposals persist but rapidly become less
+important as the real emergency unfolds. People can be vulgar when terrified,
+sometimes swear, get irrational, cry, say ugly things, and abandon arguments.
+Do not make everything a joke; dark humor should become rare after casualties.
 
-REALITY AND CONTINUITY:
-The town engine's weather, events and names are authoritative. Sam alone saw an unidentified
-tall shape near Reservoir Road in poor visibility; this does NOT prove what it was.
-Harold and Ellen have never seen it. Do not report new witnesses, attacks, physical evidence,
-official investigations, deaths, or supernatural powers as objective facts.
-Characters MAY speculate outrageously, lie, repeat ridiculous rumors, exaggerate, threaten
-to take actions, or misremember, but clearly frame these as their own claims, not new established
-events. Preserve named proposals, previous opinions, and all facts. No omniscience.
-Do not invent more named town residents.
-
-NARRATIVE MOVEMENT:
-Phase 1: Sam proposes ONE distinctive, speakable name.
-Phase 2: Harold and Ellen each propose ONE different rival name; neither is an eyewitness.
-Later phases: No new nominations; the same three names remain established, but the argument
-MUST evolve—wounded pride, accusations of stealing a name, a proposed vote or petition,
-a petty business dispute, an embarrassing public correction, the danger of being laughed at,
-or unease about what Sam actually saw. Characters may plan these, not assert unmodeled
-actions already happened. Avoid replaying the same exchange from previous episodes.
-Let someone occasionally say something surprising, rude, or unexpectedly vulnerable.
-The creature is genuinely mysterious, but the town is preoccupied with naming it.
-
-BROADCAST REQUIREMENTS:
-- lead_headline: original, specific, amusingly deadpan TV headline (35-100 characters)
-  about the ACTUAL name dispute or a resident's behavior, not an invented sighting.
-  Name one or more residents and/or an established creature nickname.
-- News: 90-150 vivid words; take the name controversy absurdly seriously, then pivot
-  to ONE normal community news event from supplied input. Accurate, restrained anchor voice,
-  with an ironic contrast; no generic "residents continue to disagree" summaries.
-  WRITE FOR A WOMAN READING ALOUD ON LOCAL TELEVISION: short and medium sentences,
-  natural commas, occasional em dashes for asides, real full stops and paragraph-like
-  breath points. No run-on sentences, monotone lists, or dramatic cliffhanger punctuation.
-  Make each sentence easy to say in one comfortable breath.
-- Weather: 60-100 words; actual supplied forecast unchanged; ordinary professional
-  weather voice with at most ONE faintly ominous, understated line tied to reservoir visibility.
-- Swap Shop: 45-90 words, an almost-believable classified or community announcement that
-  tangentially relates to the feud. Make it particular, not abstract, without inventing
-  a verified major event. Presenter must remain upbeat and not seem in on the joke.
-- Night Line: 14-20 fast, punchy conversational turns, each usually one or two sentences.
-  Include host plus all three named residents. At least one sharp personal jab,
-  one convincing escalation or interruption, and one surprising, quietly unsettling beat.
-  Not every turn must be a joke. Every character needs a recognizable linguistic fingerprint.
-  End with unresolved tension or a memorable interruption, NEVER a calm agreement.
-- Opinions: update each character's subjective belief and stance based on THAT day's dialogue.
-- Nomination list: Sam only in phase 1; Harold and Ellen only in phase 2; empty afterward.
-Use plain spoken English with genuine energy. Return strict JSON schema, no markdown
-and no stage directions or explanatory commentary."""
+OUTPUT:
+- lead_headline: 35-105 characters, about TODAY'S VERIFIED EMERGENCY BULLETIN,
+  not the old nickname debate. In days with no emergency use the naming dispute.
+  Do NOT announce a new unverified event as fact.
+- nominations: Sam nominates once on first naming phase; Harold and Ellen in
+  second; none after. Follow the phase in the input. Keep past names unchanged.
+- opinions: exactly one per LIVING/AVAILABLE original resident; no opinions
+  attributed to dead or missing characters.
+- News: 130-210 spoken words. Open with the actual reported incident and explicitly
+  give confirmed death counts and named casualties when supplied. The female anchor
+  reads clear short sentences with punctuation and real breaths. The dead are not
+  'unaccounted for'. The missing are not confirmed dead. Briefly mention an ordinary
+  local event for contrast only when it feels plausible.
+- Weather: 55-110 words. Keep factual supplied conditions and temperature,
+  but include one concrete station or infrastructure disruption from the
+  public disaster if relevant. Never invent a fresh catastrophe.
+- Swap Shop: 40-100 words. Initially mundane, later becomes lost-property,
+  shelter, evacuation-related and practical personal announcements. Never casually
+  sell household goods while the town is collapsing; never invent confirmed rescues.
+- Night Line: usually 12-20 rapid conversational turns, with host and available
+  named speakers; 6-12 if fewer than two people remain. Not everyone needs to
+  agree. The host can lose composure or be cut off by callers. Use concrete fear,
+  sharp argument, faltering attempts to remain normal, specific losses.
+  No voices from dead or missing people, no omniscience, no tidy closing speech.
+  If nobody from the original trio is available, write a distressed
+  station-only emergency broadcast with host turns.
+- Return JSON conforming exactly to schema, no stage directions or markdown.
+Keep every verified incident fact and causal ambiguity consistent across shows."""
 
 def context_for(state, daily):
     c = state.setdefault("cryptid_trial", {
@@ -237,6 +234,12 @@ def context_for(state, daily):
         "established_names": deepcopy(c["names"]),
         "previous_news": deepcopy(c["public_record"][-3:]),
         "previous_dialogue": deepcopy(c["recent_dialogue"][-2:]),
+        "public_disaster": public_context(state, daily),
+        "available_speakers": [
+            k for k in PEOPLE
+            if state.get("residents", {}).get(k, {}).get("status", "home")
+            not in ("dead", "missing", "moved", "away", "evacuated")
+        ],
     }
 
 def ask_model(client, model, context):
@@ -270,14 +273,18 @@ def apply_response(state, daily, context, data):
     if len(set([*c["names"].values(), *proposals.values()])) != len(c["names"]) + len(proposals):
         raise ValueError("Different residents must propose distinct names")
     opinions = data["opinions"]
-    if sorted(item["resident_id"] for item in opinions) != sorted(PEOPLE):
-        raise ValueError("One opinion is required from each named resident")
+    available = set(context.get("available_speakers", PEOPLE))
+    if sorted(item["resident_id"] for item in opinions) != sorted(available):
+        raise ValueError("One opinion is required from each available named resident")
     shows = data["shows"]
     turns = shows["night_line"]["turns"]
-    if not 14 <= len(turns) <= 20 or not {"host", *PEOPLE}.issubset(
-        {item["speaker_id"] for item in turns}
-    ):
-        raise ValueError("Night Line needs host and all three speakers")
+    speakers = {item["speaker_id"] for item in turns}
+    minimum = 14 if len(available) >= 3 else (10 if len(available) == 2 else
+              7 if len(available) == 1 else 5)
+    if not minimum <= len(turns) <= 20 or not {"host", *available}.issubset(speakers):
+        raise ValueError("Night Line needs host and currently available speakers")
+    if not speakers.issubset({"host", *available}):
+        raise ValueError("Dead, missing, evacuated or otherwise absent resident cannot call live")
     if sum(len(item["text"]) for item in turns) > 4800:
         raise ValueError("Night Line is too long")
     for key in ("news", "weather", "swap_shop"):
@@ -293,12 +300,14 @@ def apply_response(state, daily, context, data):
     c["minds"]["harold"]["witnessed"] = False
     c["minds"]["ellen"]["witnessed"] = False
     headline = " ".join(data["lead_headline"].split())
-    if not 20 <= len(headline) <= 110 or not any(
+    if not 20 <= len(headline) <= 110:
+        raise ValueError("Lead headline length outside permitted broadcast format")
+    if not daily.get("horror") and not any(
         token in headline.lower()
         for token in ("sam", "harold", "ellen", "name", "naming",
                       *(n.lower() for n in c["names"].values()))
     ):
-        raise ValueError("Lead headline must be specific to the ongoing naming dispute")
+        raise ValueError("Lead headline must match the existing naming dispute")
     normal = next((e["headline"] for e in daily["events"]
                    if e.get("category") == "community"), "Local community bulletins")
     story = {"day": daily["day"], "headline": headline,
@@ -308,13 +317,17 @@ def apply_response(state, daily, context, data):
     state["history"].append(story)
     state["history"] = state["history"][-800:]
     c["public_record"].append({"day": daily["day"], "headline": headline,
-                               "names": deepcopy(c["names"])})
+                               "names": deepcopy(c["names"]),
+                               "confirmed_horror_event": (
+                                   daily["horror"]["headline"] if daily.get("horror") else None)})
     c["recent_dialogue"].append({"day": daily["day"], "turns": turns})
     c["recent_dialogue"] = c["recent_dialogue"][-5:]
     daily["weather"]["footnote"] = shows["weather"]["footnote"][:190]
     daily["swap"] = shows["swap_shop"]["listing"][:200]
-    daily["call"] = {"caller": "Sam / Harold / Ellen",
-                     "caller_text": "Bramhollow debates reservoir animal names",
+    daily["call"] = {"caller": " / ".join(PEOPLE[k]["name"] for k in sorted(available))
+                               or "Emergency station staff",
+                     "caller_text": (daily["horror"]["headline"] if daily.get("horror")
+                                     else "Bramhollow debates reservoir animal names"),
                      "host_text": ""}
     daily["cryptid"] = {"phase": phase, "headline": headline,
                         "name_proposals": deepcopy(c["names"])}
@@ -363,6 +376,7 @@ def main():
     reports = []
     for _ in range(args.days):
         day = advance(state)
+        advance_incident(state, day)
         context = context_for(state, day)
         response = ask_model(client, args.model, context)
         programs = apply_response(state, day, context, response)
@@ -372,7 +386,8 @@ def main():
             encoding="utf-8")
         (tv.OUT / (prefix + "_cryptid_report.json")).write_text(
             json.dumps({"day": day, "nominations": state["cryptid_trial"]["names"],
-                        "programs": [x["name"] for x in programs]}, indent=2) + "\n",
+                        "programs": [x["name"] for x in programs],
+                        "disaster_public_facts": public_context(state, day)}, indent=2) + "\n",
             encoding="utf-8")
         generated = []
         if not args.no_video:
