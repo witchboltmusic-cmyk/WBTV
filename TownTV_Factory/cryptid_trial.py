@@ -386,14 +386,14 @@ def apply_response(state, daily, context, data):
                                "names": deepcopy(c["names"]),
                                "confirmed_horror_event": (
                                    daily["horror"]["headline"] if daily.get("horror") else None)})
-    c["recent_dialogue"].append({"day": daily["day"], "turns": turns})
+    c["last_nightline_guest"] = caller
+    c["recent_dialogue"].append({"day": daily["day"], "caller": caller, "turns": turns})
     c["recent_dialogue"] = c["recent_dialogue"][-5:]
     daily["weather"]["footnote"] = shows["weather"]["footnote"][:190]
     daily["swap"] = shows["swap_shop"]["listing"][:200]
-    daily["call"] = {"caller": " / ".join(PEOPLE[k]["name"] for k in sorted(available))
-                               or "Emergency station staff",
-                     "caller_text": (daily["horror"]["headline"] if daily.get("horror")
-                                     else "Bramhollow debates reservoir animal names"),
+    daily["call"] = {"caller": guest["name"] if guest else "Station host",
+                     "caller_text": ("On the phone: " + guest["name"] if guest
+                                     else "Station announcement; no callers available"),
                      "host_text": ""}
     daily["cryptid"] = {"phase": phase, "headline": headline,
                         "name_proposals": deepcopy(c["names"])}
@@ -413,7 +413,8 @@ def apply_response(state, daily, context, data):
         "segments": [(turn["speaker_id"], turn["text"]) for turn in turns],
         "narration": " ".join(turn["text"] for turn in turns),
         "display": daily["call"]["caller_text"],
-        "second": "Open telephone lines", "events": [headline],
+        "second": (guest["name"] + " on the phone" if guest else
+                   "Emergency station bulletin"), "events": [headline],
     })
     return scripts
 
