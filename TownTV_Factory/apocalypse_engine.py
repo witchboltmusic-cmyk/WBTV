@@ -226,16 +226,15 @@ def _apply_person_change(state, record, change, person_id, day):
 
 
 def _apply_site_change(state, record, change, place, day):
-    if change in CLOSED_STATES:
-        place_id = place
-        if place_id not in state.get("businesses", {}):
-            return None
-        site = state["businesses"][place_id]
+    if change in CLOSED_STATES and place in state.get("businesses", {}):
+        site = state["businesses"][place]
         site["status"] = CLOSED_STATES[change]
         site["reopen_day"] = 10**9
-        item = {"place": place_id, "name": site["name"],
+        item = {"place": place, "name": site["name"],
                 "status": site["status"], "day": day}
     else:
+        # Library, station, school, and roads are tracked even though they
+        # aren't ordinary commercial businesses in town_engine.py.
         item = {"place": place, "status": change, "day": day}
     existing = next((x for x in record["closed_places"] if x["place"] == place), None)
     if existing:
