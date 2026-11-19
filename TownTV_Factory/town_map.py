@@ -102,8 +102,9 @@ def build_schedules(state, daily):
     schedules = {}
     day = int(daily["day"])
     for person_id, resident in sorted(state["residents"].items()):
-        if resident.get("status") in ("away", "moved"):
-            continue  # never show a person known to be absent
+        if resident.get("status") in ("away", "moved", "dead", "missing",
+                                      "evacuated", "injured"):
+            continue  # dead, missing, hospitalized or absent residents do not walk
         home = home_for(person_id)
         workplace = destination_for(person_id, resident)
         # Small fixed timing differences avoid synchronizing every resident.
