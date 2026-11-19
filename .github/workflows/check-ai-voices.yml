@@ -7,6 +7,8 @@ on:
       - 'TownTV_Factory/apocalypse_engine.py'
       - 'TownTV_Factory/town_engine.py'
       - 'TownTV_Factory/tests/test_apocalypse_engine.py'
+      - 'TownTV_Factory/openai_voice.py'
+      - 'TownTV_Factory/tests/test_natural_ai_voices.py'
       - 'TownTV_Factory/cryptid_trial.py'
       - 'TownTV_Factory/tests/test_cryptid_pilot.py'
       - '.github/workflows/check-ai-voices.yml'
