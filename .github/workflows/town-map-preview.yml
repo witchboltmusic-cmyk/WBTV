@@ -7,16 +7,9 @@ on:
       - 'TownTV_Factory/tests/test_town_map.py'
       - '.github/workflows/town-map-preview.yml'
   workflow_dispatch:
-    inputs:
-      source_run_id:
-        description: Successful cryptid source run to match the news
-        type: string
-        required: true
-        default: '43648703309'
 
 permissions:
   contents: read
-  actions: read
 
 jobs:
   overhead-map-preview:
@@ -36,22 +29,15 @@ jobs:
           python -m pip install -r TownTV_Factory/requirements.txt
       - name: Run offline town-map continuity tests
         run: python -m unittest discover -s TownTV_Factory/tests -p test_town_map.py -v
-      - name: Retrieve actual day reports from the original cryptid broadcasts
-        uses: actions/download-artifact@v4
-        with:
-          name: brd-tv8-cryptid-pilot
-          run-id: \${{ inputs.source_run_id || '43648703309' }}
-          github-token: \${{ github.token }}
-          path: TownTV_Factory/output/original_scripts
+      - name: Read the saved town record without advancing it
+        run: |
+          python -c "import json; s=json.load(open('TownTV_Factory/cryptid_trial_state.json')); print('Recorded day',s['broadcast_day'],'events',len(s.get('history',[])))"
       - name: Render CH 02 animated neighborhood view
         shell: bash
         run: |
           set -euo pipefail
-          REPORT="$(find TownTV_Factory/output/original_scripts -type f -name 'day_*_cryptid_report.json' | sort -V | tail -n 1)"
-          test -n "$REPORT"
           python TownTV_Factory/town_map.py \
             --state TownTV_Factory/cryptid_trial_state.json \
-            --report "$REPORT" \
             --seconds 55 --fps 8 \
             --output TownTV_Factory/output/bramhollow_channel_02.mp4 \
             --preview TownTV_Factory/output/bramhollow_channel_02_preview.png
