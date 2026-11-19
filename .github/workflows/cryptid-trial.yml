@@ -41,6 +41,7 @@ jobs:
       - name: Run normal town continuity tests
         run: python -m unittest discover -s TownTV_Factory/tests -v
       - name: Generate three new horror days with the OpenAI voices
+        id: generate
         run: python TownTV_Factory/cryptid_trial.py --days 3 --voice realtime
       - name: Confirm all generated videos use OpenAI voices
         run: |
@@ -54,7 +55,8 @@ jobs:
           print('Verified 12 new broadcasts use OpenAI Realtime voices')
           PY
           printf '%s\n' 'BRD TV 8 features synthetic AI-generated voices, not human recordings.' > TownTV_Factory/output/VOICE_DISCLOSURE.txt
-      - name: Upload new horror episodes with OpenAI speech
+      - name: Upload completed horror episodes even if a later day fails
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: brd-tv8-horror-openai-voices
@@ -68,7 +70,8 @@ jobs:
             TownTV_Factory/output/day_*_night_line.mp4
             TownTV_Factory/output/cryptid_trial_manifest.json
             TownTV_Factory/output/VOICE_DISCLOSURE.txt
-      - name: Save horror story continuity for the following run
+      - name: Save completed days of horror story continuity
+        if: ${{ !cancelled() && (steps.generate.outcome == 'success' || steps.generate.outcome == 'failure') }}
         shell: bash
         run: |
           git config user.email "github-actions[bot]@users.noreply.github.com"
