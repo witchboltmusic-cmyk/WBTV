@@ -4,11 +4,17 @@ on:
   push:
     branches: [main]
     paths:
+      - 'TownTV_Factory/apocalypse_engine.py'
+      - 'TownTV_Factory/town_engine.py'
+      - 'TownTV_Factory/tests/test_apocalypse_engine.py'
       - 'TownTV_Factory/cryptid_trial.py'
       - 'TownTV_Factory/tests/test_cryptid_pilot.py'
       - '.github/workflows/check-ai-voices.yml'
   pull_request:
     paths:
+      - 'TownTV_Factory/apocalypse_engine.py'
+      - 'TownTV_Factory/town_engine.py'
+      - 'TownTV_Factory/tests/test_apocalypse_engine.py'
       - 'TownTV_Factory/cryptid_trial.py'
       - 'TownTV_Factory/tests/test_cryptid_pilot.py'
       - 'TownTV_Factory/openai_voice.py'
@@ -33,6 +39,6 @@ jobs:
           python -m pip install -r TownTV_Factory/requirements.txt 'openai>=2,<4' websocket-client
       - name: Check code syntax
         run: |
-          python -m compileall -q TownTV_Factory/openai_voice.py TownTV_Factory/revoice_cryptid.py
+          python -m compileall -q TownTV_Factory/openai_voice.py TownTV_Factory/revoice_cryptid.py TownTV_Factory/apocalypse_engine.py TownTV_Factory/cryptid_trial.py TownTV_Factory/town_engine.py
       - name: Run non-billed simulation and voice tests
         run: python -m unittest discover -s TownTV_Factory/tests -v
