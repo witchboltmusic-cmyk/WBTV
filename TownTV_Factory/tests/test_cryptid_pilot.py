@@ -98,6 +98,20 @@ class CryptidPilotTests(unittest.TestCase):
             apply_response(state,daily,context,invalid)
         self.assertEqual(state["cryptid_trial"]["names"],{})
 
+    def test_new_horror_episodes_use_the_existing_openai_voice_cast(self):
+        import cryptid_trial as pilot
+        import openai_voice
+        previous = pilot.tv.synthesize
+        try:
+            self.assertEqual(pilot.configure_voice_renderer("realtime"), "realtime")
+            self.assertIs(pilot.tv.synthesize, openai_voice.synthesize)
+            self.assertEqual(openai_voice.PROFILE["anchor"]["voice"], "shimmer")
+            self.assertTrue(openai_voice.PROFILE["anchor"]["style"].startswith("ONE adult woman"))
+            for speaker in ("host", "weather", "swap_host", "sam", "harold", "ellen"):
+                self.assertIn(speaker, openai_voice.PROFILE)
+        finally:
+            pilot.tv.synthesize = previous
+
     def test_stable_voice_profiles_and_strict_schema(self):
         self.assertNotEqual(VOICES["sam"],VOICES["harold"])
         self.assertNotEqual(VOICES["harold"],VOICES["ellen"])
