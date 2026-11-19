@@ -34,6 +34,22 @@ PEOPLE = {
     "ellen": {"name": "Ellen Price", "role": "Librarian",
               "personality": "Acid-dry, intelligent, ferociously precise, sometimes cutting. Has NOT seen the animal. Uses a calm voice to say surprisingly brutal things, especially when Harold becomes pompous; capable of making things worse on purpose."},
 }
+# Existing town residents can call; the original trio remains the naming cast.
+CALLER_CAST = {
+    **PEOPLE,
+    "mara": {"name": "Mara Voss", "role": "County clerk",
+             "personality": "Exact, exhausted, direct; knows county paperwork."},
+    "david": {"name": "David Bell", "role": "Recreation director",
+              "personality": "Friendly, increasingly anxious; struggles to sound calm."},
+    "oscar": {"name": "Oscar Reed", "role": "Sign painter",
+              "personality": "Plainspoken and attentive to concrete physical details."},
+    "june": {"name": "June Mercer", "role": "Postal worker",
+             "personality": "Dry, matter-of-fact, suspicious of rumors."},
+    "violet": {"name": "Violet Dunn", "role": "Retired schoolteacher",
+               "personality": "Calm but firm; dislikes empty reassurance."},
+    "ernest": {"name": "Ernest Pike", "role": "Garden club president",
+               "personality": "Practical and fussy; interrupts when frightened."},
+}
 # Dedicated Piper voice models give the residents genuinely different voices.
 # The rate/pitch settings below are small finishing adjustments, not the identity.
 VOICES = {
@@ -44,6 +60,12 @@ VOICES = {
     "sam": ("en_US-joe-medium", 1.00, 1.02, True),
     "harold": ("en_US-mike-medium", 0.94, 0.92, True),
     "ellen": ("en_US-amy-medium", 1.02, 1.00, True),
+    "mara": ("en_US-amy-medium", 0.97, 0.97, True),
+    "david": ("en_US-joe-medium", 1.00, 1.00, True),
+    "oscar": ("en_US-mike-medium", 1.01, 0.99, True),
+    "june": ("en_US-amy-medium", 1.01, 1.02, True),
+    "violet": ("en_US-amy-medium", 0.97, 1.00, True),
+    "ernest": ("en_US-mike-medium", 1.00, 1.00, True),
 }
 _PILOT_VOICES = {}
 
@@ -120,7 +142,7 @@ OPINION = schema_obj(
     stance=STRING,
 )
 TURN = schema_obj(
-    speaker_id={"type": "string", "enum": ["host", *PEOPLE]},
+    speaker_id={"type": "string", "enum": ["host", *CALLER_CAST]},
     text=STRING,
 )
 SCHEMA = schema_obj(
@@ -205,6 +227,24 @@ OUTPUT:
 - Return JSON conforming exactly to schema, no stage directions or markdown.
 Keep every verified incident fact and causal ambiguity consistent across shows."""
 
+def select_nightline_guest(state, daily):
+    """Rotate available town callers and avoid immediate repetition."""
+    eligible = sorted(
+        key for key in CALLER_CAST
+        if state.get("residents", {}).get(key, {}).get("status") == "home"
+    )
+    if not eligible:
+        return None
+    previous = state.get("cryptid_trial", {}).get("last_nightline_guest")
+    caller = eligible[(int(daily["day"]) - 1) % len(eligible)]
+    if caller == previous and len(eligible) > 1:
+        caller = eligible[(eligible.index(caller) + 1) % len(eligible)]
+    person = state["residents"][caller]
+    return {"resident_id": caller, "name": person["name"],
+            "job": person.get("job", CALLER_CAST[caller]["role"]),
+            "personality": CALLER_CAST[caller]["personality"]}
+
+
 def context_for(state, daily):
     c = state.setdefault("cryptid_trial", {
         "first_day": daily["day"],
@@ -233,7 +273,8 @@ def context_for(state, daily):
         "private_beliefs": deepcopy(c["minds"]),
         "established_names": deepcopy(c["names"]),
         "previous_news": deepcopy(c["public_record"][-3:]),
-        "previous_dialogue": deepcopy(c["recent_dialogue"][-2:]),
+        "previous_dialogue": deepcopy(c["recent_dialogue"][-1:]),
+        "call_in_guest": select_nightline_guest(state, daily),
         "public_disaster": public_context(state, daily),
         "available_speakers": [
             k for k in PEOPLE
